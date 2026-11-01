@@ -45,6 +45,42 @@ function signClass(value) {
   return "flat";
 }
 
+function fmtScore(value) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return "–";
+  const number = Number(value);
+  if (Math.abs(number - Math.round(number)) < 0.05) return fmt(number, 0);
+  return fmt(number, 1);
+}
+
+function fmtWeight(value) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return "–";
+  const digits = Math.abs(Number(value) - Math.round(Number(value))) < 0.05 ? 0 : 1;
+  return `${fmt(value, digits)}%`;
+}
+
+function fmtPp(value) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return null;
+  const body = fmt(Math.abs(value), 1);
+  if (value > 0) return `+${body} pp`;
+  if (value < 0) return `−${body} pp`;
+  return `${body} pp`;
+}
+
+function weekChange(history, key) {
+  const rows = (history || []).filter((row) => row[key] !== null && row[key] !== undefined);
+  if (rows.length < 6) return null;
+  return rows[rows.length - 1][key] - rows[rows.length - 6][key];
+}
+
+function weightLabel(part, renormalized) {
+  const nominal = fmtWeight(part.weight);
+  if (!renormalized || !part.available || part.effective_weight === null || part.effective_weight === undefined) {
+    return nominal;
+  }
+  if (Math.abs(Number(part.effective_weight) - Number(part.weight)) < 0.05) return nominal;
+  return `${nominal} → ${fmtWeight(part.effective_weight)}`;
+}
+
 function formatDay(iso) {
   if (!iso) return "–";
   const [year, month, day] = iso.split("-");
@@ -174,13 +210,170 @@ function lineData(history, key) {
   };
 }
 
+function scoreSpark(history, tone) {
+  const rows = (history || []).filter((row) => row.score !== null && row.score !== undefined);
+  if (rows.length < 2) return "";
+  const values = rows.map((row) => Number(row.score));
+  const width = 320;
+  const height = 78;
+  const pad = 6;
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const span = Math.max(8, max - min);
+  const low = Math.max(0, min - span * 0.18);
+  const high = Math.min(100, max + span * 0.18);
+  const range = Math.max(1, high - low);
+  const coords = values.map((value, index) => {
+    const x = pad + (index / (values.length - 1)) * (width - pad * 2);
+    const y = pad + (1 - (value - low) / range) * (height - pad * 2);
+    return [x, y];
+  });
+  const line = coords.map(([x, y], index) => `${index ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
+  const last = coords[coords.length - 1];
+  const first = coords[0];
+  const area = `${line} L${last[0].toFixed(1)} ${height - pad} L${first[0].toFixed(1)} ${height - pad} Z`;
+  const color = tone === "bad" ? "#ff6b7d" : tone === "warn" ? "#e2b657" : "#3dcf8e";
+  return `
+    <div class="spark-block">
+      <svg class="score-spark" viewBox="0 0 ${width} ${height}" role="img" aria-label="A kereskedési pontszám az utolsó ${rows.length} kereskedési napon ${fmt(min, 0)} és ${fmt(max, 0)} között mozgott">
+        <path d="${area}" fill="${color}" opacity="0.16"></path>
+        <path d="${line}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+        <circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="2.6" fill="${color}"></circle>
+      </svg>
+      <p class="spark-caption">Utolsó ${rows.length} kereskedési nap · ${formatDay(rows[0].date)} – ${formatDay(rows[rows.length - 1].date)} · ${fmt(min, 0)}–${fmt(max, 0)}</p>
+    </div>`;
+}
+
+function renderScorePart(part, renormalized) {
+  const missing = !part.available || part.score === null || part.score === undefined;
+  const width = missing ? 0 : Math.max(0, Math.min(100, Number(part.score)));
+  const tone = part.tone || "";
+  return `
+    <div class="part${missing ? " is-missing" : ""}">
+      <div class="part-top">
+        <span class="part-name">${part.label || part.id}</span>
+        <span class="part-meta num"><span>${missing ? "–" : fmtScore(part.score)}</span><span>${weightLabel(part, renormalized)}</span></span>
+      </div>
+      <div class="bar" aria-hidden="true"><i class="tone-${tone}" style="width:${width}%"></i></div>
+      <p class="part-detail">${part.detail || part.reason || ""}</p>
+    </div>`;
+}
+
+function renderTradingScore(block) {
+  if (!block || block.score === null || block.score === undefined) {
+    return unavailable("Kereskedési pontszám", block);
+  }
+  const tone = block.tone || "good";
+  const parts = block.components || [];
+  const missing = block.missing || [];
+  const missingLine = missing.length
+    ? `<p class="missing-note">Hiányzó rész: ${missing.join(", ")}. A súlyok a rendelkezésre álló részekre vannak normálva.</p>`
+    : "";
+  return `
+    <section class="score-section">
+      <article class="card score-card tone-${tone}">
+        <div class="score-layout">
+          <div class="score-main">
+            <div class="score-kicker">
+              <h2>Kereskedési pontszám</h2>
+              ${statusBadge(block)}
+            </div>
+            <p class="score-lead">Trendkövető long swinghez, nem kontrariánus jelzés.</p>
+            <div class="score-figure">
+              <span class="score-num num tone-${tone}">${fmt(block.score, 0)}</span>
+              <span class="score-of">/ 100</span>
+            </div>
+            <p class="verdict tone-${tone}">${block.verdict || ""}</p>
+            <div class="band-wrap" aria-hidden="true">
+              <div class="band">
+                <i class="b-bad"></i><i class="b-warn"></i><i class="b-good"></i><i class="b-strong"></i>
+              </div>
+              <em class="band-mark" style="left:${Math.max(0, Math.min(100, Number(block.score)))}%"></em>
+            </div>
+            <div class="band-labels num"><span>0</span><span>40</span><span>60</span><span>80</span><span>100</span></div>
+            <p class="method">${block.method || ""}</p>
+          </div>
+          <div class="score-side">
+            ${scoreSpark(block.history, tone)}
+            ${missingLine}
+            <div class="parts">
+              ${parts.map((part) => renderScorePart(part, block.renormalized)).join("")}
+            </div>
+          </div>
+        </div>
+        <p class="source">${formatDay(block.as_of)} · ${block.source || ""}</p>
+      </article>
+    </section>`;
+}
+
+function maState(state) {
+  if (state === "above") return { text: "Felette", cls: "up" };
+  if (state === "below") return { text: "Alatta", cls: "down" };
+  return { text: "Rajta", cls: "flat" };
+}
+
+function renderAverage(item) {
+  const state = maState(item.state);
+  return `
+    <article class="ma-tile ${item.state || ""}">
+      <div class="ma-kicker"><span>${item.label}</span><span class="pill ${state.cls}">${state.text}</span></div>
+      <div class="ma-value num">${fmt(item.value, 2)}</div>
+      <div class="ma-dist num ${state.cls}">${fmtPct(item.distance_pct, 1)}</div>
+      <p class="ma-sub">távolság a záróártól</p>
+    </article>`;
+}
+
+function renderCross(trend) {
+  const down = trend.last_down_cross ? formatDay(trend.last_down_cross) : "nincs a tárolt időszakban";
+  if (trend.fresh_up_cross && trend.fresh_up_cross_date) {
+    return `
+      <div class="cross-fresh">Trend eleje: 9-es EMA felfelé keresztezte a 20-ast (${formatDay(trend.fresh_up_cross_date)})</div>
+      <p class="cross-quiet">Utolsó lefelé keresztezés: ${down}</p>`;
+  }
+  const up = trend.last_up_cross ? formatDay(trend.last_up_cross) : "nincs a tárolt időszakban";
+  return `<p class="cross-quiet">Utolsó felfelé keresztezés: ${up} Utolsó lefelé keresztezés: ${down}</p>`;
+}
+
+function renderNasdaqTrend(trend) {
+  if (!trend || trend.close === null || trend.close === undefined || !trend.regime_label) {
+    return unavailable("Nasdaq trendszűrő (Qullamaggie)", trend);
+  }
+  const tone = trend.regime_tone || "warn";
+  return `
+    <section class="nasdaq-section">
+      <div class="section-head">
+        <div>
+          <h2>Nasdaq trendszűrő (Qullamaggie)</h2>
+          <p>A Nasdaq Composite (^IXIC) záróára. A 9 és a 20 napos átlag exponenciális (EMA), az 50 és a 200 napos egyszerű (SMA).</p>
+        </div>
+        ${statusBadge(trend)}
+      </div>
+      <article class="card nasdaq-card">
+        <div class="nasdaq-top">
+          <div>
+            <p class="eyebrow">Záróár · ${formatDay(trend.as_of)}</p>
+            <p class="nasdaq-close num">${fmt(trend.close, 2)}</p>
+          </div>
+          <p class="regime tone-${tone}">${trend.regime_label}</p>
+        </div>
+        ${trend.regime_note ? `<p class="regime-note">${trend.regime_note}</p>` : ""}
+        <div class="ma-grid">
+          ${(trend.averages || []).map(renderAverage).join("")}
+        </div>
+        ${renderCross(trend)}
+        <p class="source">Részpont a kereskedési pontszámban: <span class="num">${fmtScore(trend.subscore)}</span> / 100 · ${trend.source || ""}</p>
+      </article>
+    </section>`;
+}
+
 function renderBreadth(breadth) {
   const current = breadth.current || {};
+  const history = breadth.history || [];
   const tiles = [
-    ["spx200", "S&P 500 · 200 napos", current.spx200, COLORS.spx200],
     ["spx50", "S&P 500 · 50 napos", current.spx50, COLORS.spx50],
-    ["ndx200", "Nasdaq-100 · 200 napos", current.ndx200, COLORS.ndx200],
+    ["spx200", "S&P 500 · 200 napos", current.spx200, COLORS.spx200],
     ["ndx50", "Nasdaq-100 · 50 napos", current.ndx50, COLORS.ndx50],
+    ["ndx200", "Nasdaq-100 · 200 napos", current.ndx200, COLORS.ndx200],
   ];
   const sample = `S&P minta: ${current.spx_n ?? "–"} / ${breadth.universe ? breadth.universe.spx : "–"} · Nasdaq-100 minta: ${current.ndx_n ?? "–"} / ${breadth.universe ? breadth.universe.ndx : "–"}`;
   return `
@@ -188,49 +381,26 @@ function renderBreadth(breadth) {
       <div class="section-head">
         <div>
           <h2>Piaci szélesség</h2>
-          <p>A részvények hány százaléka forog a saját mozgóátlaga felett.</p>
+          <p>A részvények hány százaléka forog a saját 50 és 200 napos átlaga felett.</p>
         </div>
         ${statusBadge(breadth)}
       </div>
       <div class="grid-4">
-        ${tiles.map(([, label, value, color]) => `
+        ${tiles.map(([key, label, value, color]) => {
+          const delta = weekChange(history, key);
+          const week = delta === null ? "" : `<p class="week num ${signClass(delta)}">5 kereskedési napja ${fmtPp(delta)}</p>`;
+          return `
           <article class="card kpi">
             <div class="label"><span>${label}</span><i class="dot" style="background:${color}"></i></div>
             <div class="value num">${value === null || value === undefined ? "–" : fmt(value, 1) + "%"}</div>
             <p class="hint">${breadthWord(value)}</p>
-          </article>`).join("")}
+            ${week}
+          </article>`;
+        }).join("")}
       </div>
       <p class="story">${breadthStory(current.spx200)}</p>
-      <article class="card panel">
-        <div class="chart-box"><canvas id="chart-breadth"></canvas></div>
-        <p class="source">${sample} · Zárónap: ${formatDay(breadth.as_of)} · ${breadth.source || ""}</p>
-      </article>
+      <p class="source">${sample} · Zárónap: ${formatDay(breadth.as_of)} · ${breadth.source || ""}</p>
     </section>`;
-}
-
-function drawBreadth(breadth) {
-  const history = breadth.history || [];
-  const sets = [
-    ["spx200", "S&P 500, 200 napos", COLORS.spx200],
-    ["spx50", "S&P 500, 50 napos", COLORS.spx50],
-    ["ndx200", "Nasdaq-100, 200 napos", COLORS.ndx200],
-    ["ndx50", "Nasdaq-100, 50 napos", COLORS.ndx50],
-  ];
-  mountChart(document.getElementById("chart-breadth"), {
-    type: "line",
-    data: {
-      labels: history.map((row) => row.date),
-      datasets: sets.map(([key, label, color]) => ({
-        label,
-        data: history.map((row) => row[key]),
-        borderColor: color,
-        spanGaps: true,
-        digits: 1,
-        suffix: "%",
-      })),
-    },
-    options: baseOptions(),
-  });
 }
 
 function renderSentiment(sentiment) {
@@ -638,6 +808,8 @@ function drawYields(yields) {
 
 function problems(data) {
   const blocks = [
+    ["Kereskedési pontszám", data.trading_score],
+    ["Nasdaq trendszűrő", data.nasdaq_trend],
     ["Szélesség", data.breadth],
     ["VIX", data.sentiment.vix],
     ["VIX lejárat", data.sentiment.vix_term],
@@ -658,14 +830,15 @@ function render(data) {
     ? `<div class="alert">Nem minden forrás frissült (${issues.map(([name, block]) => `${name}: ${block.status === "stale" ? "utolsó ismert adat" : "nem elérhető"}`).join(", ")}). Ahol van korábbi jó érték, azt mutatjuk a dátumával.</div>`
     : "";
   document.getElementById("app").innerHTML = `
-    ${banner}
+    ${renderTradingScore(data.trading_score)}
+    ${renderNasdaqTrend(data.nasdaq_trend)}
     ${renderBreadth(data.breadth)}
+    ${banner}
     ${renderSentiment(data.sentiment)}
     ${renderIndices(data.indices)}
     ${renderYields(data.yields)}
     ${renderExtras(data.extras)}
   `;
-  drawBreadth(data.breadth);
   drawSentiment(data.sentiment);
   data.indices.forEach(drawSpark);
   data.extras.forEach(drawSpark);

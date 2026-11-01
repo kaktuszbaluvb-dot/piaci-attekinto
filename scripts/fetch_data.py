@@ -2,7 +2,8 @@
 """Piaci áttekintő adatlekérés.
 
 Ingyenes, kulcs nélküli forrásokból tölti le az árakat és a hangulatadatokat,
-kiszámolja a piaci szélességet, majd a web/data/dashboard.json fájlba ír.
+kiszámolja a piaci szélességet, a kereskedési pontszámot és a Nasdaq
+trendszűrőt, majd a web/data/dashboard.json fájlba ír.
 Ha egy forrás elbukik, a korábbi jó értéket megtartja és stale jelzéssel látja el.
 """
 
@@ -12,11 +13,13 @@ import csv
 import io
 import json
 import logging
+import math
 import re
 import time
 import traceback
 import warnings
 from datetime import date, datetime, timedelta
+from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -108,6 +111,34 @@ LIMITS = {
     "cnn": 800,
 }
 
+# Kereskedési pontszám: trendkövető long swing, nem kontrariánus jelzés.
+# Minden részpont 0–100. Hiányzó résznél a súlyok a többire normálódnak.
+SCORE_PARTS = (
+    ("nasdaq", "Nasdaq-trend", 35),
+    ("breadth", "Szélesség", 25),
+    ("volatility", "Volatilitás", 20),
+    ("credit", "Hitel", 10),
+    ("sentiment", "Hangulat", 10),
+)
+SCORE_META = {item[0]: item for item in SCORE_PARTS}
+SCORE_HISTORY_DAYS = 60
+FRESH_CROSS_DAYS = 5
+FRESH_CROSS_BONUS = 10.0
+VIX_INVERSION_PENALTY = 20.0
+COMPONENT_MAX_AGE_DAYS = 12
+BREADTH_FIELDS = (
+    ("spx50", "S&P 500 50 napos"),
+    ("spx200", "S&P 500 200 napos"),
+    ("ndx50", "Nasdaq-100 50 napos"),
+    ("ndx200", "Nasdaq-100 200 napos"),
+)
+SCORE_METHOD = (
+    "Trendkövető long swing környezetet mér, nem kontrariánus jelzés. "
+    "Súlyozott átlag, minden rész 0–100: Nasdaq-trend (Qullamaggie) 35%, "
+    "szélesség 25%, volatilitás 20%, hitel 10%, hangulat 10%. "
+    "Ha egy rész hiányzik, a súlyok a többire normálódnak; az extrém félelem rontja a pontot."
+)
+
 
 def log(message: str) -> None:
     print(message, flush=True)
@@ -167,7 +198,7 @@ def has_payload(block) -> bool:
         return False
     if block.get("history"):
         return True
-    for key in ("value", "price", "score", "bull", "vix"):
+    for key in ("value", "price", "score", "bull", "vix", "close"):
         if block.get(key) is not None:
             return True
     current = block.get("current")
@@ -846,6 +877,885 @@ def build_vix_blocks(series_map: dict[str, pd.Series]) -> dict:
     return {"vix": vix_block, "vix_term": term}
 
 
+def round_half_up(value: float, digits: int = 0) -> float:
+    quant = Decimal("1") if digits == 0 else Decimal("1").scaleb(-digits)
+    rounded = Decimal(format(float(value), ".10f")).quantize(quant, rounding=ROUND_HALF_UP)
+    return float(rounded)
+
+
+def publish(value, digits: int):
+    if value is None:
+        return None
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    if math.isnan(number) or math.isinf(number):
+        return None
+    rounded = round_half_up(number, digits)
+    return float(format(rounded, f".{digits}f"))
+
+
+def hu_num(value, digits: int = 1, trim: bool = False) -> str:
+    number = publish(value, digits)
+    if number is None:
+        return "–"
+    sign = "−" if number < 0 else ""
+    text = format(abs(number), f".{digits}f")
+    whole, frac = (text.split(".") + [""])[:2]
+    groups = []
+    while whole:
+        groups.append(whole[-3:])
+        whole = whole[:-3]
+    body = "\u00a0".join(reversed(groups))
+    if digits and not (trim and set(frac) <= {"0"}):
+        if trim:
+            frac = frac.rstrip("0")
+        return f"{sign}{body},{frac}" if frac else f"{sign}{body}"
+    return f"{sign}{body}"
+
+
+def hu_signed(value, digits: int = 1, trim: bool = False) -> str:
+    number = publish(value, digits)
+    if number is None:
+        return "–"
+    if number > 0:
+        return "+" + hu_num(number, digits, trim)
+    return hu_num(number, digits, trim)
+
+
+def hu_day(iso: str | None) -> str:
+    if not iso:
+        return "–"
+    year, month, day = str(iso)[:10].split("-")
+    return f"{year}. {month}. {day}."
+
+
+def lerp_score(value: float, low: float, high: float, score_at_low: float, score_at_high: float) -> float:
+    if high == low:
+        return float(score_at_low)
+    ratio = (float(value) - low) / (high - low)
+    raw = score_at_low + ratio * (score_at_high - score_at_low)
+    return max(0.0, min(100.0, raw))
+
+
+def tone_for(score) -> str | None:
+    if score is None:
+        return None
+    if score < 40:
+        return "bad"
+    if score < 60:
+        return "warn"
+    if score < 80:
+        return "good"
+    return "strong"
+
+
+def band_for(score: int) -> dict:
+    if score <= 39:
+        return {"verdict": "Nem érdemes kereskedni", "tone": "bad"}
+    if score <= 59:
+        return {"verdict": "Óvatosan / fél kockázat", "tone": "warn"}
+    if score <= 79:
+        return {"verdict": "Kedvező", "tone": "good"}
+    return {"verdict": "Erős piac", "tone": "strong"}
+
+
+def classify_regime(close: float, ema9: float, ema20: float, sma50: float, sma200: float) -> dict:
+    above9 = close > ema9
+    above20 = close > ema20
+    above50 = close > sma50
+    above200 = close > sma200
+    if close < ema20:
+        return {"id": "none", "label": "Nincs kereskedés", "tone": "bad", "note": None, "reason": "below_ema20"}
+    if (not above9) and above20:
+        return {"id": "half", "label": "Fél kockázat", "tone": "warn", "note": None, "reason": "below_ema9"}
+    if above9 and above20 and (not above50 or not above200):
+        missing = []
+        if not above50:
+            missing.append("50 napos SMA")
+        if not above200:
+            missing.append("200 napos SMA")
+        note = (
+            "A záróár a 9 és a 20 napos EMA felett van, de a "
+            + " és a ".join(missing)
+            + " alatt."
+        )
+        return {"id": "half", "label": "Fél kockázat", "tone": "warn", "note": note, "reason": "below_long"}
+    if above9 and above20 and above50 and above200:
+        return {"id": "full", "label": "LONG – teljes kockázat", "tone": "good", "note": None, "reason": "above_all"}
+    if not above20:
+        return {
+            "id": "none",
+            "label": "Nincs kereskedés",
+            "tone": "bad",
+            "note": "A záróár a 20 napos EMA-n van.",
+            "reason": "touch_ema20",
+        }
+    if not above9:
+        return {"id": "half", "label": "Fél kockázat", "tone": "warn", "note": None, "reason": "touch_ema9"}
+    note = (
+        "A záróár a 9 és a 20 napos EMA felett van, de a hosszabb távú mozgóátlagot "
+        "(50 vagy 200 napos SMA) érinti, ezért nem teljes kockázat."
+    )
+    return {"id": "half", "label": "Fél kockázat", "tone": "warn", "note": note, "reason": "touch_long"}
+
+
+def nasdaq_points(regime_id: str, fresh: bool) -> float:
+    if regime_id == "full":
+        return 100.0
+    if regime_id == "half":
+        return 50.0 + (FRESH_CROSS_BONUS if fresh else 0.0)
+    return 0.0
+
+
+def nasdaq_detail(regime: dict, score: float, fresh: bool) -> str:
+    reason = regime.get("reason")
+    if regime["id"] == "full":
+        text = "Teljes kockázat: a záróár mind a négy átlag felett van → 100."
+    elif regime["id"] == "none":
+        text = "Nincs kereskedés: a záróár a 20 napos EMA alatt van → 0."
+    else:
+        if reason == "below_ema9":
+            base = "Fél kockázat: a záróár a 9 napos EMA alatt, de a 20 napos EMA felett van"
+        elif reason in ("below_long", "touch_long"):
+            base = "Fél kockázat: a záróár a 9 és a 20 napos EMA felett van, de a hosszabb távú átlag alatt"
+        else:
+            base = "Fél kockázat"
+        if fresh:
+            text = f"{base} → 50 + 10 a friss 9/20 felkeresztezésért → {hu_num(score, 0)}."
+        else:
+            text = f"{base} → {hu_num(score, 0)}."
+    if regime.get("note") and regime["id"] == "half":
+        text = f"{text} {regime['note']}"
+    return text
+
+
+def pack_part(part: dict) -> dict:
+    _key, label, weight = SCORE_META[part["id"]]
+    part["label"] = label
+    part["weight"] = weight
+    part["tone"] = tone_for(part.get("score")) if part.get("available") else None
+    part.setdefault("inputs", {})
+    part.setdefault("reason", None)
+    part.setdefault("detail", part.get("reason") or "")
+    return part
+
+
+def nasdaq_part(snap: dict) -> dict:
+    values = [snap.get(key) for key in ("close", "ema9", "ema20", "sma50", "sma200")]
+    if any(value is None for value in values):
+        reason = "Nincs elég Nasdaq Composite záróár a 9/20 EMA és az 50/200 SMA kiszámításához."
+        return {"id": "nasdaq", "available": False, "score": None, "reason": reason, "detail": reason, "inputs": {}}
+    close, ema9, ema20, sma50, sma200 = (float(value) for value in values)
+    fresh = bool(snap.get("fresh"))
+    regime = classify_regime(close, ema9, ema20, sma50, sma200)
+    score = publish(nasdaq_points(regime["id"], fresh), 1)
+    return {
+        "id": "nasdaq",
+        "available": True,
+        "score": score,
+        "reason": None,
+        "detail": nasdaq_detail(regime, score, fresh),
+        "inputs": {
+            "regime": regime["id"],
+            "regime_label": regime["label"],
+            "fresh_up_cross": fresh,
+            "bonus": 10 if fresh and regime["id"] == "half" else 0,
+        },
+    }
+
+
+def breadth_part(snap: dict) -> dict:
+    present = {}
+    missing = []
+    too_old = []
+    for key, label in BREADTH_FIELDS:
+        if snap.get(f"{key}_too_old"):
+            too_old.append(label)
+            missing.append(label)
+            continue
+        raw = snap.get(key)
+        if raw is None:
+            missing.append(label)
+            continue
+        present[key] = publish(raw, 1)
+    if not present:
+        if too_old:
+            reason = "A szélesség utolsó adata túl régi."
+        else:
+            reason = "Nincs használható szélesség (S&P 500 és Nasdaq-100, 50 és 200 napos arány)."
+        return {"id": "breadth", "available": False, "score": None, "reason": reason, "detail": reason, "inputs": {}}
+    average = publish(sum(present.values()) / len(present), 1)
+    score = publish(lerp_score(average, 20, 70, 0, 100), 1)
+    bits = [f"{label} {hu_num(present[key], 1)}%" for key, label in BREADTH_FIELDS if key in present]
+    detail = f"Átlag {hu_num(average, 1)}% → {hu_num(score, 1, trim=True)} pont (20% → 0, 70% → 100). " + " · ".join(bits) + "."
+    if missing:
+        detail += " Hiányzó arány: " + ", ".join(missing) + "."
+    return {
+        "id": "breadth",
+        "available": True,
+        "score": score,
+        "reason": None,
+        "detail": detail,
+        "inputs": {"average": average, "missing_series": missing, **present},
+    }
+
+
+def volatility_part(snap: dict) -> dict:
+    if snap.get("vix_too_old"):
+        reason = "A VIX utolsó adata túl régi."
+        return {"id": "volatility", "available": False, "score": None, "reason": reason, "detail": reason, "inputs": {}}
+    if snap.get("vix") is None:
+        reason = "Nincs VIX érték."
+        return {"id": "volatility", "available": False, "score": None, "reason": reason, "detail": reason, "inputs": {}}
+    vix = publish(snap["vix"], 2)
+    level = publish(lerp_score(vix, 15, 30, 100, 0), 1)
+    term_missing = snap.get("vix3m") is None or bool(snap.get("vix3m_too_old"))
+    vix3m = None if term_missing else publish(snap["vix3m"], 2)
+    inverted = False
+    penalty = 0.0
+    if term_missing:
+        score = level
+        extra = " A VIX3M hiányzik, az invertálási levonás nem ellenőrizhető."
+    else:
+        inverted = vix > vix3m
+        penalty = VIX_INVERSION_PENALTY if inverted else 0.0
+        score = publish(max(0.0, level - penalty), 1)
+        if inverted:
+            extra = (
+                f" VIX3M {hu_num(vix3m, 2)}: a VIX magasabb, ezért −{hu_num(penalty, 0)} pont "
+                f"→ {hu_num(score, 1, trim=True)}."
+            )
+        else:
+            extra = f" VIX3M {hu_num(vix3m, 2)}: nincs invertálás, nincs levonás."
+    detail = f"VIX {hu_num(vix, 2)} → szint {hu_num(level, 1, trim=True)} (≤15 → 100, ≥30 → 0)." + extra
+    return {
+        "id": "volatility",
+        "available": True,
+        "score": score,
+        "reason": None,
+        "detail": detail,
+        "inputs": {
+            "vix": vix,
+            "vix3m": vix3m,
+            "level_score": level,
+            "penalty": penalty,
+            "inverted": inverted,
+            "term_missing": term_missing,
+        },
+    }
+
+
+def credit_part(snap: dict) -> dict:
+    if snap.get("hy_too_old"):
+        reason = "A bóvli felár utolsó adata túl régi."
+        return {"id": "credit", "available": False, "score": None, "reason": reason, "detail": reason, "inputs": {}}
+    if snap.get("hy") is None:
+        reason = "Nincs bóvli felár (BAMLH0A0HYM2)."
+        return {"id": "credit", "available": False, "score": None, "reason": reason, "detail": reason, "inputs": {}}
+    level = publish(snap["hy"], 2)
+    level_score = publish(lerp_score(level, 3, 8, 100, 0), 1)
+    change = None if snap.get("hy_change") is None else publish(snap["hy_change"], 2)
+    detail = f"Felár {hu_num(level, 2)}% → szint {hu_num(level_score, 1, trim=True)} (≤3% → 100, ≥8% → 0)."
+    if change is None:
+        score = level_score
+        detail += " A 20 napos változás nincs meg, csak a szint számít."
+        change_score = None
+    else:
+        change_score = publish(lerp_score(change, -0.5, 0.5, 100, 0), 1)
+        score = publish(0.6 * level_score + 0.4 * change_score, 1)
+        detail += (
+            f" 20 napos változás {hu_signed(change, 2)} százalékpont → {hu_num(change_score, 1, trim=True)} "
+            f"(−0,5 pp → 100, +0,5 pp → 0). Keverés: 60% szint + 40% változás → {hu_num(score, 1, trim=True)}."
+        )
+    return {
+        "id": "credit",
+        "available": True,
+        "score": score,
+        "reason": None,
+        "detail": detail,
+        "inputs": {
+            "level": level,
+            "level_score": level_score,
+            "change": change,
+            "change_score": change_score,
+            "change_used": change is not None,
+        },
+    }
+
+
+def sentiment_part(snap: dict) -> dict:
+    if snap.get("fg_too_old"):
+        reason = "A Fear & Greed utolsó adata túl régi."
+        return {"id": "sentiment", "available": False, "score": None, "reason": reason, "detail": reason, "inputs": {}}
+    raw = snap.get("fg")
+    if raw is None:
+        reason = "Nincs CNN Fear & Greed érték."
+        return {"id": "sentiment", "available": False, "score": None, "reason": reason, "detail": reason, "inputs": {}}
+    fg = publish(raw, 1)
+    if fg is None or fg < 0 or fg > 100:
+        reason = "A Fear & Greed érték a 0–100 tartományon kívül esik."
+        return {"id": "sentiment", "available": False, "score": None, "reason": reason, "detail": reason, "inputs": {}}
+    score = publish(lerp_score(fg, 0, 100, 40, 90), 1)
+    detail = (
+        f"Fear & Greed {hu_num(fg, 1, trim=True)} → 40 + 0,5 × {hu_num(fg, 1, trim=True)} "
+        f"= {hu_num(score, 1, trim=True)}. Enyhe skála: az extrém félelem (0) 40 pont, az extrém kapzsiság (100) 90."
+    )
+    return {
+        "id": "sentiment",
+        "available": True,
+        "score": score,
+        "reason": None,
+        "detail": detail,
+        "inputs": {"fear_greed": fg},
+    }
+
+
+def build_parts(snap: dict) -> list[dict]:
+    builders = (nasdaq_part, breadth_part, volatility_part, credit_part, sentiment_part)
+    return [pack_part(builder(snap)) for builder in builders]
+
+
+def finalize(parts: list[dict]) -> tuple[float | None, int | None, list[dict]]:
+    available = [part for part in parts if part.get("available") and part.get("score") is not None]
+    total = sum(part["weight"] for part in available)
+    for part in parts:
+        if part.get("available") and total:
+            part["effective_weight"] = publish(part["weight"] / total * 100, 1)
+        else:
+            part["effective_weight"] = 0
+    if not total:
+        return None, None, parts
+    exact = sum(part["score"] * part["weight"] for part in available) / total
+    return exact, int(round_half_up(exact, 0)), parts
+
+
+def series_from_rows(rows, value_key: str) -> pd.Series:
+    data = {}
+    for row in rows or []:
+        if not isinstance(row, dict):
+            continue
+        day = row.get("date")
+        value = row.get(value_key)
+        if not day or value is None:
+            continue
+        try:
+            data[pd.Timestamp(str(day)[:10])] = float(value)
+        except (TypeError, ValueError):
+            continue
+    if not data:
+        return pd.Series(dtype=float)
+    series = pd.Series(data, dtype=float).sort_index()
+    return series[~series.index.duplicated(keep="last")]
+
+
+def upsert_series(series: pd.Series, day, value) -> pd.Series:
+    if day is None or value is None:
+        return series
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return series
+    if math.isnan(number):
+        return series
+    stamp = pd.Timestamp(str(day)[:10])
+    if series is None or series.empty:
+        return pd.Series({stamp: number}, dtype=float)
+    updated = series.copy()
+    updated.loc[stamp] = number
+    updated = updated.sort_index()
+    return updated[~updated.index.duplicated(keep="last")]
+
+
+def nasdaq_indicator_frame(closes: pd.Series) -> pd.DataFrame:
+    close = closes.astype(float).sort_index()
+    close = close[~close.index.duplicated(keep="last")].dropna()
+    if close.empty:
+        return pd.DataFrame()
+    frame = pd.DataFrame(
+        {
+            "close": close,
+            "ema9": close.ewm(span=9, adjust=False).mean(),
+            "ema20": close.ewm(span=20, adjust=False).mean(),
+            "sma50": close.rolling(50, min_periods=50).mean(),
+            "sma200": close.rolling(200, min_periods=200).mean(),
+        }
+    )
+    frame = frame.dropna(subset=["ema9", "ema20", "sma50", "sma200"])
+    if frame.empty:
+        return frame
+    prev9 = frame["ema9"].shift(1)
+    prev20 = frame["ema20"].shift(1)
+    both = prev9.notna() & prev20.notna()
+    frame["up_cross"] = both & (prev9 <= prev20) & (frame["ema9"] > frame["ema20"])
+    frame["down_cross"] = both & (prev9 >= prev20) & (frame["ema9"] < frame["ema20"])
+    up = frame["up_cross"].astype(int)
+    frame["fresh_up"] = up.rolling(FRESH_CROSS_DAYS, min_periods=1).max().astype(bool)
+    return frame
+
+
+def asof_point(series: pd.Series, stamp, max_age_days: int = COMPONENT_MAX_AGE_DAYS):
+    if series is None or series.empty:
+        return None, None, False
+    pos = int(series.index.searchsorted(pd.Timestamp(stamp), side="right")) - 1
+    if pos < 0:
+        return None, None, False
+    point = pd.Timestamp(series.index[pos])
+    day = date_str(point)
+    age = (pd.Timestamp(stamp).normalize() - point.normalize()).days
+    if age > max_age_days:
+        return None, day, True
+    value = series.iloc[pos]
+    if pd.isna(value):
+        return None, day, False
+    return float(value), day, False
+
+
+def index_by_id(items, item_id: str) -> dict:
+    for item in items or []:
+        if isinstance(item, dict) and item.get("id") == item_id:
+            return item
+    return {}
+
+
+def empty_trading_score() -> dict:
+    return {
+        "score": None,
+        "score_exact": None,
+        "verdict": None,
+        "tone": None,
+        "method": SCORE_METHOD,
+        "renormalized": False,
+        "missing": [],
+        "components": [],
+        "history": [],
+        "source": "Saját számítás",
+    }
+
+
+def empty_nasdaq_trend() -> dict:
+    return {
+        "close": None,
+        "regime": None,
+        "regime_label": None,
+        "averages": [],
+        "subscore": None,
+        "source": "Yahoo Finance (^IXIC)",
+    }
+
+
+def ma_state(close: float, value: float) -> str:
+    if close > value:
+        return "above"
+    if close < value:
+        return "below"
+    return "touch"
+
+
+def build_nasdaq_panel(frame: pd.DataFrame, stamp, subscore, ixic: dict) -> dict:
+    row = frame.loc[stamp]
+    close = float(row["close"])
+    ema9 = float(row["ema9"])
+    ema20 = float(row["ema20"])
+    sma50 = float(row["sma50"])
+    sma200 = float(row["sma200"])
+    regime = classify_regime(close, ema9, ema20, sma50, sma200)
+    up_index = frame.index[frame["up_cross"].fillna(False).astype(bool)]
+    down_index = frame.index[frame["down_cross"].fillna(False).astype(bool)]
+    last_up = date_str(up_index[-1]) if len(up_index) else None
+    last_down = date_str(down_index[-1]) if len(down_index) else None
+    fresh = bool(row["fresh_up"])
+    averages = []
+    for key, label, kind, period in (
+        ("ema9", "9 napos EMA", "EMA", 9),
+        ("ema20", "20 napos EMA", "EMA", 20),
+        ("sma50", "50 napos SMA", "SMA", 50),
+        ("sma200", "200 napos SMA", "SMA", 200),
+    ):
+        value = float(row[key])
+        averages.append(
+            {
+                "id": key,
+                "label": label,
+                "kind": kind,
+                "period": period,
+                "value": rnd(value, 2),
+                "distance_pct": rnd((close / value - 1) * 100, 2) if value else None,
+                "state": ma_state(close, value),
+            }
+        )
+    status = "stale" if ixic.get("status") == "stale" else "ok"
+    panel = {
+        "status": status,
+        "source": "Yahoo Finance (^IXIC); 9 és 20 napos EMA, 50 és 200 napos SMA",
+        "as_of": date_str(stamp),
+        "name": ixic.get("name") or "Nasdaq Composite",
+        "ticker": "^IXIC",
+        "close": rnd(close, 2),
+        "averages": averages,
+        "regime": regime["id"],
+        "regime_label": regime["label"],
+        "regime_tone": regime["tone"],
+        "regime_note": regime.get("note"),
+        "fresh_up_cross": fresh,
+        "fresh_up_cross_date": last_up if fresh else None,
+        "last_up_cross": last_up,
+        "last_down_cross": last_down,
+        "subscore": subscore,
+        "ma_note": "A 9 és a 20 napos átlag exponenciális (EMA), az 50 és a 200 napos egyszerű (SMA).",
+    }
+    if status == "stale" and ixic.get("error"):
+        panel["error"] = ixic.get("error")
+    return panel
+
+
+def build_market_regime(indices: list, breadth: dict, sentiment: dict) -> tuple[dict, dict]:
+    ixic = index_by_id(indices, "ixic")
+    closes = upsert_series(series_from_rows(ixic.get("history"), "close"), ixic.get("as_of"), ixic.get("price"))
+    frame = nasdaq_indicator_frame(closes) if not closes.empty else pd.DataFrame()
+
+    breadth_rows = list((breadth or {}).get("history") or [])
+    current = (breadth or {}).get("current") or {}
+    if (breadth or {}).get("as_of") and any(current.get(key) is not None for key, _label in BREADTH_FIELDS):
+        breadth_rows.append({"date": breadth.get("as_of"), **{key: current.get(key) for key, _label in BREADTH_FIELDS}})
+    breadth_series = {key: series_from_rows(breadth_rows, key) for key, _label in BREADTH_FIELDS}
+
+    sentiment = sentiment or {}
+    vix_block = sentiment.get("vix") or {}
+    term = sentiment.get("vix_term") or {}
+    hy = sentiment.get("hy_spread") or {}
+    fear = sentiment.get("fear_greed") or {}
+
+    vix_series = upsert_series(series_from_rows(term.get("history"), "vix"), term.get("as_of"), term.get("vix"))
+    vix_series = upsert_series(vix_series, vix_block.get("as_of"), vix_block.get("value"))
+    if vix_series.empty:
+        vix_series = upsert_series(series_from_rows(vix_block.get("history"), "value"), vix_block.get("as_of"), vix_block.get("value"))
+    vix3m_series = upsert_series(series_from_rows(term.get("history"), "vix3m"), term.get("as_of"), term.get("vix3m"))
+
+    hy_series = upsert_series(series_from_rows(hy.get("history"), "value"), hy.get("as_of"), hy.get("value"))
+    hy_change = (hy_series - hy_series.shift(20)).dropna() if not hy_series.empty else pd.Series(dtype=float)
+
+    fg_rows = list(fear.get("history") or [])
+    if fear.get("as_of") and fear.get("score") is not None:
+        fg_rows.append({"date": fear.get("as_of"), "score": fear.get("score")})
+    fg_series = series_from_rows(fg_rows, "score")
+
+    if frame is not None and not frame.empty:
+        spine = frame.index
+    else:
+        spine = pd.DatetimeIndex([])
+        for candidate in (
+            breadth_series["spx200"],
+            vix_series,
+            hy_series,
+            fg_series,
+        ):
+            if candidate is not None and not candidate.empty:
+                spine = candidate.index
+                break
+    if len(spine) == 0:
+        score = empty_trading_score()
+        score["status"] = "unavailable"
+        score["error"] = "Egyik összetevő sem számolható."
+        trend = empty_nasdaq_trend()
+        trend["status"] = "unavailable"
+        trend["error"] = "Nincs Nasdaq Composite előzmény."
+        return trend, score
+
+    def snap_for(stamp) -> dict:
+        snap = {}
+        if frame is not None and not frame.empty and stamp in frame.index:
+            row = frame.loc[stamp]
+            snap.update(
+                {
+                    "close": float(row["close"]),
+                    "ema9": float(row["ema9"]),
+                    "ema20": float(row["ema20"]),
+                    "sma50": float(row["sma50"]),
+                    "sma200": float(row["sma200"]),
+                    "fresh": bool(row["fresh_up"]),
+                }
+            )
+        for key, _label in BREADTH_FIELDS:
+            value, _day, too_old = asof_point(breadth_series[key], stamp)
+            snap[key] = value
+            snap[f"{key}_too_old"] = too_old and value is None
+        vix, _day, vix_old = asof_point(vix_series, stamp)
+        vix3m, _day, vix3m_old = asof_point(vix3m_series, stamp)
+        snap["vix"] = vix
+        snap["vix_too_old"] = vix_old and vix is None
+        snap["vix3m"] = None if vix3m_old else vix3m
+        snap["vix3m_too_old"] = bool(vix3m_old)
+        level, _day, hy_old = asof_point(hy_series, stamp)
+        change, _day, _change_old = asof_point(hy_change, stamp)
+        snap["hy"] = level
+        snap["hy_too_old"] = hy_old and level is None
+        snap["hy_change"] = None if hy_old else change
+        fg, _day, fg_old = asof_point(fg_series, stamp)
+        snap["fg"] = fg
+        snap["fg_too_old"] = fg_old and fg is None
+        return snap
+
+    dates = list(spine[-SCORE_HISTORY_DAYS:])
+    scored = []
+    for stamp in dates:
+        parts = build_parts(snap_for(stamp))
+        exact, headline, parts = finalize(parts)
+        if headline is None:
+            continue
+        scored.append((pd.Timestamp(stamp), exact, headline, parts))
+    if not scored:
+        score = empty_trading_score()
+        score["status"] = "unavailable"
+        score["error"] = "Egyik összetevő sem számolható."
+        trend = empty_nasdaq_trend()
+        trend["status"] = "unavailable"
+        trend["error"] = "Nincs értékelhető nap."
+        return trend, score
+
+    history = []
+    for stamp, _exact, headline, parts in scored:
+        row = {"date": date_str(stamp), "score": headline}
+        for part in parts:
+            row[part["id"]] = part["score"] if part.get("available") else None
+        history.append(row)
+
+    stamp, exact, headline, parts = scored[-1]
+    band = band_for(headline)
+    missing = [part["label"] for part in parts if not part.get("available")]
+    vol_stale = vix_block.get("status") == "stale" or (
+        parts[2].get("available") and parts[2]["inputs"].get("vix3m") is not None and term.get("status") == "stale"
+    )
+    source_status = {
+        "nasdaq": ixic.get("status"),
+        "breadth": (breadth or {}).get("status"),
+        "volatility": "stale" if vol_stale else vix_block.get("status"),
+        "credit": hy.get("status"),
+        "sentiment": fear.get("status"),
+    }
+    stale_labels = []
+    for part in parts:
+        part["stale"] = bool(part.get("available") and source_status.get(part["id"]) == "stale")
+        if part["stale"]:
+            stale_labels.append(part["label"])
+    score = {
+        "status": "stale" if stale_labels else "ok",
+        "source": "Saját számítás: Nasdaq Composite, szélesség, VIX, bóvli felár, CNN Fear & Greed",
+        "as_of": date_str(stamp),
+        "score": headline,
+        "score_exact": publish(exact, 1),
+        "verdict": band["verdict"],
+        "tone": band["tone"],
+        "method": SCORE_METHOD,
+        "renormalized": bool(missing),
+        "missing": missing,
+        "components": parts,
+        "history": history,
+    }
+    if stale_labels:
+        score["error"] = "Régebbi adat: " + ", ".join(stale_labels)
+    nasdaq_score = next(part["score"] for part in parts if part["id"] == "nasdaq")
+    if frame is not None and not frame.empty and stamp in frame.index:
+        trend = build_nasdaq_panel(frame, stamp, nasdaq_score, ixic)
+    else:
+        trend = empty_nasdaq_trend()
+        trend["status"] = "unavailable"
+        trend["error"] = "Nincs elég Nasdaq Composite előzmény a mozgóátlagokhoz."
+    return trend, score
+
+
+def self_check() -> None:
+    assert sum(item[2] for item in SCORE_PARTS) == 100
+    assert lerp_score(20, 20, 70, 0, 100) == 0
+    assert lerp_score(70, 20, 70, 0, 100) == 100
+    assert lerp_score(45, 20, 70, 0, 100) == 50
+    assert lerp_score(10, 20, 70, 0, 100) == 0
+    assert lerp_score(15, 15, 30, 100, 0) == 100
+    assert lerp_score(30, 15, 30, 100, 0) == 0
+    assert abs(lerp_score(22.5, 15, 30, 100, 0) - 50) < 1e-9
+    assert lerp_score(0, 0, 100, 40, 90) == 40
+    assert lerp_score(100, 0, 100, 40, 90) == 90
+    assert abs(lerp_score(50, 0, 100, 40, 90) - 65) < 1e-9
+    assert [band_for(score)["tone"] for score in (0, 39, 40, 59, 60, 79, 80, 100)] == [
+        "bad",
+        "bad",
+        "warn",
+        "warn",
+        "good",
+        "good",
+        "strong",
+        "strong",
+    ]
+    assert band_for(39)["verdict"] == "Nem érdemes kereskedni"
+    assert band_for(40)["verdict"] == "Óvatosan / fél kockázat"
+    assert band_for(60)["verdict"] == "Kedvező"
+    assert band_for(80)["verdict"] == "Erős piac"
+
+    assert classify_regime(100, 90, 80, 70, 60)["id"] == "full"
+    below9 = classify_regime(85, 90, 80, 70, 60)
+    assert below9["id"] == "half" and below9["reason"] == "below_ema9"
+    assert classify_regime(75, 90, 80, 70, 60)["id"] == "none"
+    below_long = classify_regime(100, 90, 80, 110, 70)
+    assert below_long["id"] == "half" and "50 napos SMA" in below_long["note"]
+    below_both = classify_regime(100, 90, 80, 110, 120)
+    assert "50 napos SMA" in below_both["note"] and "200 napos SMA" in below_both["note"]
+    assert nasdaq_points("full", True) == 100
+    assert nasdaq_points("half", False) == 50
+    assert nasdaq_points("half", True) == 60
+    assert nasdaq_points("none", True) == 0
+
+    breadth = breadth_part({"spx50": 20, "spx200": 70, "ndx50": 45, "ndx200": None})
+    assert breadth["available"] and breadth["score"] == 50
+    assert "Nasdaq-100 200 napos" in breadth["inputs"]["missing_series"]
+    assert volatility_part({"vix": 15, "vix3m": 14})["score"] == 80
+    assert volatility_part({"vix": 30, "vix3m": 40})["score"] == 0
+    partial_vol = volatility_part({"vix": 22.5, "vix3m": None})
+    assert partial_vol["score"] == 50 and partial_vol["inputs"]["term_missing"] is True
+    assert credit_part({"hy": 3, "hy_change": 0.5})["score"] == 60
+    assert credit_part({"hy": 5.5, "hy_change": 0})["score"] == 50
+    assert credit_part({"hy": 3, "hy_change": None})["score"] == 100
+    assert sentiment_part({"fg": 0})["score"] == 40
+    assert sentiment_part({"fg": 100})["score"] == 90
+    assert sentiment_part({"fg": 50})["score"] == 65
+    assert sentiment_part({"fg": None})["available"] is False
+
+    parts = build_parts(
+        {
+            "close": 100,
+            "ema9": 90,
+            "ema20": 80,
+            "sma50": 70,
+            "sma200": 60,
+            "fresh": True,
+            "spx50": 20,
+            "spx200": 70,
+            "ndx50": 45,
+            "ndx200": 45,
+            "vix": None,
+            "hy": 3,
+            "hy_change": 0.5,
+            "fg": 80,
+        }
+    )
+    exact, headline, done = finalize(parts)
+    # Nasdaq 100, breadth of 20/70/45/45 = 45 → 50, volatility missing, credit 60, sentiment 80.
+    # (100*35 + 50*25 + 60*10 + 80*10) / 80 = 76.875
+    assert abs(exact - 76.875) < 1e-9
+    assert headline == 77
+    assert next(part["effective_weight"] for part in done if part["id"] == "volatility") == 0
+
+    bull = pd.Series(
+        [100 * (1.002**i) for i in range(260)],
+        index=pd.bdate_range("2021-01-01", periods=260),
+    )
+    bull_frame = nasdaq_indicator_frame(bull)
+    last = bull_frame.iloc[-1]
+    assert (
+        classify_regime(float(last.close), float(last.ema9), float(last.ema20), float(last.sma50), float(last.sma200))["id"]
+        == "full"
+    )
+
+    price = 100.0
+    prices = []
+    for _ in range(220):
+        price *= 1.001
+        prices.append(price)
+    for _ in range(15):
+        price *= 0.97
+        prices.append(price)
+    for _ in range(40):
+        price *= 1.02
+        prices.append(price)
+    crash = nasdaq_indicator_frame(pd.Series(prices, index=pd.bdate_range("2020-01-01", periods=len(prices))))
+    assert bool(crash["down_cross"].any())
+    assert bool(crash["up_cross"].any())
+    up_days = crash.index[crash["up_cross"].astype(bool)]
+    down_days = crash.index[crash["down_cross"].astype(bool)]
+    assert up_days[-1] > down_days[-1]
+    cross_at = crash.index.get_loc(up_days[-1])
+    assert bool(crash.iloc[cross_at]["fresh_up"]) is True
+    if cross_at + FRESH_CROSS_DAYS < len(crash):
+        assert bool(crash.iloc[cross_at + FRESH_CROSS_DAYS]["fresh_up"]) is False
+    saw_none = False
+    for _, row in crash.iterrows():
+        regime = classify_regime(float(row.close), float(row.ema9), float(row.ema20), float(row.sma50), float(row.sma200))
+        if regime["id"] == "none":
+            saw_none = True
+            break
+    assert saw_none
+    end = crash.iloc[-1]
+    assert classify_regime(float(end.close), float(end.ema9), float(end.ema20), float(end.sma50), float(end.sma200))["id"] == "full"
+
+    index = pd.bdate_range("2022-01-03", periods=260)
+    history = [{"date": date_str(day), "close": 100 * (1.0015**i)} for i, day in enumerate(index)]
+    indices = [
+        {
+            "id": "ixic",
+            "name": "Nasdaq Composite",
+            "status": "ok",
+            "as_of": history[-1]["date"],
+            "price": history[-1]["close"],
+            "history": history,
+        }
+    ]
+    breadth_rows = [
+        {"date": date_str(day), "spx50": 62, "spx200": 60, "ndx50": 58, "ndx200": 55} for day in index[199:]
+    ]
+    breadth_block = {
+        "status": "ok",
+        "as_of": breadth_rows[-1]["date"],
+        "current": {key: breadth_rows[-1][key] for key in ("spx50", "spx200", "ndx50", "ndx200")},
+        "history": breadth_rows,
+    }
+    vix_rows = [{"date": date_str(day), "vix": 16, "vix3m": 18} for day in index]
+    sentiment = {
+        "vix": {
+            "status": "ok",
+            "as_of": vix_rows[-1]["date"],
+            "value": 16,
+            "history": [{"date": row["date"], "value": row["vix"]} for row in vix_rows],
+        },
+        "vix_term": {"status": "ok", "as_of": vix_rows[-1]["date"], "vix": 16, "vix3m": 18, "history": vix_rows},
+        "fear_greed": {
+            "status": "ok",
+            "as_of": date_str(index[-1]),
+            "score": 55,
+            "history": [{"date": date_str(day), "score": 55} for day in index[-80:]],
+        },
+        "hy_spread": {
+            "status": "ok",
+            "as_of": date_str(index[-1]),
+            "value": 3.2,
+            "history": [{"date": date_str(day), "value": 3.2} for day in index],
+        },
+    }
+    trend, score = build_market_regime(indices, breadth_block, sentiment)
+    by_id = {part["id"]: part for part in score["components"]}
+    assert trend["regime"] == "full"
+    assert trend["subscore"] == 100
+    assert trend["fresh_up_cross"] is False
+    assert by_id["nasdaq"]["score"] == 100
+    assert by_id["breadth"]["score"] == 77.6
+    assert by_id["volatility"]["score"] == 93.3
+    assert by_id["credit"]["score"] == 77.6
+    assert by_id["sentiment"]["score"] == 67.5
+    assert score["score"] == 88
+    assert score["score_exact"] == 87.6
+    assert score["verdict"] == "Erős piac"
+    assert len(score["history"]) == SCORE_HISTORY_DAYS
+    assert score["history"][-1]["score"] == score["score"]
+    assert score["history"][-1]["date"] == trend["as_of"]
+    sentiment["fear_greed"] = {"status": "unavailable", "score": None, "history": []}
+    _trend, reduced = build_market_regime(indices, breadth_block, sentiment)
+    assert "Hangulat" in reduced["missing"]
+    assert reduced["renormalized"] is True
+    nasdaq_weight = next(part["effective_weight"] for part in reduced["components"] if part["id"] == "nasdaq")
+    assert nasdaq_weight == 38.9
+    assert abs(sum(part["effective_weight"] for part in reduced["components"] if part["available"]) - 100) < 0.11
+    log("Pontszám önellenőrzés rendben.")
+
+
 def attach_history(item: dict, previous_items: dict, limit: int) -> dict:
     if item.get("status") == "ok" and item.get("id") in previous_items:
         item["history"] = merge_rows(previous_items[item["id"]].get("history"), item.get("history"), limit)
@@ -867,6 +1777,7 @@ def finish_instrument(meta: dict, series_map: dict[str, pd.Series], source: str,
 
 
 def main() -> int:
+    self_check()
     started = time.time()
     now = datetime.now(BUDAPEST)
     previous = load_previous()
@@ -1061,6 +1972,22 @@ def main() -> int:
     for item in indices:
         if item.get("id") == "spx" and item.get("as_of"):
             market_date = item["as_of"]
+    sentiment = {
+        "vix": vix_blocks["vix"],
+        "vix_term": vix_blocks["vix_term"],
+        "fear_greed": cnn["fear_greed"],
+        "aaii": aaii,
+        "put_call": cnn["put_call"],
+        "hy_spread": hy_spread,
+    }
+    log("Kereskedési pontszám és Nasdaq trendszűrő…")
+    try:
+        nasdaq_trend, trading_score = build_market_regime(indices, breadth, sentiment)
+    except Exception as exc:
+        log(f"Pontszám hiba: {exc}")
+        traceback.print_exc()
+        nasdaq_trend = as_stale(previous.get("nasdaq_trend"), str(exc), empty_nasdaq_trend())
+        trading_score = as_stale(previous.get("trading_score"), str(exc), empty_trading_score())
     dashboard = {
         "meta": {
             "schema_version": SCHEMA_VERSION,
@@ -1070,15 +1997,10 @@ def main() -> int:
             "market_date": market_date,
             "price_period": PRICE_PERIOD,
         },
+        "trading_score": trading_score,
+        "nasdaq_trend": nasdaq_trend,
         "breadth": breadth,
-        "sentiment": {
-            "vix": vix_blocks["vix"],
-            "vix_term": vix_blocks["vix_term"],
-            "fear_greed": cnn["fear_greed"],
-            "aaii": aaii,
-            "put_call": cnn["put_call"],
-            "hy_spread": hy_spread,
-        },
+        "sentiment": sentiment,
         "indices": indices,
         "yields": yields,
         "extras": extras,
@@ -1091,6 +2013,22 @@ def main() -> int:
 
 
 def summarize(dashboard: dict) -> None:
+    score = dashboard.get("trading_score") or {}
+    trend = dashboard.get("nasdaq_trend") or {}
+    log(
+        f"Pontszám {score.get('status')} {score.get('score')} {score.get('verdict')} "
+        f"pontos={score.get('score_exact')} hiányzik={score.get('missing')} nap={score.get('as_of')} "
+        f"történet={len(score.get('history') or [])}"
+    )
+    for part in score.get("components") or []:
+        log(
+            f"  rész {part.get('id')}: available={part.get('available')} score={part.get('score')} "
+            f"w={part.get('weight')} eff={part.get('effective_weight')}"
+        )
+    log(
+        f"Nasdaq {trend.get('status')} close={trend.get('close')} {trend.get('regime_label')} "
+        f"fresh={trend.get('fresh_up_cross')} up={trend.get('last_up_cross')} down={trend.get('last_down_cross')}"
+    )
     breadth = dashboard["breadth"]
     current = breadth.get("current") or {}
     log(

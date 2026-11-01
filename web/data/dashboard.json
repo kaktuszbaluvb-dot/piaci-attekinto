@@ -1,11 +1,715 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-01T18:07:50+01:00",
-    "generated_at_budapest": "2026. november 1., 18:07",
+    "generated_at": "2026-11-01T20:37:59+01:00",
+    "generated_at_budapest": "2026. november 1., 20:37",
     "timezone": "Europe/Budapest",
     "market_date": "2026-10-30",
     "price_period": "3y"
+  },
+  "trading_score": {
+    "status": "ok",
+    "source": "Saját számítás: Nasdaq Composite, szélesség, VIX, bóvli felár, CNN Fear & Greed",
+    "as_of": "2026-10-30",
+    "score": 45,
+    "score_exact": 45.2,
+    "verdict": "Óvatosan / fél kockázat",
+    "tone": "warn",
+    "method": "Trendkövető long swing környezetet mér, nem kontrariánus jelzés. Súlyozott átlag, minden rész 0–100: Nasdaq-trend (Qullamaggie) 35%, szélesség 25%, volatilitás 20%, hitel 10%, hangulat 10%. Ha egy rész hiányzik, a súlyok a többire normálódnak; az extrém félelem rontja a pontot.",
+    "renormalized": false,
+    "missing": [],
+    "components": [
+      {
+        "id": "nasdaq",
+        "available": true,
+        "score": 0.0,
+        "reason": null,
+        "detail": "Nincs kereskedés: a záróár a 20 napos EMA alatt van → 0.",
+        "inputs": {
+          "regime": "none",
+          "regime_label": "Nincs kereskedés",
+          "fresh_up_cross": false,
+          "bonus": 0
+        },
+        "label": "Nasdaq-trend",
+        "weight": 35,
+        "tone": "bad",
+        "effective_weight": 35.0,
+        "stale": false
+      },
+      {
+        "id": "breadth",
+        "available": true,
+        "score": 72.6,
+        "reason": null,
+        "detail": "Átlag 56,3% → 72,6 pont (20% → 0, 70% → 100). S&P 500 50 napos 61,4% · S&P 500 200 napos 61,6% · Nasdaq-100 50 napos 48,5% · Nasdaq-100 200 napos 53,5%.",
+        "inputs": {
+          "average": 56.3,
+          "missing_series": [],
+          "spx50": 61.4,
+          "spx200": 61.6,
+          "ndx50": 48.5,
+          "ndx200": 53.5
+        },
+        "label": "Szélesség",
+        "weight": 25,
+        "tone": "good",
+        "effective_weight": 25.0,
+        "stale": false
+      },
+      {
+        "id": "volatility",
+        "available": true,
+        "score": 70.5,
+        "reason": null,
+        "detail": "VIX 19,42 → szint 70,5 (≤15 → 100, ≥30 → 0). VIX3M 20,78: nincs invertálás, nincs levonás.",
+        "inputs": {
+          "vix": 19.42,
+          "vix3m": 20.78,
+          "level_score": 70.5,
+          "penalty": 0.0,
+          "inverted": false,
+          "term_missing": false
+        },
+        "label": "Volatilitás",
+        "weight": 20,
+        "tone": "good",
+        "effective_weight": 20.0,
+        "stale": false
+      },
+      {
+        "id": "credit",
+        "available": true,
+        "score": 76.1,
+        "reason": null,
+        "detail": "Felár 3,26% → szint 94,8 (≤3% → 100, ≥8% → 0). 20 napos változás +0,02 százalékpont → 48 (−0,5 pp → 100, +0,5 pp → 0). Keverés: 60% szint + 40% változás → 76,1.",
+        "inputs": {
+          "level": 3.26,
+          "level_score": 94.8,
+          "change": 0.02,
+          "change_score": 48.0,
+          "change_used": true
+        },
+        "label": "Hitel",
+        "weight": 10,
+        "tone": "good",
+        "effective_weight": 10.0,
+        "stale": false
+      },
+      {
+        "id": "sentiment",
+        "available": true,
+        "score": 53.1,
+        "reason": null,
+        "detail": "Fear & Greed 26,2 → 40 + 0,5 × 26,2 = 53,1. Enyhe skála: az extrém félelem (0) 40 pont, az extrém kapzsiság (100) 90.",
+        "inputs": {
+          "fear_greed": 26.2
+        },
+        "label": "Hangulat",
+        "weight": 10,
+        "tone": "warn",
+        "effective_weight": 10.0,
+        "stale": false
+      }
+    ],
+    "history": [
+      {
+        "date": "2026-08-07",
+        "score": 93,
+        "nasdaq": 100.0,
+        "breadth": 92.6,
+        "volatility": 100.0,
+        "credit": 79.6,
+        "sentiment": 72.6
+      },
+      {
+        "date": "2026-08-10",
+        "score": 93,
+        "nasdaq": 100.0,
+        "breadth": 93.6,
+        "volatility": 96.9,
+        "credit": 79.6,
+        "sentiment": 72.2
+      },
+      {
+        "date": "2026-08-11",
+        "score": 92,
+        "nasdaq": 100.0,
+        "breadth": 89.8,
+        "volatility": 98.1,
+        "credit": 80.0,
+        "sentiment": 70.1
+      },
+      {
+        "date": "2026-08-12",
+        "score": 93,
+        "nasdaq": 100.0,
+        "breadth": 92.8,
+        "volatility": 100.0,
+        "credit": 80.0,
+        "sentiment": 70.9
+      },
+      {
+        "date": "2026-08-13",
+        "score": 95,
+        "nasdaq": 100.0,
+        "breadth": 100.0,
+        "volatility": 100.0,
+        "credit": 80.0,
+        "sentiment": 73.1
+      },
+      {
+        "date": "2026-08-14",
+        "score": 95,
+        "nasdaq": 100.0,
+        "breadth": 100.0,
+        "volatility": 100.0,
+        "credit": 82.4,
+        "sentiment": 72.2
+      },
+      {
+        "date": "2026-08-17",
+        "score": 93,
+        "nasdaq": 100.0,
+        "breadth": 92.0,
+        "volatility": 98.7,
+        "credit": 79.6,
+        "sentiment": 69.6
+      },
+      {
+        "date": "2026-08-18",
+        "score": 74,
+        "nasdaq": 50.0,
+        "breadth": 92.4,
+        "volatility": 94.4,
+        "credit": 77.6,
+        "sentiment": 67.3
+      },
+      {
+        "date": "2026-08-19",
+        "score": 76,
+        "nasdaq": 50.0,
+        "breadth": 95.4,
+        "volatility": 100.0,
+        "credit": 78.0,
+        "sentiment": 68.3
+      },
+      {
+        "date": "2026-08-20",
+        "score": 55,
+        "nasdaq": 0.0,
+        "breadth": 86.2,
+        "volatility": 93.3,
+        "credit": 80.8,
+        "sentiment": 65.7
+      },
+      {
+        "date": "2026-08-21",
+        "score": 57,
+        "nasdaq": 0.0,
+        "breadth": 87.4,
+        "volatility": 99.1,
+        "credit": 83.6,
+        "sentiment": 67.4
+      },
+      {
+        "date": "2026-08-24",
+        "score": 56,
+        "nasdaq": 0.0,
+        "breadth": 88.8,
+        "volatility": 94.3,
+        "credit": 84.8,
+        "sentiment": 67.5
+      },
+      {
+        "date": "2026-08-25",
+        "score": 57,
+        "nasdaq": 0.0,
+        "breadth": 87.2,
+        "volatility": 97.0,
+        "credit": 85.6,
+        "sentiment": 69.8
+      },
+      {
+        "date": "2026-08-26",
+        "score": 57,
+        "nasdaq": 0.0,
+        "breadth": 87.0,
+        "volatility": 98.6,
+        "credit": 88.0,
+        "sentiment": 67.0
+      },
+      {
+        "date": "2026-08-27",
+        "score": 91,
+        "nasdaq": 100.0,
+        "breadth": 82.4,
+        "volatility": 100.0,
+        "credit": 88.4,
+        "sentiment": 68.7
+      },
+      {
+        "date": "2026-08-28",
+        "score": 91,
+        "nasdaq": 100.0,
+        "breadth": 83.0,
+        "volatility": 100.0,
+        "credit": 90.0,
+        "sentiment": 66.9
+      },
+      {
+        "date": "2026-08-31",
+        "score": 90,
+        "nasdaq": 100.0,
+        "breadth": 79.4,
+        "volatility": 100.0,
+        "credit": 86.0,
+        "sentiment": 64.6
+      },
+      {
+        "date": "2026-09-01",
+        "score": 50,
+        "nasdaq": 0.0,
+        "breadth": 70.0,
+        "volatility": 91.1,
+        "credit": 83.2,
+        "sentiment": 62.5
+      },
+      {
+        "date": "2026-09-02",
+        "score": 52,
+        "nasdaq": 0.0,
+        "breadth": 72.2,
+        "volatility": 98.7,
+        "credit": 83.6,
+        "sentiment": 63.1
+      },
+      {
+        "date": "2026-09-03",
+        "score": 89,
+        "nasdaq": 100.0,
+        "breadth": 77.0,
+        "volatility": 100.0,
+        "credit": 82.4,
+        "sentiment": 63.8
+      },
+      {
+        "date": "2026-09-04",
+        "score": 88,
+        "nasdaq": 100.0,
+        "breadth": 73.6,
+        "volatility": 100.0,
+        "credit": 80.8,
+        "sentiment": 62.6
+      },
+      {
+        "date": "2026-09-08",
+        "score": 85,
+        "nasdaq": 100.0,
+        "breadth": 69.0,
+        "volatility": 95.2,
+        "credit": 82.0,
+        "sentiment": 59.6
+      },
+      {
+        "date": "2026-09-09",
+        "score": 46,
+        "nasdaq": 0.0,
+        "breadth": 58.0,
+        "volatility": 90.3,
+        "credit": 80.0,
+        "sentiment": 59.1
+      },
+      {
+        "date": "2026-09-10",
+        "score": 43,
+        "nasdaq": 0.0,
+        "breadth": 53.2,
+        "volatility": 81.1,
+        "credit": 80.4,
+        "sentiment": 56.0
+      },
+      {
+        "date": "2026-09-11",
+        "score": 82,
+        "nasdaq": 100.0,
+        "breadth": 59.4,
+        "volatility": 94.4,
+        "credit": 80.8,
+        "sentiment": 56.6
+      },
+      {
+        "date": "2026-09-14",
+        "score": 45,
+        "nasdaq": 0.0,
+        "breadth": 58.6,
+        "volatility": 86.0,
+        "credit": 79.6,
+        "sentiment": 56.1
+      },
+      {
+        "date": "2026-09-15",
+        "score": 43,
+        "nasdaq": 0.0,
+        "breadth": 51.8,
+        "volatility": 85.3,
+        "credit": 79.6,
+        "sentiment": 54.7
+      },
+      {
+        "date": "2026-09-16",
+        "score": 42,
+        "nasdaq": 0.0,
+        "breadth": 47.6,
+        "volatility": 81.9,
+        "credit": 81.2,
+        "sentiment": 53.5
+      },
+      {
+        "date": "2026-09-17",
+        "score": 80,
+        "nasdaq": 100.0,
+        "breadth": 46.6,
+        "volatility": 97.1,
+        "credit": 82.0,
+        "sentiment": 54.8
+      },
+      {
+        "date": "2026-09-18",
+        "score": 80,
+        "nasdaq": 100.0,
+        "breadth": 45.4,
+        "volatility": 100.0,
+        "credit": 80.8,
+        "sentiment": 54.3
+      },
+      {
+        "date": "2026-09-21",
+        "score": 81,
+        "nasdaq": 100.0,
+        "breadth": 50.2,
+        "volatility": 100.0,
+        "credit": 81.2,
+        "sentiment": 57.0
+      },
+      {
+        "date": "2026-09-22",
+        "score": 82,
+        "nasdaq": 100.0,
+        "breadth": 53.4,
+        "volatility": 100.0,
+        "credit": 80.8,
+        "sentiment": 57.6
+      },
+      {
+        "date": "2026-09-23",
+        "score": 81,
+        "nasdaq": 100.0,
+        "breadth": 50.6,
+        "volatility": 98.8,
+        "credit": 77.6,
+        "sentiment": 56.9
+      },
+      {
+        "date": "2026-09-24",
+        "score": 79,
+        "nasdaq": 100.0,
+        "breadth": 46.6,
+        "volatility": 95.5,
+        "credit": 73.2,
+        "sentiment": 57.3
+      },
+      {
+        "date": "2026-09-25",
+        "score": 80,
+        "nasdaq": 100.0,
+        "breadth": 51.4,
+        "volatility": 100.0,
+        "credit": 66.8,
+        "sentiment": 58.5
+      },
+      {
+        "date": "2026-09-28",
+        "score": 78,
+        "nasdaq": 100.0,
+        "breadth": 48.6,
+        "volatility": 92.9,
+        "credit": 64.2,
+        "sentiment": 56.2
+      },
+      {
+        "date": "2026-09-29",
+        "score": 60,
+        "nasdaq": 50.0,
+        "breadth": 47.2,
+        "volatility": 93.1,
+        "credit": 61.8,
+        "sentiment": 55.6
+      },
+      {
+        "date": "2026-09-30",
+        "score": 76,
+        "nasdaq": 100.0,
+        "breadth": 43.4,
+        "volatility": 91.1,
+        "credit": 60.2,
+        "sentiment": 55.2
+      },
+      {
+        "date": "2026-10-01",
+        "score": 75,
+        "nasdaq": 100.0,
+        "breadth": 43.6,
+        "volatility": 90.7,
+        "credit": 57.1,
+        "sentiment": 54.6
+      },
+      {
+        "date": "2026-10-02",
+        "score": 78,
+        "nasdaq": 100.0,
+        "breadth": 46.8,
+        "volatility": 97.9,
+        "credit": 62.0,
+        "sentiment": 59.1
+      },
+      {
+        "date": "2026-10-05",
+        "score": 80,
+        "nasdaq": 100.0,
+        "breadth": 52.0,
+        "volatility": 96.5,
+        "credit": 61.0,
+        "sentiment": 61.6
+      },
+      {
+        "date": "2026-10-06",
+        "score": 82,
+        "nasdaq": 100.0,
+        "breadth": 57.8,
+        "volatility": 99.9,
+        "credit": 65.2,
+        "sentiment": 63.5
+      },
+      {
+        "date": "2026-10-07",
+        "score": 81,
+        "nasdaq": 100.0,
+        "breadth": 55.2,
+        "volatility": 99.5,
+        "credit": 63.7,
+        "sentiment": 62.4
+      },
+      {
+        "date": "2026-10-08",
+        "score": 63,
+        "nasdaq": 50.0,
+        "breadth": 57.0,
+        "volatility": 97.3,
+        "credit": 60.2,
+        "sentiment": 59.6
+      },
+      {
+        "date": "2026-10-09",
+        "score": 82,
+        "nasdaq": 100.0,
+        "breadth": 59.2,
+        "volatility": 100.0,
+        "credit": 60.3,
+        "sentiment": 61.8
+      },
+      {
+        "date": "2026-10-12",
+        "score": 83,
+        "nasdaq": 100.0,
+        "breadth": 62.0,
+        "volatility": 98.6,
+        "credit": 62.7,
+        "sentiment": 62.6
+      },
+      {
+        "date": "2026-10-13",
+        "score": 65,
+        "nasdaq": 50.0,
+        "breadth": 61.6,
+        "volatility": 98.2,
+        "credit": 62.1,
+        "sentiment": 62.8
+      },
+      {
+        "date": "2026-10-14",
+        "score": 42,
+        "nasdaq": 0.0,
+        "breadth": 54.6,
+        "volatility": 87.5,
+        "credit": 57.0,
+        "sentiment": 54.4
+      },
+      {
+        "date": "2026-10-15",
+        "score": 46,
+        "nasdaq": 0.0,
+        "breadth": 64.6,
+        "volatility": 90.3,
+        "credit": 57.2,
+        "sentiment": 56.0
+      },
+      {
+        "date": "2026-10-16",
+        "score": 39,
+        "nasdaq": 0.0,
+        "breadth": 59.0,
+        "volatility": 66.7,
+        "credit": 56.3,
+        "sentiment": 49.1
+      },
+      {
+        "date": "2026-10-19",
+        "score": 41,
+        "nasdaq": 0.0,
+        "breadth": 58.6,
+        "volatility": 77.1,
+        "credit": 56.5,
+        "sentiment": 49.8
+      },
+      {
+        "date": "2026-10-20",
+        "score": 45,
+        "nasdaq": 0.0,
+        "breadth": 69.0,
+        "volatility": 84.6,
+        "credit": 56.0,
+        "sentiment": 54.4
+      },
+      {
+        "date": "2026-10-21",
+        "score": 47,
+        "nasdaq": 0.0,
+        "breadth": 73.6,
+        "volatility": 88.8,
+        "credit": 56.8,
+        "sentiment": 55.2
+      },
+      {
+        "date": "2026-10-22",
+        "score": 44,
+        "nasdaq": 0.0,
+        "breadth": 74.2,
+        "volatility": 73.1,
+        "credit": 55.2,
+        "sentiment": 50.0
+      },
+      {
+        "date": "2026-10-23",
+        "score": 43,
+        "nasdaq": 0.0,
+        "breadth": 71.8,
+        "volatility": 70.3,
+        "credit": 57.4,
+        "sentiment": 48.4
+      },
+      {
+        "date": "2026-10-26",
+        "score": 47,
+        "nasdaq": 0.0,
+        "breadth": 77.2,
+        "volatility": 77.4,
+        "credit": 65.2,
+        "sentiment": 54.9
+      },
+      {
+        "date": "2026-10-27",
+        "score": 49,
+        "nasdaq": 0.0,
+        "breadth": 79.0,
+        "volatility": 83.2,
+        "credit": 73.8,
+        "sentiment": 56.5
+      },
+      {
+        "date": "2026-10-28",
+        "score": 51,
+        "nasdaq": 0.0,
+        "breadth": 78.6,
+        "volatility": 87.3,
+        "credit": 77.5,
+        "sentiment": 57.2
+      },
+      {
+        "date": "2026-10-29",
+        "score": 51,
+        "nasdaq": 0.0,
+        "breadth": 83.6,
+        "volatility": 85.3,
+        "credit": 76.1,
+        "sentiment": 55.4
+      },
+      {
+        "date": "2026-10-30",
+        "score": 45,
+        "nasdaq": 0.0,
+        "breadth": 72.6,
+        "volatility": 70.5,
+        "credit": 76.1,
+        "sentiment": 53.1
+      }
+    ]
+  },
+  "nasdaq_trend": {
+    "status": "ok",
+    "source": "Yahoo Finance (^IXIC); 9 és 20 napos EMA, 50 és 200 napos SMA",
+    "as_of": "2026-10-30",
+    "name": "Nasdaq Composite",
+    "ticker": "^IXIC",
+    "close": 25437.0,
+    "averages": [
+      {
+        "id": "ema9",
+        "label": "9 napos EMA",
+        "kind": "EMA",
+        "period": 9,
+        "value": 26195.59,
+        "distance_pct": -2.9,
+        "state": "below"
+      },
+      {
+        "id": "ema20",
+        "label": "20 napos EMA",
+        "kind": "EMA",
+        "period": 20,
+        "value": 26444.49,
+        "distance_pct": -3.81,
+        "state": "below"
+      },
+      {
+        "id": "sma50",
+        "label": "50 napos SMA",
+        "kind": "SMA",
+        "period": 50,
+        "value": 26574.14,
+        "distance_pct": -4.28,
+        "state": "below"
+      },
+      {
+        "id": "sma200",
+        "label": "200 napos SMA",
+        "kind": "SMA",
+        "period": 200,
+        "value": 25055.75,
+        "distance_pct": 1.52,
+        "state": "above"
+      }
+    ],
+    "regime": "none",
+    "regime_label": "Nincs kereskedés",
+    "regime_tone": "bad",
+    "regime_note": null,
+    "fresh_up_cross": false,
+    "fresh_up_cross_date": null,
+    "last_up_cross": "2026-09-18",
+    "last_down_cross": "2026-10-16",
+    "subscore": 0.0,
+    "ma_note": "A 9 és a 20 napos átlag exponenciális (EMA), az 50 és a 200 napos egyszerű (SMA)."
   },
   "breadth": {
     "status": "ok",
@@ -18316,7 +19020,7 @@
       ]
     },
     "hy_spread": {
-      "status": "stale",
+      "status": "ok",
       "source": "FRED, ICE BofA US High Yield Index Option-Adjusted Spread (BAMLH0A0HYM2)",
       "as_of": "2026-10-29",
       "value": 3.26,
@@ -21465,8 +22169,7 @@
           "date": "2026-10-29",
           "value": 3.26
         }
-      ],
-      "error": "HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=40)"
+      ]
     }
   },
   "indices": [
@@ -43324,7 +44027,7 @@
     }
   ],
   "yields": {
-    "status": "stale",
+    "status": "ok",
     "source": "FRED: DGS3MO, DGS2, DGS10, DGS30, T10Y2Y",
     "as_of": "2026-10-29",
     "current": {
@@ -53330,8 +54033,7 @@
         "date": "2026-10-30",
         "spread": 0.38
       }
-    ],
-    "error": "HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=40)"
+    ]
   },
   "extras": [
     {
@@ -62456,13 +63158,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-01",
-      "price": 78008.0,
-      "change": 573.0,
-      "change_pct": 0.74,
-      "dma50": 81911.0,
-      "dma200": 73148.0,
-      "dist50_pct": -4.77,
-      "dist200_pct": 6.64,
+      "price": 77653.0,
+      "change": 219.0,
+      "change_pct": 0.28,
+      "dma50": 81904.0,
+      "dma200": 73146.0,
+      "dist50_pct": -5.19,
+      "dist200_pct": 6.16,
       "history": [
         {
           "date": "2024-05-16",
@@ -66062,7 +66764,7 @@
         },
         {
           "date": "2026-11-01",
-          "close": 78008.0
+          "close": 77653.0
         }
       ]
     }
