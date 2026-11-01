@@ -1,12 +1,33 @@
 # Piaci áttekintő
 
-Egyoldalas, statikus műszerfal részvénykereskedőknek. A célja, hogy az amerikai zárás után egy pillantással látsszon a piac szélessége, a hangulat, a fő indexek és az amerikai hozamgörbe. Az oldal magyar nyelvű, sötét témájú, és GitHub Pagesre telepíthető. Nincs szerver, nincs előfizetés, nincs API-kulcs.
+Egyoldalas, statikus műszerfal részvénykereskedőknek. A célja, hogy az amerikai zárás után egy pillantással látsszon, mennyire kedvező a környezet a trendkövető long swing kereskedéshez: elöl a kereskedési pontszám és a Nasdaq trendszűrő, alattuk a szélesség számai, majd a hangulat, a fő indexek és az amerikai hozamgörbe. Az oldal magyar nyelvű, sötét témájú, és GitHub Pagesre telepíthető. Nincs szerver, nincs előfizetés, nincs API-kulcs.
 
 A számok nem befektetési tanácsok. Késleltetett, harmadik féltől származó adatok, a kereskedés előtt az elsődleges forrás a mérvadó.
 
 ## Mit jelent az egyes mutató
 
-**Piaci szélesség.** Az S&P 500 és a Nasdaq-100 összetevői közül hány százalék zár a saját 50 és 200 napos mozgóátlaga felett. Magas érték széles emelkedést jelent, alacsony érték azt, hogy a részvények többsége gyenge, még ha az indexet néhány nagy papír tartja is.
+**Kereskedési pontszám.** 0-tól 100-ig tartó, a trendkövető long swing környezetet mérő szám. Nem kontrariánus jelzés: az extrém félelem rontja, nem javítja. Öt részpont súlyozott átlaga. Minden rész önmagában is 0–100. Ha egy résznek nincs adata, a súlya a megmaradó részekre oszlik, és a felület kiírja, melyik hiányzik.
+
+| Rész | Súly | Számítás |
+| --- | --- | --- |
+| Nasdaq-trend | 35% | A Qullamaggie-szabály a Nasdaq Composite-on. Teljes kockázat 100, fél kockázat 50, és ehhez +10 jár, ha az utolsó 5 kereskedési napon a 9 napos EMA alulról keresztezte a 20 naposat. Nincs kereskedés: 0. |
+| Szélesség | 25% | Az S&P 500 és a Nasdaq-100 50 és 200 napos átlag feletti arányának átlaga. 20% → 0 pont, 70% → 100 pont, közte lineáris, a tartományon kívül levágva. Ha a négy arányból valamelyik hiányzik, a többi átlaga számít. |
+| Volatilitás | 20% | VIX: 15 vagy alatta 100, 30 vagy felette 0, közte lineáris. Ha a VIX a 3 hónapos VIX felett van (invertált szerkezet), 20 pont levonás. Ha a VIX3M hiányzik, a levonás kimarad, és ez a felületen látszik. |
+| Hitel | 10% | A bóvli felár szintje (3% vagy alatta 100, 8% vagy felette 0) adja a rész 60%-át. A 20 megfigyeléses változás (−0,5 százalékpont vagy jobb 100, +0,5 vagy rosszabb 0) adja a 40%-át. Emelkedő felár ront. Ha a változás nincs meg, csak a szint számít. |
+| Hangulat | 10% | CNN Fear & Greed, enyhe skálán: 0 → 40 pont, 100 → 90 pont (40 + 0,5 × az index). |
+
+Sávok: 0–39 „Nem érdemes kereskedni”, 40–59 „Óvatosan / fél kockázat”, 60–79 „Kedvező”, 80–100 „Erős piac”. A kijelzett szám a súlyozott átlag egészre kerekítve. Az utolsó 60 kereskedési nap pontszáma kis sparkline-on látszik. A részpontok, a súlyok és a képlet a pontszám alatt, a `trading_score` mezőben a JSON-ban is megvan.
+
+**Nasdaq trendszűrő (Qullamaggie).** A Nasdaq Composite (^IXIC) záróára négy átlaghoz képest. A 9 és a 20 napos átlag exponenciális (EMA), az 50 és a 200 napos átlag egyszerű (SMA). A felület mind a négyhez kiírja az átlag értékét, a záróár távolságát százalékban, és hogy az ár felette vagy alatta van.
+
+- Záróár mind a négy átlag felett: „LONG – teljes kockázat”.
+- Záróár a 9 napos EMA alatt, de a 20 napos EMA felett: „Fél kockázat”.
+- Záróár a 20 napos EMA alatt: „Nincs kereskedés”.
+- Záróár a 9 és a 20 napos EMA felett, de az 50 vagy a 200 napos SMA alatt: „Fél kockázat”, azzal a megjegyzéssel, hogy a hosszabb távú átlag alatt van.
+
+Ha a 9 napos EMA az utolsó 5 kereskedési napon alulról keresztezte a 20 naposat, kiemelt jelzés jelenik meg: „Trend eleje: 9-es EMA felfelé keresztezte a 20-ast”, a keresztezés napjával. Különben az utolsó felfelé és az utolsó lefelé keresztezés napja látszik. Ez a szabály a pontszám Nasdaq-trend része is.
+
+**Piaci szélesség.** Az S&P 500 és a Nasdaq-100 összetevői közül hány százalék zár a saját 50 és 200 napos mozgóátlaga felett. Magas érték széles emelkedést jelent, alacsony érték azt, hogy a részvények többsége gyenge, még ha az indexet néhány nagy papír tartja is. Az oldalon a négy aktuális százalék és az 5 kereskedési nappal korábbihoz mért változás látszik. A szélesség vonalgrafikonja nincs a lapon; a történet a JSON-ban megmarad, ebből készül a heti változás és a pontszám szélesség része.
 
 **VIX.** Az S&P 500 opciókból számolt, 30 napos implikált volatilitása. 15 alatt nyugodt a piac, 20–30 között emelkedett a bizonytalanság, 30 felett már félelem.
 
@@ -40,6 +61,7 @@ Ha egy forrás nem válaszol, a kártya nem ürül ki: az utolsó sikeres érté
 | Magas hozamú felár | FRED, `BAMLH0A0HYM2` (ICE BofA US High Yield OAS). |
 | Fear & Greed és put/call | A CNN nyilvános Fear & Greed végpontja. A put/call a komponens nyers értéke, nem külön CBOE-előfizetés. |
 | AAII | Az [AAII Sentiment Survey](https://www.aaii.com/sentimentsurvey) nyilvánosan kiírt heti eredményei. |
+| Kereskedési pontszám és Nasdaq trendszűrő | Származtatott. A `scripts/fetch_data.py` a már letöltött Nasdaq Composite záróárból, a szélességből, a VIX-ből, a bóvli felárból és a Fear & Greed indexből számolja. Nincs hozzá külön adatforrás. |
 
 A CBOE régi, nyilvános put/call CSV-je 2019 októbere óta nem frissül, a teljes történet pedig fizetős. Ezért a put/call a CNN által közölt 5 napos átlag. Az AAII 1987-ig visszanyúló teljes táblája csak tagnak tölthető le; az oldal a nyilvános heteket gyűjti, így a grafikon a futások során hosszabbodik.
 
