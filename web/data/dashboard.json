@@ -1,14 +1,14 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-01T20:37:59+01:00",
-    "generated_at_budapest": "2026. november 1., 20:37",
+    "generated_at": "2026-11-01T22:00:27+01:00",
+    "generated_at_budapest": "2026. november 1., 22:00",
     "timezone": "Europe/Budapest",
     "market_date": "2026-10-30",
     "price_period": "3y"
   },
   "trading_score": {
-    "status": "ok",
+    "status": "stale",
     "source": "Saját számítás: Nasdaq Composite, szélesség, VIX, bóvli felár, CNN Fear & Greed",
     "as_of": "2026-10-30",
     "score": 45,
@@ -94,7 +94,7 @@
         "weight": 10,
         "tone": "good",
         "effective_weight": 10.0,
-        "stale": false
+        "stale": true
       },
       {
         "id": "sentiment",
@@ -653,7 +653,8 @@
         "credit": 76.1,
         "sentiment": 53.1
       }
-    ]
+    ],
+    "error": "Régebbi adat: Hitel"
   },
   "nasdaq_trend": {
     "status": "ok",
@@ -19020,7 +19021,7 @@
       ]
     },
     "hy_spread": {
-      "status": "ok",
+      "status": "stale",
       "source": "FRED, ICE BofA US High Yield Index Option-Adjusted Spread (BAMLH0A0HYM2)",
       "as_of": "2026-10-29",
       "value": 3.26,
@@ -22169,7 +22170,8 @@
           "date": "2026-10-29",
           "value": 3.26
         }
-      ]
+      ],
+      "error": "HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=40)"
     }
   },
   "indices": [
@@ -44027,7 +44029,7 @@
     }
   ],
   "yields": {
-    "status": "ok",
+    "status": "stale",
     "source": "FRED: DGS3MO, DGS2, DGS10, DGS30, T10Y2Y",
     "as_of": "2026-10-29",
     "current": {
@@ -54033,7 +54035,8 @@
         "date": "2026-10-30",
         "spread": 0.38
       }
-    ]
+    ],
+    "error": "HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=40)"
   },
   "extras": [
     {
@@ -63158,13 +63161,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-01",
-      "price": 77653.0,
-      "change": 219.0,
-      "change_pct": 0.28,
-      "dma50": 81904.0,
-      "dma200": 73146.0,
-      "dist50_pct": -5.19,
-      "dist200_pct": 6.16,
+      "price": 77789.0,
+      "change": 354.0,
+      "change_pct": 0.46,
+      "dma50": 81907.0,
+      "dma200": 73147.0,
+      "dist50_pct": -5.03,
+      "dist200_pct": 6.35,
       "history": [
         {
           "date": "2024-05-16",
@@ -66764,7 +66767,7 @@
         },
         {
           "date": "2026-11-01",
-          "close": 77653.0
+          "close": 77789.0
         }
       ]
     }
