@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Piaci áttekintő</title>
+  <meta name="description" content="Szélesség, hangulat, indexek és amerikai hozamok egy oldalon. Ingyenes, kulcs nélküli adatokból.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">
+        <img src="favicon.svg" alt="" width="28" height="28">
+        <div>
+          <p class="eyebrow">Részvénykereskedőknek</p>
+          <h1>Piaci áttekintő</h1>
+        </div>
+      </div>
+      <div class="updated" id="updated">
+        <p class="eyebrow">Utolsó frissítés</p>
+        <p class="stamp">Adatok betöltése…</p>
+      </div>
+    </div>
+  </header>
+  <main id="app">
+    <p class="loading">A műszerfal betöltése…</p>
+  </main>
+  <footer class="site-footer">
+    <p>Az oldal nem befektetési tanács. Az adatok késleltetettek, harmadik féltől származnak, és hibát tartalmazhatnak. A számokat a kereskedési döntés előtt ellenőrizd az elsődleges forrásban.</p>
+  </footer>
+  <script src="vendor/chart.umd.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

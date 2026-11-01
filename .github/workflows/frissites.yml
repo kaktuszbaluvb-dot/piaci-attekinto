@@ -1,0 +1,64 @@
+name: Adatfrissítés és közzététel
+
+on:
+  # Amerikai zárás (16:00 ET) után. 23:30 UTC télen 18:30 ET, nyáron 19:30 ET.
+  schedule:
+    - cron: "30 23 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: piaci-attekinto
+  cancel-in-progress: false
+
+jobs:
+  frissites:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Forráskód
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Függőségek
+        run: pip install -r requirements.txt
+
+      - name: Adatok lekérése
+        run: python scripts/fetch_data.py
+
+      - name: Adatok mentése a repóba
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cache web/data
+          if git diff --staged --quiet; then
+            echo "Nincs változás az adatokban."
+          else
+            git commit -m "Adatok frissítése"
+            git push origin "HEAD:${{ github.ref_name }}"
+          fi
+
+      - name: Oldal csomagolása
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+  kozzetetel:
+    needs: frissites
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Közzététel GitHub Pagesre
+        id: deployment
+        uses: actions/deploy-pages@v4
