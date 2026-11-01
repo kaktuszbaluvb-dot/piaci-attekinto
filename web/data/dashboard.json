@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-01T11:24:19+01:00",
-    "generated_at_budapest": "2026. november 1., 11:24",
+    "generated_at": "2026-11-01T18:07:50+01:00",
+    "generated_at_budapest": "2026. november 1., 18:07",
     "timezone": "Europe/Budapest",
     "market_date": "2026-10-30",
     "price_period": "3y"
@@ -18316,7 +18316,7 @@
       ]
     },
     "hy_spread": {
-      "status": "ok",
+      "status": "stale",
       "source": "FRED, ICE BofA US High Yield Index Option-Adjusted Spread (BAMLH0A0HYM2)",
       "as_of": "2026-10-29",
       "value": 3.26,
@@ -21465,7 +21465,8 @@
           "date": "2026-10-29",
           "value": 3.26
         }
-      ]
+      ],
+      "error": "HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=40)"
     }
   },
   "indices": [
@@ -43323,7 +43324,7 @@
     }
   ],
   "yields": {
-    "status": "ok",
+    "status": "stale",
     "source": "FRED: DGS3MO, DGS2, DGS10, DGS30, T10Y2Y",
     "as_of": "2026-10-29",
     "current": {
@@ -53329,7 +53330,8 @@
         "date": "2026-10-30",
         "spread": 0.38
       }
-    ]
+    ],
+    "error": "HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=40)"
   },
   "extras": [
     {
@@ -62454,13 +62456,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-01",
-      "price": 77985.0,
-      "change": 550.0,
-      "change_pct": 0.71,
+      "price": 78008.0,
+      "change": 573.0,
+      "change_pct": 0.74,
       "dma50": 81911.0,
       "dma200": 73148.0,
-      "dist50_pct": -4.79,
-      "dist200_pct": 6.61,
+      "dist50_pct": -4.77,
+      "dist200_pct": 6.64,
       "history": [
         {
           "date": "2024-05-16",
@@ -66060,7 +66062,7 @@
         },
         {
           "date": "2026-11-01",
-          "close": 77985.0
+          "close": 78008.0
         }
       ]
     }
