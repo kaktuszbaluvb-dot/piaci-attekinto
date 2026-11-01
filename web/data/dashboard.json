@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-01T18:34:34+01:00",
-    "generated_at_budapest": "2026. november 1., 18:34",
+    "generated_at": "2026-11-01T20:37:59+01:00",
+    "generated_at_budapest": "2026. november 1., 20:37",
     "timezone": "Europe/Budapest",
     "market_date": "2026-10-30",
     "price_period": "3y"
@@ -1456,7 +1456,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.6,
-        "spx50": 34.7,
+        "spx50": 34.9,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -63158,13 +63158,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-01",
-      "price": 78022.0,
-      "change": 588.0,
-      "change_pct": 0.76,
-      "dma50": 81911.0,
-      "dma200": 73148.0,
-      "dist50_pct": -4.75,
-      "dist200_pct": 6.66,
+      "price": 77653.0,
+      "change": 219.0,
+      "change_pct": 0.28,
+      "dma50": 81904.0,
+      "dma200": 73146.0,
+      "dist50_pct": -5.19,
+      "dist200_pct": 6.16,
       "history": [
         {
           "date": "2024-05-16",
@@ -66764,7 +66764,7 @@
         },
         {
           "date": "2026-11-01",
-          "close": 78022.0
+          "close": 77653.0
         }
       ]
     }
