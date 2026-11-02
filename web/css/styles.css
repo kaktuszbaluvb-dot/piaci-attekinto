@@ -329,6 +329,13 @@ section { margin-bottom: 56px; scroll-margin-top: 76px; }
 }
 
 .badge.stale, .pill.flat { color: var(--warn); border-color: transparent; background: var(--warn-soft); }
+
+.asof-note {
+  color: var(--faint);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
 .badge.bad { color: var(--down); border-color: transparent; background: var(--down-soft); }
 .badge.calm, .pill.up { color: var(--up); border-color: transparent; background: var(--up-soft); }
 .badge.warn { color: var(--warn); border-color: transparent; background: var(--warn-soft); }

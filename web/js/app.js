@@ -118,12 +118,141 @@ function safeUrl(url) {
   return "";
 }
 
-function statusBadge(block) {
-  if (!block || block.status === "ok") return "";
-  if (block.status === "stale") {
-    return `<span class="badge stale" title="A forrás most nem válaszolt, az utolsó sikeres értéket mutatjuk.">Utolsó ismert adat · ${formatDay(block.as_of)}</span>`;
+function isoDate(year, monthIndex, day) {
+  return new Date(Date.UTC(year, monthIndex, day)).toISOString().slice(0, 10);
+}
+
+function observedHoliday(year, monthIndex, day) {
+  const date = new Date(Date.UTC(year, monthIndex, day));
+  const weekday = date.getUTCDay();
+  if (weekday === 6) date.setUTCDate(date.getUTCDate() - 1);
+  else if (weekday === 0) date.setUTCDate(date.getUTCDate() + 1);
+  return date.toISOString().slice(0, 10);
+}
+
+function nthWeekdayOfMonth(year, monthIndex, weekday, n) {
+  const first = new Date(Date.UTC(year, monthIndex, 1));
+  const shift = (weekday - first.getUTCDay() + 7) % 7;
+  return 1 + shift + (n - 1) * 7;
+}
+
+function lastWeekdayOfMonth(year, monthIndex, weekday) {
+  const last = new Date(Date.UTC(year, monthIndex + 1, 0));
+  const shift = (last.getUTCDay() - weekday + 7) % 7;
+  return last.getUTCDate() - shift;
+}
+
+function goodFriday(year) {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  const easter = new Date(Date.UTC(year, month - 1, day));
+  easter.setUTCDate(easter.getUTCDate() - 2);
+  return easter.toISOString().slice(0, 10);
+}
+
+function usMarketHolidays(year) {
+  return new Set([
+    observedHoliday(year, 0, 1),
+    isoDate(year, 0, nthWeekdayOfMonth(year, 0, 1, 3)),
+    isoDate(year, 1, nthWeekdayOfMonth(year, 1, 1, 3)),
+    goodFriday(year),
+    isoDate(year, 4, lastWeekdayOfMonth(year, 4, 1)),
+    observedHoliday(year, 5, 19),
+    observedHoliday(year, 6, 4),
+    isoDate(year, 8, nthWeekdayOfMonth(year, 8, 1, 1)),
+    isoDate(year, 10, nthWeekdayOfMonth(year, 10, 4, 4)),
+    observedHoliday(year, 11, 25),
+  ]);
+}
+
+const holidayCache = new Map();
+
+function holidaySet(year) {
+  if (!holidayCache.has(year)) holidayCache.set(year, usMarketHolidays(year));
+  return holidayCache.get(year);
+}
+
+function isUsTradingDay(iso) {
+  const date = new Date(`${iso}T00:00:00Z`);
+  if (Number.isNaN(date.getTime())) return false;
+  const weekday = date.getUTCDay();
+  if (weekday === 0 || weekday === 6) return false;
+  const year = date.getUTCFullYear();
+  return !holidaySet(year - 1).has(iso) && !holidaySet(year).has(iso) && !holidaySet(year + 1).has(iso);
+}
+
+function shiftTradingDay(iso, step) {
+  const date = new Date(`${iso}T00:00:00Z`);
+  for (let i = 0; i < 12; i += 1) {
+    date.setUTCDate(date.getUTCDate() + step);
+    const next = date.toISOString().slice(0, 10);
+    if (isUsTradingDay(next)) return next;
   }
-  return `<span class="badge bad" title="Ehhez a mutatóhoz még nincs megjeleníthető adat.">Nem elérhető</span>`;
+  return iso;
+}
+
+function lastCompletedUsSession(now = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(now);
+  const part = (type) => parts.find((item) => item.type === type).value;
+  const today = `${part("year")}-${part("month")}-${part("day")}`;
+  const minutes = Number(part("hour")) * 60 + Number(part("minute"));
+  if (isUsTradingDay(today) && minutes >= 16 * 60) return today;
+  return shiftTradingDay(today, -1);
+}
+
+function expectedAsOf(kind, now = new Date()) {
+  const session = lastCompletedUsSession(now);
+  if (kind === "fred") return shiftTradingDay(session, -1);
+  if (kind === "weekly") {
+    const date = new Date(now.getTime() - 12 * 86400000);
+    return new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Budapest",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date);
+  }
+  return session;
+}
+
+function freshness(block, kind = "equity") {
+  if (!block || block.status === "ok" || !block.status) return "ok";
+  if (block.status === "unavailable") return "unavailable";
+  if (block.status !== "stale") return "ok";
+  const asOf = String(block.as_of || "").slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(asOf)) return "stale";
+  return asOf >= expectedAsOf(kind) ? "ok" : "stale";
+}
+
+function statusBadge(block, kind = "equity") {
+  const state = freshness(block, kind);
+  if (state === "unavailable") {
+    return `<span class="badge bad" title="Ehhez a mutatóhoz még nincs megjeleníthető adat.">Nem elérhető</span>`;
+  }
+  if (state === "stale") {
+    return `<span class="asof-note">utolsó adat: ${formatDay(block.as_of)}</span>`;
+  }
+  return "";
 }
 
 function unavailable(title, block) {
@@ -774,7 +903,7 @@ function renderAaii(block) {
   const avg = block.averages || {};
   return `
     <article class="card">
-      <div class="card-kicker"><h3>AAII bika / medve</h3>${statusBadge(block)}</div>
+      <div class="card-kicker"><h3>AAII bika / medve</h3>${statusBadge(block, "weekly")}</div>
       <div class="price-row">
         <span class="price num ${signClass(block.spread)}">${fmtSigned(block.spread, 1, " pp")}</span>
         <span class="chg">bika − medve</span>
@@ -811,7 +940,7 @@ function renderHy(block) {
   if (!block || block.value === null || block.value === undefined) return unavailable("Bóvli kötvényfelár", block);
   return `
     <article class="card">
-      <div class="card-kicker"><h3>Bóvli kötvényfelár</h3><span>${statusBadge(block)} <span class="badge">${esc(hyWord(block.value))}</span></span></div>
+      <div class="card-kicker"><h3>Bóvli kötvényfelár</h3><span>${statusBadge(block, "fred")} <span class="badge">${esc(hyWord(block.value))}</span></span></div>
       <div class="price-row"><span class="price num">${fmt(block.value, 2)}%</span></div>
       <p class="fine">Mennyivel fizet többet az amerikai gyenge besorolású vállalati kötvény az állampapírnál. Táguló felár kockázatkerülést, szűkülő felár kockázatvállalást jelez.</p>
       <div class="chart-box spark"><canvas id="chart-hy"></canvas></div>
@@ -840,7 +969,7 @@ function renderYields(yields, hy, extras) {
           <h2>Kamatok, hitel és egyéb piacok</h2>
           <p>Az amerikai hozamgörbe, a bóvli kötvényfelár, valamint a dollár, az arany, az olaj és a bitcoin. Ezek gyakran együtt mozognak a részvénykockázattal.</p>
         </div>
-        ${statusBadge(yields)}
+        ${statusBadge(yields, "fred")}
       </div>
       <h3 class="subhead">Amerikai hozamok</h3>
       <div class="yield-row">
@@ -1279,31 +1408,29 @@ function drawYields(yields) {
   });
 }
 
-function problems(data) {
+function keyFailures(data) {
   const sentiment = data.sentiment || {};
+  const spx = (data.indices || []).find((item) => item.id === "spx");
   const blocks = [
-    ["Kereskedési pontszám", data.trading_score],
-    ["Nasdaq trendszűrő", data.nasdaq_trend],
-    ["Szélesség", data.breadth],
-    ["VIX", sentiment.vix],
-    ["VIX lejárat", sentiment.vix_term],
-    ["Fear & Greed", sentiment.fear_greed],
-    ["AAII", sentiment.aaii],
-    ["Put/call", sentiment.put_call],
-    ["Bóvli felár", sentiment.hy_spread],
-    ["Hozamok", data.yields],
-    ["Szektorok", data.sectors],
-    ["Hírek", data.news],
-    ...(data.indices || []).map((item) => [item.name, item]),
-    ...(data.extras || []).map((item) => [item.name, item]),
+    ["Kereskedési pontszám", data.trading_score, "equity"],
+    ["Nasdaq trendszűrő", data.nasdaq_trend, "equity"],
+    ["Szélesség", data.breadth, "equity"],
+    ["VIX", sentiment.vix, "equity"],
+    ["Fear & Greed", sentiment.fear_greed, "equity"],
+    ["Hozamok", data.yields, "fred"],
+    ["Bóvli felár", sentiment.hy_spread, "fred"],
+    ["S&P 500", spx, "equity"],
   ];
-  return blocks.filter(([, block]) => block && block.status && block.status !== "ok");
+  return blocks.filter(([, block, kind]) => {
+    const state = freshness(block, kind);
+    return state === "stale" || state === "unavailable";
+  });
 }
 
 function render(data, summary) {
-  const issues = problems(data);
-  const banner = issues.length
-    ? `<div class="alert">Nem minden forrás frissült (${issues.map(([name, block]) => `${esc(name)}: ${block.status === "stale" ? "utolsó ismert adat" : "nem elérhető"}`).join(", ")}). Ahol van korábbi jó érték, azt mutatjuk a dátumával.</div>`
+  const failed = keyFailures(data);
+  const banner = failed.length >= 3
+    ? `<div class="alert">Több fontos forrás nem elérhető vagy elavult (${failed.map(([name]) => esc(name)).join(", ")}). Ahol van korábbi érték, azt mutatjuk a dátumával.</div>`
     : "";
   const sentiment = data.sentiment || {};
   document.getElementById("app").innerHTML = `
@@ -1338,9 +1465,11 @@ function renderHeader(meta) {
 async function main() {
   const app = document.getElementById("app");
   try {
+    const version = document.querySelector('meta[name="asset-version"]')?.content || "";
+    const dataUrl = (path) => (version ? `${path}?v=${encodeURIComponent(version)}` : path);
     const [response, summaryResponse] = await Promise.all([
-      fetch("data/dashboard.json", { cache: "no-cache" }),
-      fetch("data/news_summary.json", { cache: "no-cache" }),
+      fetch(dataUrl("data/dashboard.json"), { cache: "no-store" }),
+      fetch(dataUrl("data/news_summary.json"), { cache: "no-store" }),
     ]);
     if (!response.ok) throw new Error("A dashboard.json nem tölthető be.");
     const data = await response.json();
