@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-02T11:42:22+01:00",
-    "generated_at_budapest": "2026. november 2., 11:42",
+    "generated_at": "2026-11-02T12:21:32+01:00",
+    "generated_at_budapest": "2026. november 2., 12:21",
     "timezone": "Europe/Budapest",
     "market_date": "2026-10-30",
     "price_period": "3y"
@@ -1457,7 +1457,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.6,
-        "spx50": 34.9,
+        "spx50": 34.7,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -4622,9 +4622,9 @@
       "status": "ok",
       "source": "Yahoo Finance (^VIX)",
       "as_of": "2026-11-02",
-      "value": 18.87,
-      "change": -0.55,
-      "change_pct": -2.83,
+      "value": 18.86,
+      "change": -0.56,
+      "change_pct": -2.88,
       "history": [
         {
           "date": "2023-10-30",
@@ -7652,7 +7652,7 @@
         },
         {
           "date": "2026-11-02",
-          "value": 18.87
+          "value": 18.86
         }
       ]
     },
@@ -12198,7 +12198,7 @@
         },
         {
           "date": "2026-11-02",
-          "vix": 18.87
+          "vix": 18.86
         }
       ]
     },
@@ -16020,7 +16020,7 @@
         }
       ],
       "note": "A teljes, 1987-ig visszanyúló sorozat csak AAII-tagoknak érhető el. Az oldal a nyilvánosan kiírt heteket gyűjti.",
-      "error": "503 Server Error: Service Unavailable for url: https://www.aaii.com/sentimentsurvey"
+      "error": "HTTPSConnectionPool(host='www.aaii.com', port=443): Read timed out. (read timeout=40)"
     },
     "put_call": {
       "status": "ok",
@@ -37359,13 +37359,13 @@
       "group": "eu",
       "source": "Yahoo Finance",
       "as_of": "2026-11-02",
-      "price": 25904.26,
-      "change": 86.05,
-      "change_pct": 0.33,
-      "dma50": 25574.91,
-      "dma200": 24900.37,
-      "dist50_pct": 1.29,
-      "dist200_pct": 4.03,
+      "price": 25891.41,
+      "change": 73.2,
+      "change_pct": 0.28,
+      "dma50": 25574.65,
+      "dma200": 24900.31,
+      "dist50_pct": 1.24,
+      "dist200_pct": 3.98,
       "history": [
         {
           "date": "2023-10-30",
@@ -40421,7 +40421,7 @@
         },
         {
           "date": "2026-11-02",
-          "close": 25904.26
+          "close": 25891.41
         }
       ]
     },
@@ -54072,13 +54072,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-02",
-      "price": 101.68,
-      "change": -0.2,
-      "change_pct": -0.2,
+      "price": 101.69,
+      "change": -0.18,
+      "change_pct": -0.18,
       "dma50": 100.87,
       "dma200": 99.64,
-      "dist50_pct": 0.8,
-      "dist200_pct": 2.04,
+      "dist50_pct": 0.82,
+      "dist200_pct": 2.06,
       "history": [
         {
           "date": "2023-11-01",
@@ -57098,7 +57098,7 @@
         },
         {
           "date": "2026-11-02",
-          "close": 101.68
+          "close": 101.69
         }
       ]
     },
@@ -57112,13 +57112,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-02",
-      "price": 3904.0,
-      "change": 5.1,
-      "change_pct": 0.13,
-      "dma50": 4279.27,
-      "dma200": 4515.72,
-      "dist50_pct": -8.77,
-      "dist200_pct": -13.55,
+      "price": 3909.2,
+      "change": 10.3,
+      "change_pct": 0.26,
+      "dma50": 4279.37,
+      "dma200": 4515.74,
+      "dist50_pct": -8.65,
+      "dist200_pct": -13.43,
       "history": [
         {
           "date": "2023-11-01",
@@ -60142,7 +60142,7 @@
         },
         {
           "date": "2026-11-02",
-          "close": 3904.0
+          "close": 3909.2
         }
       ]
     },
@@ -60156,13 +60156,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-02",
-      "price": 99.79,
-      "change": -4.33,
-      "change_pct": -4.16,
+      "price": 99.61,
+      "change": -4.51,
+      "change_pct": -4.33,
       "dma50": 94.88,
       "dma200": 86.54,
-      "dist50_pct": 5.17,
-      "dist200_pct": 15.3,
+      "dist50_pct": 4.98,
+      "dist200_pct": 15.1,
       "history": [
         {
           "date": "2023-11-01",
@@ -63182,7 +63182,7 @@
         },
         {
           "date": "2026-11-02",
-          "close": 99.79
+          "close": 99.61
         }
       ]
     },
@@ -63196,13 +63196,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-02",
-      "price": 77867.0,
-      "change": -381.0,
-      "change_pct": -0.49,
-      "dma50": 81936.0,
+      "price": 77773.0,
+      "change": -476.0,
+      "change_pct": -0.61,
+      "dma50": 81935.0,
       "dma200": 73162.0,
-      "dist50_pct": -4.97,
-      "dist200_pct": 6.43,
+      "dist50_pct": -5.08,
+      "dist200_pct": 6.3,
       "history": [
         {
           "date": "2024-05-17",
@@ -66802,7 +66802,7 @@
         },
         {
           "date": "2026-11-02",
-          "close": 77867.0
+          "close": 77773.0
         }
       ]
     }
@@ -67108,7 +67108,7 @@
         "id": "cnbc_top",
         "name": "CNBC",
         "status": "ok",
-        "items": 24,
+        "items": 27,
         "error": null,
         "note": null
       },
@@ -67156,7 +67156,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 79,
+        "items": 78,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
