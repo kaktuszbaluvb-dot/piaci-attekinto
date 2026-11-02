@@ -1,14 +1,14 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-02T11:39:24+01:00",
-    "generated_at_budapest": "2026. november 2., 11:39",
+    "generated_at": "2026-11-02T11:42:22+01:00",
+    "generated_at_budapest": "2026. november 2., 11:42",
     "timezone": "Europe/Budapest",
     "market_date": "2026-10-30",
     "price_period": "3y"
   },
   "trading_score": {
-    "status": "ok",
+    "status": "stale",
     "source": "Saját számítás: Nasdaq Composite, szélesség, VIX, bóvli felár, CNN Fear & Greed",
     "as_of": "2026-10-30",
     "score": 45,
@@ -94,16 +94,16 @@
         "weight": 10,
         "tone": "good",
         "effective_weight": 10.0,
-        "stale": false
+        "stale": true
       },
       {
         "id": "sentiment",
         "available": true,
         "score": 53.1,
         "reason": null,
-        "detail": "Fear & Greed 26,2 → 40 + 0,5 × 26,2 = 53,1. Enyhe skála: az extrém félelem (0) 40 pont, az extrém kapzsiság (100) 90.",
+        "detail": "Fear & Greed 26,1 → 40 + 0,5 × 26,1 = 53,1. Enyhe skála: az extrém félelem (0) 40 pont, az extrém kapzsiság (100) 90.",
         "inputs": {
-          "fear_greed": 26.2
+          "fear_greed": 26.1
         },
         "label": "Hangulat",
         "weight": 10,
@@ -653,7 +653,8 @@
         "credit": 76.1,
         "sentiment": 53.1
       }
-    ]
+    ],
+    "error": "Régebbi adat: Hitelkockázat"
   },
   "nasdaq_trend": {
     "status": "ok",
@@ -1456,7 +1457,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.6,
-        "spx50": 34.7,
+        "spx50": 34.9,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -4621,9 +4622,9 @@
       "status": "ok",
       "source": "Yahoo Finance (^VIX)",
       "as_of": "2026-11-02",
-      "value": 18.85,
-      "change": -0.57,
-      "change_pct": -2.94,
+      "value": 18.87,
+      "change": -0.55,
+      "change_pct": -2.83,
       "history": [
         {
           "date": "2023-10-30",
@@ -7651,7 +7652,7 @@
         },
         {
           "date": "2026-11-02",
-          "value": 18.85
+          "value": 18.87
         }
       ]
     },
@@ -12197,7 +12198,7 @@
         },
         {
           "date": "2026-11-02",
-          "vix": 18.85
+          "vix": 18.87
         }
       ]
     },
@@ -15965,7 +15966,7 @@
         },
         {
           "date": "2026-10-30",
-          "score": 26.2,
+          "score": 26.1,
           "rating": "fear"
         },
         {
@@ -15976,7 +15977,7 @@
       ]
     },
     "aaii": {
-      "status": "ok",
+      "status": "stale",
       "source": "AAII Investor Sentiment Survey, nyilvános heti eredmények",
       "as_of": "2026-10-28",
       "bull": 37.8,
@@ -16018,7 +16019,8 @@
           "spread": -3.6
         }
       ],
-      "note": "A teljes, 1987-ig visszanyúló sorozat csak AAII-tagoknak érhető el. Az oldal a nyilvánosan kiírt heteket gyűjti."
+      "note": "A teljes, 1987-ig visszanyúló sorozat csak AAII-tagoknak érhető el. Az oldal a nyilvánosan kiírt heteket gyűjti.",
+      "error": "503 Server Error: Service Unavailable for url: https://www.aaii.com/sentimentsurvey"
     },
     "put_call": {
       "status": "ok",
@@ -19033,7 +19035,7 @@
       ]
     },
     "hy_spread": {
-      "status": "ok",
+      "status": "stale",
       "source": "FRED, ICE BofA US High Yield Index Option-Adjusted Spread (BAMLH0A0HYM2)",
       "as_of": "2026-10-29",
       "value": 3.26,
@@ -22182,7 +22184,8 @@
           "date": "2026-10-29",
           "value": 3.26
         }
-      ]
+      ],
+      "error": "HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=40)"
     }
   },
   "indices": [
@@ -37356,13 +37359,13 @@
       "group": "eu",
       "source": "Yahoo Finance",
       "as_of": "2026-11-02",
-      "price": 25902.39,
-      "change": 84.18,
+      "price": 25904.26,
+      "change": 86.05,
       "change_pct": 0.33,
-      "dma50": 25574.87,
-      "dma200": 24900.36,
-      "dist50_pct": 1.28,
-      "dist200_pct": 4.02,
+      "dma50": 25574.91,
+      "dma200": 24900.37,
+      "dist50_pct": 1.29,
+      "dist200_pct": 4.03,
       "history": [
         {
           "date": "2023-10-30",
@@ -40418,7 +40421,7 @@
         },
         {
           "date": "2026-11-02",
-          "close": 25902.39
+          "close": 25904.26
         }
       ]
     },
@@ -44045,20 +44048,20 @@
   ],
   "yields": {
     "status": "ok",
-    "source": "FRED: DGS3MO, DGS2, DGS10, DGS30, T10Y2Y",
-    "as_of": "2026-10-29",
+    "source": "U.S. Treasury napi hozamgörbe (FRED helyett); a 10 év−2 év különbség saját számítás",
+    "as_of": "2026-10-30",
     "current": {
-      "m3": 4.18,
-      "y2": 4.61,
-      "y10": 4.98,
-      "y30": 5.32,
+      "m3": 4.16,
+      "y2": 4.56,
+      "y10": 4.94,
+      "y30": 5.31,
       "spread": 0.38
     },
     "as_of_by_tenor": {
-      "m3": "2026-10-29",
-      "y2": "2026-10-29",
-      "y10": "2026-10-29",
-      "y30": "2026-10-29",
+      "m3": "2026-10-30",
+      "y2": "2026-10-30",
+      "y10": "2026-10-30",
+      "y30": "2026-10-30",
       "spread": "2026-10-30"
     },
     "history": [
@@ -54048,9 +54051,15 @@
       },
       {
         "date": "2026-10-30",
-        "spread": 0.38
+        "spread": 0.38,
+        "m3": 4.16,
+        "y2": 4.56,
+        "y10": 4.94,
+        "y30": 5.31
       }
-    ]
+    ],
+    "fallback": "treasury",
+    "fred_error": "HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read timed out. (read timeout=40)"
   },
   "extras": [
     {
@@ -54063,13 +54072,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-02",
-      "price": 101.66,
-      "change": -0.22,
-      "change_pct": -0.22,
+      "price": 101.68,
+      "change": -0.2,
+      "change_pct": -0.2,
       "dma50": 100.87,
       "dma200": 99.64,
-      "dist50_pct": 0.78,
-      "dist200_pct": 2.02,
+      "dist50_pct": 0.8,
+      "dist200_pct": 2.04,
       "history": [
         {
           "date": "2023-11-01",
@@ -57089,7 +57098,7 @@
         },
         {
           "date": "2026-11-02",
-          "close": 101.66
+          "close": 101.68
         }
       ]
     },
@@ -57103,13 +57112,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-02",
-      "price": 3904.2,
-      "change": 5.3,
-      "change_pct": 0.14,
+      "price": 3904.0,
+      "change": 5.1,
+      "change_pct": 0.13,
       "dma50": 4279.27,
       "dma200": 4515.72,
-      "dist50_pct": -8.76,
-      "dist200_pct": -13.54,
+      "dist50_pct": -8.77,
+      "dist200_pct": -13.55,
       "history": [
         {
           "date": "2023-11-01",
@@ -60133,7 +60142,7 @@
         },
         {
           "date": "2026-11-02",
-          "close": 3904.2
+          "close": 3904.0
         }
       ]
     },
@@ -60147,13 +60156,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-02",
-      "price": 99.9,
-      "change": -4.22,
-      "change_pct": -4.05,
-      "dma50": 94.89,
-      "dma200": 86.55,
-      "dist50_pct": 5.28,
-      "dist200_pct": 15.43,
+      "price": 99.79,
+      "change": -4.33,
+      "change_pct": -4.16,
+      "dma50": 94.88,
+      "dma200": 86.54,
+      "dist50_pct": 5.17,
+      "dist200_pct": 15.3,
       "history": [
         {
           "date": "2023-11-01",
@@ -63173,7 +63182,7 @@
         },
         {
           "date": "2026-11-02",
-          "close": 99.9
+          "close": 99.79
         }
       ]
     },
@@ -63187,8 +63196,8 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-02",
-      "price": 77864.0,
-      "change": -384.0,
+      "price": 77867.0,
+      "change": -381.0,
       "change_pct": -0.49,
       "dma50": 81936.0,
       "dma200": 73162.0,
@@ -66793,7 +66802,7 @@
         },
         {
           "date": "2026-11-02",
-          "close": 77864.0
+          "close": 77867.0
         }
       ]
     }
@@ -67099,7 +67108,7 @@
         "id": "cnbc_top",
         "name": "CNBC",
         "status": "ok",
-        "items": 25,
+        "items": 24,
         "error": null,
         "note": null
       },
@@ -67139,7 +67148,7 @@
         "id": "bloomberg_econ",
         "name": "Bloomberg",
         "status": "ok",
-        "items": 14,
+        "items": 13,
         "error": null,
         "note": null
       },
@@ -67147,7 +67156,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 75,
+        "items": 79,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
