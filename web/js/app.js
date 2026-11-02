@@ -379,18 +379,104 @@ function methodology() {
     <details class="method">
       <summary>Hogyan számolunk?</summary>
       <div class="method-body">
-        <p>A kereskedési pontszám 0 és 100 között azt méri, mennyire kedvező a környezet a trendkövető, emelkedésre játszó swing kereskedéshez. Nem fordított jelzés: a nagy félelem rontja a pontot, nem javítja. Öt rész súlyozott átlaga. Ha egy résznek nincs friss adata, a súlya a többire oszlik, és ez a felületen látszik.</p>
+        <p>A kereskedési pontszám 0 és 100 között azt méri, mennyire kedvező a környezet a trendkövető, emelkedésre játszó swing kereskedéshez. Nem fordított jelzés: a nagy félelem rontja a pontot, nem javítja. Öt rész súlyozott átlaga. Ha egy résznek nincs friss adata, a súlya a többire oszlik, és ez a felületen látszik. A kijelzett szám az átlag egészre kerekítve. A sávok: 0–39 nem érdemes kereskedni, 40–59 óvatosan, 60–79 kedvező, 80–100 erős piac.</p>
         <ul>
-          <li><b>Nasdaq-trend, 35%.</b> A Nasdaq Composite záróára négy átlaghoz képest. A 9 és a 20 napos átlag exponenciális (EMA), az 50 és a 200 napos egyszerű (SMA). Mind a négy felett: 100. A 20 napos alatt: 0. Vegyes helyzetben 50, plusz 10, ha az utolsó öt kereskedési napon a 9 napos átlag alulról keresztezte a 20 naposat.</li>
-          <li><b>Piaci szélesség, 25%.</b> Az S&P 500 és a Nasdaq-100 részvényei közül hány százalék zár a saját 50 és 200 napos átlaga felett. A négy arány átlaga: 20% alatt 0 pont, 70% felett 100, közte egyenes arány.</li>
-          <li><b>Volatilitás, 20%.</b> A VIX 15 vagy alatta 100 pont, 30 vagy felette 0. Ha a 30 napos VIX a 3 hónapos felett van, 20 pont levonás.</li>
-          <li><b>Hitelkockázat, 10%.</b> Az amerikai bóvli kötvényfelár. 3% vagy alatta erős, 8% vagy felette gyenge; ez a rész 60%-a. A felár 20 napos változása a maradék 40%: a szűkülő felár jobb.</li>
-          <li><b>Hangulat, 10%.</b> CNN Fear &amp; Greed, enyhe skálán: 0 (extrém félelem) 40 pont, 100 (extrém kapzsiság) 90 pont.</li>
+          <li><b>Nasdaq-trend, 35%.</b> Teljes kockázat, ha a záróár a 9 és a 20 napos EMA, valamint az 50 és a 200 napos SMA felett van: 100 pont. Fél kockázat: 50 pont, plusz 10, ha az utolsó 5 kereskedési napon a 9 napos EMA alulról keresztezte a 20 naposat. A 20 napos EMA alatt: 0 pont.</li>
+          <li><b>Piaci szélesség, 25%.</b> Az S&amp;P 500 és a Nasdaq-100 50 és 200 napos átlag feletti négy arány átlaga. 20% → 0 pont, 70% → 100 pont, közte egyenes: (átlag − 20) / 50 × 100. A tartományon kívül a pont 0 vagy 100.</li>
+          <li><b>Volatilitás, 20%.</b> VIX 15 vagy alatta: 100 pont, 30 vagy felette: 0, közte egyenes. Ha a 30 napos VIX a 3 hónapos VIX felett van: −20 pont.</li>
+          <li><b>Hitelkockázat, 10%.</b> A bóvli felár szintje: 3% vagy alatta 100, 8% vagy felette 0. A 20 napos változás: −0,5 százalékpont 100, +0,5 százalékpont 0. A rész 60% szint + 40% változás. Ha a változás hiányzik, csak a szint számít.</li>
+          <li><b>Hangulat, 10%.</b> 40 + 0,5 × a CNN Fear &amp; Greed index. Az extrém félelem (0) 40 pont, az extrém kapzsiság (100) 90 pont.</li>
         </ul>
-        <p>Sávok: 0–39 nem érdemes kereskedni, 40–59 óvatosan, 60–79 kedvező, 80–100 erős piac. A kijelzett szám a súlyozott átlag egészre kerekítve. A kis görbe az utolsó 60 kereskedési nap.</p>
-        <p>A Nasdaq trendszűrő ugyanezt a négy átlagot mutatja külön. A teljes kockázat azt jelenti, hogy a rövid és a hosszú trend együtt emelkedik. A fél kockázat vegyes kép. A nincs kereskedés azt jelenti, hogy az ár a 20 napos átlag alá esett.</p>
+        <p>A kis görbe az utolsó 60 kereskedési nap. A Nasdaq trendszűrő ugyanezt a négy átlagot mutatja külön is.</p>
       </div>
     </details>`;
+}
+
+function plainPart(part) {
+  if (!part.available || part.score === null || part.score === undefined) {
+    return part.reason || "Ehhez a részhez most nincs használható adat.";
+  }
+  const inputs = part.inputs || {};
+  if (part.id === "nasdaq") return plainNasdaq(inputs);
+  if (part.id === "breadth") return plainBreadth(inputs);
+  if (part.id === "volatility") return plainVolatility(inputs);
+  if (part.id === "credit") return plainCredit(inputs);
+  if (part.id === "sentiment") return plainSentiment(inputs);
+  return part.reason || "";
+}
+
+function plainNasdaq(inputs) {
+  if (inputs.regime === "full") {
+    return "Az ár mind a négy átlag felett van: a rövid és a hosszú trend együtt emelkedik.";
+  }
+  if (inputs.regime === "none") {
+    return "Az ár a 20 napos átlag alatt van, a rövid emelkedő trend megtört.";
+  }
+  if (inputs.regime === "half") {
+    const fresh = inputs.fresh_up_cross
+      ? " A 9 napos átlag nemrég fordult a 20 napos fölé."
+      : "";
+    return `A kép vegyes: a rövid trend még tart, de nem minden átlag támogatja.${fresh}`;
+  }
+  return "A Nasdaq-trend most nem ítélhető meg.";
+}
+
+function plainBreadth(inputs) {
+  const average = Number(inputs.average);
+  if (!Number.isFinite(average)) return "A szélesség most nem számolható.";
+  let read = "a részvények nagy része a hosszú átlag alatt van";
+  if (average >= 70) read = "széles, erős emelkedés";
+  else if (average >= 55) read = "közepesen erős piac";
+  else if (average >= 40) read = "vegyes kép";
+  else if (average >= 20) read = "szűk, gyenge piac";
+  return `A részvények ${fmt(average, 0)}%-a van a mozgóátlagai felett – ${read}.`;
+}
+
+function plainVolatility(inputs) {
+  const vix = Number(inputs.vix);
+  if (!Number.isFinite(vix)) return "A volatilitás most nem számolható.";
+  if (inputs.inverted) {
+    return `A VIX ${fmt(vix, 0)} és a három hónapos fölött van: a közeli félelem a szokásosnál drágább.`;
+  }
+  let level = "magas, a piac félelmet áraz";
+  if (vix < 15) level = "alacsony, a piac nyugodt";
+  else if (vix < 20) level = "visszafogott";
+  else if (vix < 30) level = "emelkedett, de nincs pánik";
+  return `A VIX ${fmt(vix, 0)} körül van: a bizonytalanság ${level}.`;
+}
+
+function plainCredit(inputs) {
+  const level = Number(inputs.level);
+  if (!Number.isFinite(level)) return "A hitelkockázat most nem számolható.";
+  let state = "nagyon tág, a hitelpiac stresszes";
+  if (level < 3.5) state = "a hitelpiac nyugodt";
+  else if (level < 5) state = "nincs stressz a hitelpiacon";
+  else if (level < 8) state = "a kockázatkerülés nő";
+  const change = Number(inputs.change);
+  if (inputs.change_used && Number.isFinite(change) && Math.abs(change) >= 0.15) {
+    const move = change > 0 ? "tágult" : "szűkült";
+    return `A bóvli felár ${fmt(level, 1)}%, és az utóbbi hetekben ${move}: ${state}.`;
+  }
+  return `A bóvli felár ${fmt(level, 1)}% körül van, és alig mozdult: ${state}.`;
+}
+
+function plainSentiment(inputs) {
+  const fg = Number(inputs.fear_greed);
+  if (!Number.isFinite(fg)) return "A hangulat most nem számolható.";
+  let read = "erős kapzsiság, a piac feszített";
+  if (fg < 25) read = "erős félelem, a befektetők nagyon óvatosak";
+  else if (fg < 45) read = "a piac fél, nem kapzsi";
+  else if (fg < 55) read = "a hangulat semleges";
+  else if (fg < 75) read = "a hangulat inkább optimista";
+  return `A Fear & Greed ${fmt(fg, 0)}: ${read}.`;
+}
+
+function bandLabels() {
+  const ticks = [0, 40, 60, 80, 100];
+  return `<div class="band-labels num">${ticks.map((value, index) => {
+    const edge = index === 0 ? "is-first" : index === ticks.length - 1 ? "is-last" : "";
+    return `<span class="${edge}" style="left:${value}%">${value}</span>`;
+  }).join("")}</div>`;
 }
 
 function renderScorePart(part, renormalized) {
@@ -405,7 +491,7 @@ function renderScorePart(part, renormalized) {
         <span class="part-meta num"><span>${missing ? "–" : fmtScore(part.score)}</span><span>${esc(weightLabel(part, renormalized))}</span></span>
       </div>
       <div class="bar" aria-hidden="true"><i class="tone-${esc(tone)}" style="width:${width}%"></i></div>
-      <p class="part-detail">${esc(part.detail || part.reason || hint)}</p>
+      <p class="part-detail">${esc(plainPart(part))}</p>
     </div>`;
 }
 
@@ -440,7 +526,7 @@ function renderTradingScore(block) {
               </div>
               <em class="band-mark" style="left:${Math.max(0, Math.min(100, Number(block.score)))}%"></em>
             </div>
-            <div class="band-labels num"><span>0</span><span>40</span><span>60</span><span>80</span><span>100</span></div>
+            ${bandLabels()}
           </div>
           <div class="score-side">
             ${scoreSpark(block.history, tone)}
