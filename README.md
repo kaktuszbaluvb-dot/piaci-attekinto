@@ -49,7 +49,44 @@ Ha a 9 napos EMA az utolsó 5 kereskedési napon alulról keresztezte a 20 napos
 
 **Szektorok.** Az S&P 500 tizenegy GICS szektora SPDR ETF-eken (XLK, XLF, XLV, XLY, XLP, XLE, XLI, XLB, XLU, XLRE, XLC), magyar névvel. Az elsődleges sor az utolsó 5 kereskedési nap hozama, a legerősebbtől a leggyengébbig. Mellette az 1 hónap (21 kereskedési nap), az év eleje óta mért hozam, és a különbség az S&P 500 ETF-hez (SPY) képest ugyanazon a héten. A pozitív különbség felülteljesítés. A három legerősebb és a három leggyengébb ki van emelve.
 
-**Napi hírek.** Körülbelül 8–12 fontosabb piaci cím az elmúlt 36 órából. A cím eredeti nyelvén látszik, a forrással, budapesti idővel és egy új lapon nyíló hivatkozással. Ismétlődő címek kiesnek. Ha egy hírfolyam nem válaszol, a többi megmarad.
+**A nap legfontosabb eseményei.** Felül egy kézzel írt, magyar napi összefoglaló, alatta az S&P 500 és a Nasdaq-100 öt legnagyobb emelkedője és öt legnagyobb esője az utolsó kereskedési napon: ticker, cégnév, százalékos változás. Mindkét index nagy kapitalizációjú, ezért törpepapír nem kerül a listára. Ha egy szűrt hírügynökségi cím említi a papírt vagy a céget, a sor alatt kis hivatkozás jelenik meg. Az összefoglaló nem a lekérő scriptből készül.
+
+### Napi összefoglaló (`web/data/news_summary.json`)
+
+Ezt egy külső folyamat írja, hétköznap reggel, a `main` ágra. A `scripts/fetch_data.py` nem olvassa felül és nem írja. A fájl commitja a `main` ágon újraindítja a közzétételt.
+
+Ha az `items` tömb üres, vagy a `date` három napnál régebbi (Európa/Budapest szerint), az oldal a „Nincs friss összefoglaló” megjegyzést mutatja a számok helyett.
+
+```json
+{
+  "date": "YYYY-MM-DD",
+  "updated_at": "ISO8601 időzóna-eltolással",
+  "headline": "Egy mondatos magyar tanulság a napról.",
+  "items": [
+    {
+      "title": "Rövid magyar cím",
+      "summary": "Egy-két mondatos magyar összefoglaló.",
+      "impact": "pozitív",
+      "tickers": ["NVDA"],
+      "source": "Reuters",
+      "url": "https://..."
+    }
+  ]
+}
+```
+
+| Mező | Jelentés |
+| --- | --- |
+| `date` | A kereskedési nap, `YYYY-MM-DD`. Három napnál régebbi fájl nem jelenik meg. |
+| `updated_at` | Az írás ideje, ISO-8601, eltolással (például `2026-11-02T07:30:00+01:00`). |
+| `headline` | Egy mondatos magyar tanulság. |
+| `items` | 3–5 elem. Üres tömbnél az oldal nem mutat összefoglalót. |
+| `items[].title` | Rövid magyar cím. |
+| `items[].summary` | Egy-két mondatos magyar kifejtés. |
+| `items[].impact` | `pozitív`, `negatív` vagy `semleges`. |
+| `items[].tickers` | Érintett tickerek, lehet üres tömb. |
+| `items[].source` | A forrás neve. |
+| `items[].url` | A forrásra mutató `http` vagy `https` cím. |
 
 **Dollárindex, arany, WTI olaj, bitcoin.** A részvényeken kívüli, gyakran együtt figyelt piacok.
 
@@ -71,7 +108,8 @@ A felület rendszer-betűt használ, a számok táblázatosak. A világos és a 
 | Bóvli kötvényfelár | FRED, `BAMLH0A0HYM2` (ICE BofA US High Yield OAS). |
 | Fear & Greed és put/call | A CNN nyilvános Fear & Greed végpontja. |
 | AAII | Az [AAII Sentiment Survey](https://www.aaii.com/sentimentsurvey) nyilvánosan kiírt heti eredményei. |
-| Hírek | Ingyenes RSS, kulcs nélkül: CNBC (címlap, eredmények, gazdaság), MarketWatch címlap, Yahoo Finance, Portfolio.hu, valamint Reuters a Google News `reuters.com`-ra szűrt folyamán keresztül. A Reuters saját RSS-e kulcs nélkül nem elérhető. |
+| Napi összefoglaló | Kézi `web/data/news_summary.json`. A lekérés nem írja felül. |
+| Napi elmozdulás | A már letöltött S&P 500 és Nasdaq-100 záróárak. Ha egy cím említi a papírt, a hivatkozás CNBC, MarketWatch, Bloomberg vagy Reuters RSS-ből jön. Az AP saját RSS-e kulcs nélkül nem elérhető. |
 | Kereskedési pontszám és Nasdaq trendszűrő | Származtatott. A `scripts/fetch_data.py` a már letöltött adatokból számolja. |
 
 A FRED élhálózata a böngészős és a hosszú egyedi azonosítójú kéréseket válasz nélkül hagyja (a kapcsolat megnyílik, a törzs nem érkezik meg). A lekérés ezért rövid, nem böngészős azonosítót küld, és néhányszor újrapróbálja. Ez volt az oka, hogy a hozamok és a bóvli felár korábban „utolsó ismert adat” jelzéssel maradtak.
@@ -94,7 +132,7 @@ A munkafolyamat fájljának a `main` ágon kell lennie, különben az ütemezés
 5. Az oldal címe: `https://<felhasználónév>.github.io/piaci-attekinto/`  
    Ennek a repónak várhatóan: <https://kaktuszbaluvb-dot.github.io/piaci-attekinto/>
 
-Ezután a munkafolyamat hétfőtől péntekig kétszer fut: 23:30 UTC-kor (amerikai zárás után; télen 18:30, nyáron 19:30 New York-i idő) és 05:30 UTC-kor (európai reggel; télen 06:30, nyáron 07:30 Budapest). Kézzel is indítható. Amerikai ünnepen is elindul, de ilyenkor a piaci dátum az előző kereskedési nap marad. Egy forrás hibája nem állítja meg a többit, és nem teszi sikertelenné a közzétételt. Az „Utolsó frissítés” mindig Európa/Budapest időzónában látszik, a „piaci nap” pedig az utolsó S&P 500 zárás napja.
+Ezután a munkafolyamat hétfőtől péntekig kétszer fut: 23:30 UTC-kor (amerikai zárás után; télen 18:30, nyáron 19:30 New York-i idő) és 05:30 UTC-kor (európai reggel; télen 06:30, nyáron 07:30 Budapest). Kézzel is indítható. A `web/data/news_summary.json` módosítása a `main` ágon szintén elindítja, így a reggeli összefoglaló kikerül az oldalra. A futás a saját adatcommitja előtt `rebase`-eli magát a távoli ágra, és csak a `cache/` mappát meg a `web/data/dashboard.json` fájlt commitolja, a kézi összefoglalót nem. A `github-actions` bot push-a nem indít új kört. Egyidejű futások ugyanabba a sorba állnak. Amerikai ünnepen is elindul, de ilyenkor a piaci dátum az előző kereskedési nap marad. Egy forrás hibája nem állítja meg a többit, és nem teszi sikertelenné a közzétételt. Az „Utolsó frissítés” mindig Európa/Budapest időzónában látszik, a „piaci nap” pedig az utolsó S&P 500 zárás napja.
 
 ## Helyi megtekintés és kézi frissítés
 

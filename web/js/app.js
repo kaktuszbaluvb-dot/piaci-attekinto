@@ -731,17 +731,32 @@ function renderTerm(block) {
     </article>`;
 }
 
+function fearBadgeClass(label) {
+  const text = (label || "").toLowerCase();
+  if (text.includes("kapzsi")) return "calm";
+  if (text.includes("félelem") || text.includes("felelem")) return "hot";
+  return "";
+}
+
+function fearLabel(label) {
+  const text = (label || "").trim();
+  if (!text) return "";
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 function renderFear(block) {
   if (!block || block.score === null || block.score === undefined) return unavailable("Fear & Greed", block);
   const left = Math.max(0, Math.min(100, Number(block.score)));
+  const label = fearLabel(block.rating_hu);
   return `
     <article class="card">
       <div class="card-kicker"><h3>Fear &amp; Greed</h3>${statusBadge(block)}</div>
-      <div class="price-row">
+      <div class="fg-value">
         <span class="price num">${fmt(block.score, 1)}</span>
-        <span class="chg">${esc(block.rating_hu || "")}</span>
+        ${label ? `<span class="badge ${fearBadgeClass(label)}">${esc(label)}</span>` : ""}
       </div>
-      <div class="meter" title="0 extrém félelem, 100 extrém kapzsiság." aria-hidden="true"><i style="left:${left}%"></i></div>
+      <div class="meter" aria-hidden="true"><i style="left:${left}%"></i></div>
+      <div class="meter-ends"><span>Extrém félelem</span><span>Extrém kapzsiság</span></div>
       <div class="stats">
         <span>Előző záró <b class="num">${fmt(block.previous_close, 1)}</b></span>
         <span>1 hét <b class="num">${fmt(block.previous_week, 1)}</b></span>
@@ -938,39 +953,112 @@ function renderSectors(block) {
     </section>`;
 }
 
-function renderNews(block) {
+function renderMover(row) {
+  const headline = row.headline || null;
+  const href = headline ? safeUrl(headline.url) : "";
+  const link = href
+    ? `<a class="mover-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer"><span>${esc(headline.source || "")}</span> ${esc(headline.title || "")}</a>`
+    : "";
+  return `
+    <div class="mover-row">
+      <span class="mover-ticker num">${esc(row.ticker)}</span>
+      <span class="mover-name">${esc(row.name || "")}</span>
+      <span class="mover-chg num ${signClass(row.change_pct)}">${fmtPct(row.change_pct, 2)}</span>
+      ${link}
+    </div>`;
+}
+
+function renderMoverColumn(title, rows) {
+  if (!rows.length) {
+    return `<article class="card"><h3>${esc(title)}</h3><p class="empty">Nincs megjeleníthető papír.</p></article>`;
+  }
+  return `
+    <article class="card mover-card">
+      <h3>${esc(title)}</h3>
+      ${rows.map(renderMover).join("")}
+    </article>`;
+}
+
+function budapestTodayIso() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Budapest",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+}
+
+function summaryIsFresh(summary) {
+  if (!summary || !Array.isArray(summary.items) || summary.items.length === 0) return false;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(summary.date || "")) return false;
+  const summaryDay = Date.parse(`${summary.date}T00:00:00Z`);
+  const today = Date.parse(`${budapestTodayIso()}T00:00:00Z`);
+  if (!Number.isFinite(summaryDay) || !Number.isFinite(today)) return false;
+  const age = Math.round((today - summaryDay) / 86400000);
+  return age >= 0 && age <= 3;
+}
+
+function impactClass(impact) {
+  if (impact === "pozitív") return "up";
+  if (impact === "negatív") return "down";
+  return "flat";
+}
+
+function impactLabel(impact) {
+  if (impact === "pozitív") return "Pozitív";
+  if (impact === "negatív") return "Negatív";
+  if (impact === "semleges") return "Semleges";
+  return "";
+}
+
+function renderSummary(summary) {
+  if (!summaryIsFresh(summary)) {
+    return `<p class="summary-empty">Nincs friss összefoglaló.</p>`;
+  }
+  const cards = summary.items.map((item) => {
+    const href = safeUrl(item.url);
+    const tickers = (item.tickers || []).filter(Boolean).map((ticker) => `<span class="badge">${esc(ticker)}</span>`).join("");
+    const source = href
+      ? `<a class="summary-source" href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(item.source || "Forrás")}</a>`
+      : `<span class="summary-source">${esc(item.source || "")}</span>`;
+    const pill = impactLabel(item.impact);
+    return `
+      <article class="card summary-card">
+        <h3>${esc(item.title || "")}</h3>
+        <p class="fine">${esc(item.summary || "")}</p>
+        <div class="summary-meta">
+          ${pill ? `<span class="pill ${impactClass(item.impact)}">${pill}</span>` : ""}
+          ${tickers}
+          ${source}
+        </div>
+      </article>`;
+  }).join("");
+  return `
+    <p class="takeaway">${esc(summary.headline || "")}</p>
+    <p class="source">Összefoglaló napja: ${formatDay(summary.date)}</p>
+    <div class="summary-grid">${cards}</div>`;
+}
+
+function renderNews(block, summary) {
   const data = block || {};
-  const items = data.items || [];
-  const failed = (data.feeds || []).filter((feed) => feed.status && feed.status !== "ok");
-  const reuters = (data.feeds || []).find((feed) => feed.id === "reuters" && feed.note);
-  const failLine = failed.length
-    ? `<p class="note">Most nem válaszolt: ${esc([...new Set(failed.map((feed) => feed.name))].join(", "))}.</p>`
-    : "";
-  const reutersLine = reuters
-    ? `<p class="note">A Reuters saját hírcsatornája kulcs nélkül nem elérhető, ezért ezek a címek a Google News reuters.com-ra szűrt folyamából jönnek.</p>`
-    : "";
-  const body = items.length
-    ? `<div class="news-grid">${items.map((item) => {
-        const href = safeUrl(item.url);
-        const meta = `${esc(item.source || "")} · ${esc(ago(item.published_at))} · ${esc(item.published_budapest || "")}`;
-        if (!href) {
-          return `<div class="news-item"><span class="news-title">${esc(item.title)}</span><span class="news-meta">${meta}</span></div>`;
-        }
-        return `<a class="news-item" href="${esc(href)}" target="_blank" rel="noopener noreferrer"><span class="news-title">${esc(item.title)}</span><span class="news-meta"><span class="src">${esc(item.source || "")}</span> · ${esc(ago(item.published_at))} · ${esc(item.published_budapest || "")}</span></a>`;
-      }).join("")}</div>`
-    : unavailable("Napi hírek", data);
+  const movers = data.movers || {};
+  const gainers = movers.gainers || [];
+  const losers = movers.losers || [];
+  const moverBlock = gainers.length || losers.length
+    ? `<div class="mover-grid">${renderMoverColumn("Emelkedők", gainers)}${renderMoverColumn("Esők", losers)}</div>`
+    : `<p class="empty">A napi elmozdulások most nem számolhatók.</p>`;
   return `
     <section id="hirek">
       <div class="section-head">
         <div>
-          <h2>Napi hírek</h2>
-          <p>Fontosabb piaci címek az elmúlt ${data.window_hours || 36} órából. A cím eredeti nyelvén látszik, az idő Európa/Budapest szerint.</p>
+          <h2>A nap legfontosabb eseményei</h2>
+          <p>Rövid, kézi összefoglaló, alatta az S&amp;P 500 és a Nasdaq-100 öt legnagyobb napi emelkedője és esője.</p>
         </div>
         ${statusBadge(data)}
       </div>
-      ${body}
-      ${failLine}
-      ${reutersLine}
+      ${renderSummary(summary)}
+      <h3 class="subhead">Legnagyobb elmozdulások${movers.as_of ? ` · ${formatDay(movers.as_of)}` : ""}</h3>
+      ${moverBlock}
       <p class="source">${esc(data.source || "")}</p>
     </section>`;
 }
@@ -1212,7 +1300,7 @@ function problems(data) {
   return blocks.filter(([, block]) => block && block.status && block.status !== "ok");
 }
 
-function render(data) {
+function render(data, summary) {
   const issues = problems(data);
   const banner = issues.length
     ? `<div class="alert">Nem minden forrás frissült (${issues.map(([name, block]) => `${esc(name)}: ${block.status === "stale" ? "utolsó ismert adat" : "nem elérhető"}`).join(", ")}). Ahol van korábbi jó érték, azt mutatjuk a dátumával.</div>`
@@ -1226,7 +1314,7 @@ function render(data) {
     ${renderSentiment(sentiment)}
     ${renderYields(data.yields, sentiment.hy_spread, data.extras || [])}
     ${renderSectors(data.sectors)}
-    ${renderNews(data.news)}
+    ${renderNews(data.news, summary)}
   `;
   drawSentiment(sentiment);
   (data.indices || []).forEach(drawSpark);
@@ -1250,11 +1338,22 @@ function renderHeader(meta) {
 async function main() {
   const app = document.getElementById("app");
   try {
-    const response = await fetch("data/dashboard.json", { cache: "no-cache" });
+    const [response, summaryResponse] = await Promise.all([
+      fetch("data/dashboard.json", { cache: "no-cache" }),
+      fetch("data/news_summary.json", { cache: "no-cache" }),
+    ]);
     if (!response.ok) throw new Error("A dashboard.json nem tölthető be.");
     const data = await response.json();
+    let summary = null;
+    if (summaryResponse.ok) {
+      try {
+        summary = await summaryResponse.json();
+      } catch (error) {
+        summary = null;
+      }
+    }
     renderHeader(data.meta || {});
-    render(data);
+    render(data, summary);
   } catch (error) {
     app.innerHTML = `<p class="error-banner">Az adatfájl nem olvasható. Futtasd a <span class="num">python scripts/fetch_data.py</span> parancsot, majd frissítsd az oldalt.</p>`;
   }

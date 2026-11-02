@@ -38,6 +38,8 @@ logging.getLogger("urllib3").setLevel(logging.ERROR)
 ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / "cache"
 DATA_PATH = ROOT / "web" / "data" / "dashboard.json"
+# Kézi napi összefoglaló. A fetch soha nem olvassa felül és nem írja.
+SUMMARY_PATH = ROOT / "web" / "data" / "news_summary.json"
 BUDAPEST = ZoneInfo("Europe/Budapest")
 
 PRICE_PERIOD = "3y"
@@ -124,9 +126,10 @@ SECTOR_WEEK_SESSIONS = 5
 SECTOR_MONTH_SESSIONS = 21
 
 NEWS_WINDOW_HOURS = 36
-NEWS_LIMIT = 12
-NEWS_TARGET = 8
-NEWS_PER_SOURCE = 3
+HEADLINE_LIMIT = 5
+MOVER_LIMIT = 5
+# Az S&P 500 és a Nasdaq-100 eleve nagy kapitalizációjú kosár. Külön piaci
+# értékletöltés nincs: a Yahoo záróárában nincs méret, a két index pedig kiszűri a törpéket.
 NEWS_FEEDS = [
     {
         "id": "cnbc_top",
@@ -149,49 +152,58 @@ NEWS_FEEDS = [
         "url": "https://feeds.marketwatch.com/marketwatch/topstories/",
     },
     {
-        "id": "yahoo",
-        "name": "Yahoo Finance",
-        "url": "https://feeds.finance.yahoo.com/rss/2.0/headline?s=%5EGSPC,%5EDJI,%5EIXIC&region=US&lang=en-US",
+        "id": "bloomberg_markets",
+        "name": "Bloomberg",
+        "url": "https://feeds.bloomberg.com/markets/news.rss",
     },
     {
-        "id": "portfolio",
-        "name": "Portfolio.hu",
-        "url": "https://www.portfolio.hu/rss/all.xml",
+        "id": "bloomberg_econ",
+        "name": "Bloomberg",
+        "url": "https://feeds.bloomberg.com/economics/news.rss",
     },
     {
-        # A Reuters saját RSS-e 2026-ban kulcs nélkül nem elérhető (401 / megszűnt cím).
-        # A Google News nyilvános RSS-e reuters.com-ra szűrve adja a címeket.
+        # A Reuters saját RSS-e kulcs nélkül nem elérhető. A Google News
+        # nyilvános RSS-e reuters.com-ra szűrve adja a címeket.
         "id": "reuters",
         "name": "Reuters",
         "url": (
             "https://news.google.com/rss/search?q=site:reuters.com+"
-            "(stocks+OR+markets+OR+Fed+OR+oil+OR+yields)+when:2d&hl=en-US&gl=US&ceid=US:en"
+            "(Fed+OR+inflation+OR+CPI+OR+jobs+OR+earnings+OR+oil+OR+tariffs+OR+yields+OR+ECB)"
+            "+when:2d&hl=en-US&gl=US&ceid=US:en"
         ),
     },
 ]
-MARKET_RE = re.compile(
-    r"\b(stocks?|markets?|s&p|nasdaq|dow|fed|federal|treasury|yields?|oil|gold|"
-    r"banks?|earnings|futures|bonds?|inflation|economy|gdp|investors?|shares|"
-    r"equit(?:y|ies)|tariffs?|rally|sell-?off|trading|recession|payrolls?|"
-    r"bitcoin|crypto|etf|ipo|wall street)\b",
+KEYWORD_RULES = (
+    (re.compile(r"\b(fomc|federal reserve|powell|warsh|fed)\b", re.IGNORECASE), 5),
+    (re.compile(r"\b(interest rates?|rate cut|rate hike|rates)\b", re.IGNORECASE), 4),
+    (re.compile(r"\b(inflation|cpi|pce|consumer prices?)\b", re.IGNORECASE), 5),
+    (re.compile(r"\b(nonfarm|payrolls?|jobs report|jobless|unemployment)\b", re.IGNORECASE), 5),
+    (re.compile(r"\bgdp\b", re.IGNORECASE), 4),
+    (re.compile(r"\b(opec|crude|oil|brent|wti)\b", re.IGNORECASE), 4),
+    (re.compile(r"\btariffs?\b", re.IGNORECASE), 4),
+    (re.compile(r"\b(treasury|treasuries|bond yields?|yields?)\b", re.IGNORECASE), 4),
+    (re.compile(r"\b(ecb|lagarde|european central bank)\b", re.IGNORECASE), 4),
+)
+MEGA_CAP_RE = re.compile(
+    r"\b(apple|microsoft|nvidia|amazon|alphabet|google|meta|tesla|broadcom|berkshire|"
+    r"jpmorgan|jp morgan|unitedhealth|eli lilly|visa|exxon|mastercard|costco|walmart|"
+    r"netflix|oracle|salesforce|bank of america)\b|"
+    r"\b(AAPL|MSFT|NVDA|AMZN|GOOGL|GOOG|META|TSLA|AVGO|JPM|UNH|LLY|XOM|COST|WMT|NFLX|ORCL|CRM|BAC)\b",
     re.IGNORECASE,
 )
-HU_MARKET_HINTS = (
-    "tőzsde",
-    "részvény",
-    "hozam",
-    "olaj",
-    "forint",
-    "mnb",
-    "kamat",
-    "inflác",
-    "befektet",
-    "arany",
-    "dollár",
-    "árfolyam",
-    "kötvény",
-    "bitcoin",
-    "euró",
+EARNINGS_RE = re.compile(r"\b(earnings|results|profit|revenue|guidance)\b", re.IGNORECASE)
+CLICKBAIT_RE = (
+    re.compile(r"\?"),
+    re.compile(r"^\s*(how|what|why|should|is|are|can|will|do|does)\b", re.IGNORECASE),
+    re.compile(r"\byou\b", re.IGNORECASE),
+    re.compile(r"\b(should you buy|stocks? to buy|best stocks|stocks? to watch)\b", re.IGNORECASE),
+    re.compile(r"\b(\d+\s+(stocks?|ways|reasons|things|tips)|list of)\b", re.IGNORECASE),
+    re.compile(r"\b(401\(k\)|retirement|mortgage|personal finance|how to save|your money|your portfolio)\b", re.IGNORECASE),
+    re.compile(r"\b(bitcoin|crypto|ethereum|meme ?coins?|dogecoin)\b", re.IGNORECASE),
+)
+NAME_SUFFIX_RE = re.compile(
+    r"\b(inc|incorporated|corp|corporation|company|co|ltd|limited|plc|sa|ag|nv|class [a-c])\b\.?",
+    re.IGNORECASE,
 )
 
 VIX_TICKERS = {"vix": "^VIX", "vix9d": "^VIX9D", "vix3m": "^VIX3M"}
@@ -287,6 +299,8 @@ def load_previous() -> dict:
 
 
 def write_dashboard(payload: dict) -> None:
+    if DATA_PATH.resolve() == SUMMARY_PATH.resolve():
+        raise RuntimeError("a news_summary.json nem írható felül")
     DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
     tmp = DATA_PATH.with_suffix(".json.tmp")
@@ -297,6 +311,9 @@ def write_dashboard(payload: dict) -> None:
 def has_payload(block) -> bool:
     if not isinstance(block, dict):
         return False
+    movers = block.get("movers") if isinstance(block.get("movers"), dict) else None
+    if movers and (movers.get("gainers") or movers.get("losers")):
+        return True
     if block.get("history") or block.get("items") or block.get("sectors"):
         return True
     for key in ("value", "price", "score", "bull", "vix", "close"):
@@ -1972,57 +1989,82 @@ def self_check() -> None:
     assert ytd_return(pd.Series([1.0, 2.0], index=pd.bdate_range("2025-01-02", periods=2))) is None
 
     moment = datetime(2026, 11, 2, 12, 0, tzinfo=timezone.utc)
+    assert keyword_score("Fed holds rates") >= 5
+    assert keyword_score("Oil jumps as Treasury yields fall") >= 8
+    assert keyword_score("CPI rises more than expected") >= 5
+    assert keyword_score("Apple earnings beat estimates") >= 5
+    assert keyword_score("Celebrity lists a house") == 0
+    assert is_clickbait("Should you buy these stocks?")
+    assert is_clickbait("5 stocks to buy now")
+    assert is_clickbait("What should you do with your portfolio?")
+    assert is_clickbait("Bitcoin surges as traders pile in")
+    assert not is_clickbait("Fed holds rates as inflation cools")
     raw_news = [
         {
             "title": "Stocks rally on earnings",
             "url": "https://example.com/a?utm_source=rss",
             "source": "CNBC",
-            "published": moment - timedelta(hours=2),
-            "market": True,
+            "published": moment - timedelta(hours=1),
         },
         {
             "title": "Stocks rally on earnings!",
             "url": "https://example.com/a",
-            "source": "Yahoo Finance",
-            "published": moment - timedelta(hours=1),
-            "market": True,
+            "source": "CNBC",
+            "published": moment - timedelta(hours=2),
         },
         {
             "title": "Oil jumps as yields fall",
             "url": "https://example.com/b",
             "source": "Reuters",
             "published": moment - timedelta(hours=3),
-            "market": True,
         },
         {
-            "title": "Celebrity lists a house",
+            "title": "Should you buy these stocks?",
             "url": "https://example.com/c",
             "source": "MarketWatch",
             "published": moment - timedelta(hours=1),
-            "market": False,
         },
         {
             "title": "Fed holds rates",
             "url": "https://example.com/d",
             "source": "CNBC",
-            "published": moment - timedelta(hours=40),
-            "market": True,
+            "published": moment - timedelta(hours=4),
+        },
+        {
+            "title": "ECB watches inflation",
+            "url": "https://example.com/e",
+            "source": "Bloomberg",
+            "published": moment - timedelta(hours=2),
         },
     ]
-    fresh = [row for row in raw_news if moment - row["published"] <= timedelta(hours=NEWS_WINDOW_HOURS)]
-    deduped = dedupe_news(fresh)
-    assert len(deduped) == 3
-    assert deduped[0]["url"].rstrip("/").endswith("/a")
+    deduped = dedupe_news(raw_news)
+    assert len(deduped) == 5
     picked = select_headlines(deduped)
     titles = [row["title"] for row in picked]
-    assert any(title.startswith("Stocks rally on earnings") for title in titles)
+    assert "Should you buy these stocks?" not in titles
+    assert "Stocks rally on earnings" not in titles
+    assert titles[0] == "ECB watches inflation"
+    assert "Fed holds rates" in titles
     assert "Oil jumps as yields fall" in titles
-    assert "Fed holds rates" not in titles
-    rally_at = next(index for index, title in enumerate(titles) if title.startswith("Stocks rally on earnings"))
-    assert rally_at < titles.index("Celebrity lists a house")
-    assert market_related("A forint gyengült a dollárral szemben")
-    assert market_related("Nasdaq futures rise before the Fed")
-    assert not market_related("Celebrity lists a house")
+    assert len(picked) <= HEADLINE_LIMIT
+    assert picked == sorted(picked, key=lambda row: row["published"], reverse=True)
+    days = pd.to_datetime(["2026-10-29", "2026-10-30"])
+    frame = pd.DataFrame({f"T{i:02d}": [100, 100 + (i - 6)] for i in range(12)}, index=days)
+    members = [{"symbol": f"T{i:02d}", "name": f"Name {i} Inc."} for i in range(12)]
+    linked = [
+        {
+            "title": "T11 earnings beat estimates",
+            "url": "https://example.com/t11",
+            "source": "Reuters",
+            "published": moment,
+        }
+    ]
+    moved = build_movers(frame, pd.DataFrame(), members, [], linked)
+    assert moved["as_of"] == "2026-10-30"
+    assert [row["ticker"] for row in moved["gainers"]] == ["T11", "T10", "T09", "T08", "T07"]
+    assert [row["ticker"] for row in moved["losers"]] == ["T00", "T01", "T02", "T03", "T04"]
+    assert moved["gainers"][0]["headline"]["url"] == "https://example.com/t11"
+    assert moved["gainers"][1]["headline"] is None
     log("Pontszám önellenőrzés rendben.")
 
 
@@ -2217,11 +2259,34 @@ def norm_url(url: str) -> str:
     return text.lower().rstrip("/")
 
 
-def market_related(title: str) -> bool:
-    if MARKET_RE.search(title):
+def keyword_score(title: str) -> int:
+    score = 0
+    for pattern, weight in KEYWORD_RULES:
+        if pattern.search(title):
+            score += weight
+    if EARNINGS_RE.search(title) and MEGA_CAP_RE.search(title):
+        score += 5
+    return score
+
+
+def is_clickbait(title: str) -> bool:
+    return any(pattern.search(title) for pattern in CLICKBAIT_RE)
+
+
+def company_name(name: str) -> str:
+    text = NAME_SUFFIX_RE.sub(" ", name or "")
+    text = re.sub(r"[^A-Za-z0-9 &.-]", " ", text)
+    text = re.sub(r"\s+", " ", text).strip(" .,-")
+    return text
+
+
+def mentions_company(title: str, ticker: str, name: str) -> bool:
+    if ticker and re.search(rf"\b{re.escape(ticker)}\b", title):
         return True
-    folded = title.casefold()
-    return any(hint in folded for hint in HU_MARKET_HINTS)
+    cleaned = company_name(name)
+    if len(cleaned) < 4:
+        return False
+    return re.search(rf"\b{re.escape(cleaned)}\b", title, re.IGNORECASE) is not None
 
 
 def parse_news_datetime(raw: str | None) -> datetime | None:
@@ -2285,36 +2350,26 @@ def dedupe_news(items: list[dict]) -> list[dict]:
 
 
 def select_headlines(items: list[dict]) -> list[dict]:
-    ordered = sorted(items, key=lambda row: row["published"], reverse=True)
-    chosen: list[dict] = []
-    counts: dict[str, int] = {}
-
-    def take(pool: list[dict], cap: int, limit: int) -> None:
-        for row in pool:
-            if len(chosen) >= limit:
-                return
-            if any(existing is row for existing in chosen):
-                continue
-            source = row.get("source") or ""
-            if counts.get(source, 0) >= cap:
-                continue
-            chosen.append(row)
-            counts[source] = counts.get(source, 0) + 1
-
-    market = [row for row in ordered if row.get("market")]
-    other = [row for row in ordered if not row.get("market")]
-    take(market, NEWS_PER_SOURCE, NEWS_LIMIT)
-    if len(chosen) < NEWS_TARGET:
-        take(market, 99, NEWS_LIMIT)
-    if len(chosen) < NEWS_TARGET:
-        take(other, 2, NEWS_TARGET)
+    ranked = []
+    for row in items:
+        title = row.get("title") or ""
+        if is_clickbait(title):
+            continue
+        score = keyword_score(title)
+        if score <= 0:
+            continue
+        picked = dict(row)
+        picked["relevance"] = score
+        ranked.append(picked)
+    ranked.sort(key=lambda row: (row["relevance"], row["published"]), reverse=True)
+    chosen = ranked[:HEADLINE_LIMIT]
     chosen.sort(key=lambda row: row["published"], reverse=True)
-    return chosen[:NEWS_LIMIT]
+    return chosen
 
 
 def news_public(row: dict) -> dict:
     local = row["published"].astimezone(BUDAPEST)
-    title = re.sub(r"\s+[-–|]\s+reuters\s*$", "", row["title"], flags=re.IGNORECASE).strip()
+    title = re.sub(r"\s+[-–|]\s+(reuters|bloomberg|ap)\s*$", "", row["title"], flags=re.IGNORECASE).strip()
     return {
         "title": title,
         "source": row["source"],
@@ -2351,7 +2406,6 @@ def parse_feed_items(payload: bytes, source: str, now: datetime) -> list[dict]:
                 "url": url,
                 "source": source,
                 "published": published,
-                "market": market_related(title),
             }
         )
     return found
@@ -2359,8 +2413,9 @@ def parse_feed_items(payload: bytes, source: str, now: datetime) -> list[dict]:
 
 def empty_news() -> dict:
     return {
-        "source": "RSS: CNBC, MarketWatch, Yahoo Finance, Reuters, Portfolio.hu",
+        "source": "RSS: CNBC, MarketWatch, Bloomberg, Reuters",
         "window_hours": NEWS_WINDOW_HOURS,
+        "movers": {"gainers": [], "losers": []},
         "items": [],
         "feeds": [],
     }
@@ -2383,7 +2438,72 @@ def fresh_previous_news(previous: dict, now: datetime) -> list[dict]:
     return kept
 
 
-def build_news(session: requests.Session, now: datetime) -> dict:
+def best_headline(row: dict, headlines: list[dict]) -> dict | None:
+    matches = [
+        item
+        for item in headlines
+        if not is_clickbait(item.get("title") or "")
+        and mentions_company(item.get("title") or "", row["ticker"], row.get("name") or "")
+    ]
+    if not matches:
+        return None
+    matches.sort(key=lambda item: (keyword_score(item.get("title") or ""), item["published"]), reverse=True)
+    return news_public(matches[0])
+
+
+def build_movers(spx: pd.DataFrame | None, ndx: pd.DataFrame | None, spx_members: list[dict], ndx_members: list[dict], headlines: list[dict]) -> dict:
+    frames = [frame for frame in (spx, ndx) if frame is not None and not frame.empty]
+    if not frames:
+        raise RuntimeError("nincs összetevő árfolyam a napi elmozduláshoz")
+    combined = pd.concat(frames, axis=1)
+    combined = combined.loc[:, ~combined.columns.duplicated()]
+    names = {}
+    for member in list(spx_members or []) + list(ndx_members or []):
+        symbol = str(member.get("symbol") or "")
+        if symbol and symbol not in names:
+            names[symbol] = (member.get("name") or symbol).strip()
+    changes = []
+    for symbol in combined.columns:
+        series = combined[symbol].dropna()
+        if len(series) < 2:
+            continue
+        last = float(series.iloc[-1])
+        previous = float(series.iloc[-2])
+        if previous == 0 or pd.isna(last) or pd.isna(previous):
+            continue
+        change = (last / previous - 1.0) * 100.0
+        if abs(change) > 80:
+            continue
+        ticker = str(symbol)
+        changes.append(
+            {
+                "ticker": ticker,
+                "name": names.get(ticker, ticker),
+                "change_pct": rnd(change, 2),
+                "as_of": date_str(series.index[-1]),
+            }
+        )
+    if not changes:
+        raise RuntimeError("egy papírnak sincs napi változása")
+    as_of = max(row["as_of"] for row in changes)
+    day_rows = [row for row in changes if row["as_of"] == as_of and row["change_pct"] is not None]
+    day_rows.sort(key=lambda row: row["change_pct"], reverse=True)
+    gainers = day_rows[:MOVER_LIMIT]
+    gainer_ids = {row["ticker"] for row in gainers}
+    losers = [row for row in reversed(day_rows[-MOVER_LIMIT:]) if row["ticker"] not in gainer_ids]
+    for row in gainers + losers:
+        headline = best_headline(row, headlines)
+        row["headline"] = headline
+        row.pop("as_of", None)
+    return {
+        "as_of": as_of,
+        "universe": "S&P 500 és Nasdaq-100",
+        "gainers": gainers,
+        "losers": losers,
+    }
+
+
+def fetch_headline_pool(session: requests.Session, now: datetime) -> tuple[list[dict], list[dict]]:
     collected: list[dict] = []
     feeds = []
     for feed in NEWS_FEEDS:
@@ -2425,22 +2545,39 @@ def build_news(session: requests.Session, now: datetime) -> dict:
                     "error": message,
                 }
             )
-    chosen = select_headlines(dedupe_news(collected))
-    if not chosen:
-        failed = [feed["name"] for feed in feeds if feed["status"] != "ok"]
-        raise RuntimeError("nincs friss cím" + (f"; elbukott: {', '.join(failed)}" if failed else ""))
+    return collected, feeds
+
+
+def build_news(session: requests.Session, now: datetime, spx, ndx, spx_members: list[dict], ndx_members: list[dict]) -> dict:
+    collected, feeds = fetch_headline_pool(session, now)
+    quality = [row for row in dedupe_news(collected) if not is_clickbait(row.get("title") or "")]
+    mover_error = None
+    try:
+        movers = build_movers(spx, ndx, spx_members, ndx_members, quality)
+    except Exception as exc:
+        mover_error = str(exc).strip().splitlines()[-1][:240]
+        log(f"  napi elmozdulás hiba: {mover_error}")
+        movers = {"as_of": None, "universe": "S&P 500 és Nasdaq-100", "gainers": [], "losers": [], "error": mover_error}
     names = []
     for feed in feeds:
-        if feed["name"] not in names:
+        if feed["status"] == "ok" and feed["name"] not in names:
             names.append(feed["name"])
+    if not movers.get("gainers") and not movers.get("losers"):
+        raise RuntimeError(mover_error or "nincs napi elmozdulás")
     return {
         "status": "ok",
-        "source": "RSS: " + ", ".join(names),
-        "as_of": chosen[0]["published"].astimezone(BUDAPEST).isoformat(timespec="seconds"),
-        "window_hours": NEWS_WINDOW_HOURS,
-        "items": [news_public(row) for row in chosen],
+        "source": "Yahoo Finance záróár, S&P 500 és Nasdaq-100" + ("; hivatkozás: " + ", ".join(names) if names else ""),
+        "as_of": movers.get("as_of"),
+        "movers": movers,
         "feeds": feeds,
+        "note": "A napi szöveges összefoglaló külön, kézi fájl. Az itteni hírfolyam csak akkor kerül a papír mellé, ha a cím említi a jegyet vagy a céget.",
     }
+
+
+def summary_bytes() -> bytes | None:
+    if not SUMMARY_PATH.exists():
+        return None
+    return SUMMARY_PATH.read_bytes()
 
 
 def main() -> int:
@@ -2448,6 +2585,7 @@ def main() -> int:
     started = time.time()
     now = datetime.now(BUDAPEST)
     previous = load_previous()
+    summary_before = summary_bytes()
     session = http_session()
     log("Összetevőlisták…")
     spx_members, spx_origin = load_universe(session, "sp500")
@@ -2541,6 +2679,8 @@ def main() -> int:
     indices.append(bux_quote)
 
     log("Piaci szélesség…")
+    spx_prices = None
+    ndx_prices = None
     try:
         log(f"  S&P 500, {len(spx_members)} ticker")
         spx_prices = download_closes([row["symbol"] for row in spx_members], PRICE_PERIOD)
@@ -2673,9 +2813,9 @@ def main() -> int:
         traceback.print_exc()
         sectors = as_stale(previous.get("sectors"), str(exc), empty_sectors())
 
-    log("Napi hírek…")
+    log("A nap eseményei…")
     try:
-        news = build_news(session, now)
+        news = build_news(session, now, spx_prices, ndx_prices, spx_members, ndx_members)
     except Exception as exc:
         log(f"Hír hiba: {exc}")
         traceback.print_exc()
@@ -2715,6 +2855,8 @@ def main() -> int:
         "news": news,
     }
     write_dashboard(dashboard)
+    if summary_bytes() != summary_before:
+        raise RuntimeError("a fetch script nem írhatja a news_summary.json fájlt")
     elapsed = round(time.time() - started, 1)
     log(f"Kész {elapsed} s alatt → {DATA_PATH}")
     summarize(dashboard)
@@ -2770,7 +2912,19 @@ def summarize(dashboard: dict) -> None:
             f"hó={row.get('month_pct')} ytd={row.get('ytd_pct')} vs={row.get('week_vs_spy')} {row.get('role')}"
         )
     news = dashboard.get("news") or {}
-    log(f"Hírek {news.get('status')} {len(news.get('items') or [])} cím, forrás={news.get('source')}")
+    movers = news.get("movers") or {}
+    log(
+        f"Napi elmozdulás {news.get('status')} nap={movers.get('as_of')} "
+        f"emelkedő={len(movers.get('gainers') or [])} eső={len(movers.get('losers') or [])}"
+    )
+    for row in movers.get("gainers") or []:
+        log(f"  emelkedő {row.get('ticker')} {row.get('name')} {row.get('change_pct')}%")
+    for row in movers.get("losers") or []:
+        log(f"  eső {row.get('ticker')} {row.get('name')} {row.get('change_pct')}%")
+    for row in (movers.get("gainers") or []) + (movers.get("losers") or []):
+        link = (row.get("headline") or {}).get("title")
+        if link:
+            log(f"    hír: {link}")
     for feed in news.get("feeds") or []:
         log(f"  feed {feed.get('id')}: {feed.get('status')} {feed.get('items')} {feed.get('error') or ''}")
 
