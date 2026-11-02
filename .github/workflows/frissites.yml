@@ -1,9 +1,12 @@
 name: Adatfrissítés és közzététel
 
 on:
-  # Amerikai zárás (16:00 ET) után. 23:30 UTC télen 18:30 ET, nyáron 19:30 ET.
   schedule:
+    # Amerikai zárás (16:00 ET) után. 23:30 UTC télen 18:30, nyáron 19:30 New York-i idő.
     - cron: "30 23 * * 1-5"
+    # Európai reggel, hogy a hírek és az európai adat napközben friss legyen.
+    # 05:30 UTC télen 06:30, nyáron 07:30 Budapest.
+    - cron: "30 5 * * 1-5"
   workflow_dispatch:
 
 permissions:

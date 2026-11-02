@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Piaci áttekintő adatlekérés.
 
-Ingyenes, kulcs nélküli forrásokból tölti le az árakat és a hangulatadatokat,
-kiszámolja a piaci szélességet, a kereskedési pontszámot és a Nasdaq
-trendszűrőt, majd a web/data/dashboard.json fájlba ír.
+Ingyenes, kulcs nélküli forrásokból tölti le az árakat, a hangulatot, a szektorokat
+és a napi híreket, kiszámolja a piaci szélességet, a kereskedési pontszámot és a
+Nasdaq trendszűrőt, majd a web/data/dashboard.json fájlba ír.
 Ha egy forrás elbukik, a korábbi jó értéket megtartja és stale jelzéssel látja el.
+Egy forrás hibája nem állítja meg a többit.
 """
 
 from __future__ import annotations
@@ -18,8 +19,10 @@ import re
 import time
 import traceback
 import warnings
-from datetime import date, datetime, timedelta
+import xml.etree.ElementTree as ET
+from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal, ROUND_HALF_UP
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -51,7 +54,16 @@ SPX_WIKI = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 NDX_WIKI = "https://en.wikipedia.org/wiki/List_of_NASDAQ-100_companies"
 CNN_URL = "https://production.dataviz.cnn.io/index/fearandgreed/graphdata/2023-11-01"
 AAII_URL = "https://www.aaii.com/sentimentsurvey"
-FRED_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}"
+FRED_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}&cosd=2016-01-01"
+# A FRED élhálózata a böngészős és a hosszú egyedi User-Agentet válasz nélkül hagyja
+# (a kapcsolat megnyílik, a törzs nem érkezik meg, ezért read timeout). Egy rövid,
+# nem böngészős azonosítóval a nyilvános CSV azonnal megjön, API-kulcs nélkül.
+FRED_HEADERS = {"User-Agent": "FREDGraph/1.0", "Accept": "text/csv,text/plain,*/*"}
+TREASURY_URL = (
+    "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/"
+    "daily-treasury-rates.csv/{year}/all?type=daily_treasury_yield_curve"
+    "&field_tdr_date_value={year}&page&_format=csv"
+)
 BSE_PAGE = "https://bse.hu/pages/data-download"
 
 MONTHS_HU = [
@@ -93,6 +105,95 @@ EXTRAS = [
     {"id": "btc", "name": "Bitcoin", "ticker": "BTC-USD", "digits": 0, "unit": "USD"},
 ]
 
+# Az S&P 500 tizenegy GICS szektora, SPDR ETF-eken. A heti hozam 5 kereskedési nap.
+SECTORS = [
+    {"id": "xlk", "ticker": "XLK", "name": "Technológia", "name_en": "Technology"},
+    {"id": "xlf", "ticker": "XLF", "name": "Pénzügy", "name_en": "Financials"},
+    {"id": "xlv", "ticker": "XLV", "name": "Egészségügy", "name_en": "Health Care"},
+    {"id": "xly", "ticker": "XLY", "name": "Ciklikus fogyasztás", "name_en": "Consumer Discretionary"},
+    {"id": "xlp", "ticker": "XLP", "name": "Alapvető fogyasztás", "name_en": "Consumer Staples"},
+    {"id": "xle", "ticker": "XLE", "name": "Energia", "name_en": "Energy"},
+    {"id": "xli", "ticker": "XLI", "name": "Ipar", "name_en": "Industrials"},
+    {"id": "xlb", "ticker": "XLB", "name": "Alapanyag", "name_en": "Materials"},
+    {"id": "xlu", "ticker": "XLU", "name": "Közmű", "name_en": "Utilities"},
+    {"id": "xlre", "ticker": "XLRE", "name": "Ingatlan", "name_en": "Real Estate"},
+    {"id": "xlc", "ticker": "XLC", "name": "Kommunikáció", "name_en": "Communication Services"},
+]
+BENCHMARK_TICKER = "SPY"
+SECTOR_WEEK_SESSIONS = 5
+SECTOR_MONTH_SESSIONS = 21
+
+NEWS_WINDOW_HOURS = 36
+NEWS_LIMIT = 12
+NEWS_TARGET = 8
+NEWS_PER_SOURCE = 3
+NEWS_FEEDS = [
+    {
+        "id": "cnbc_top",
+        "name": "CNBC",
+        "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114",
+    },
+    {
+        "id": "cnbc_earnings",
+        "name": "CNBC",
+        "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=15839135",
+    },
+    {
+        "id": "cnbc_economy",
+        "name": "CNBC",
+        "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=20910258",
+    },
+    {
+        "id": "marketwatch",
+        "name": "MarketWatch",
+        "url": "https://feeds.marketwatch.com/marketwatch/topstories/",
+    },
+    {
+        "id": "yahoo",
+        "name": "Yahoo Finance",
+        "url": "https://feeds.finance.yahoo.com/rss/2.0/headline?s=%5EGSPC,%5EDJI,%5EIXIC&region=US&lang=en-US",
+    },
+    {
+        "id": "portfolio",
+        "name": "Portfolio.hu",
+        "url": "https://www.portfolio.hu/rss/all.xml",
+    },
+    {
+        # A Reuters saját RSS-e 2026-ban kulcs nélkül nem elérhető (401 / megszűnt cím).
+        # A Google News nyilvános RSS-e reuters.com-ra szűrve adja a címeket.
+        "id": "reuters",
+        "name": "Reuters",
+        "url": (
+            "https://news.google.com/rss/search?q=site:reuters.com+"
+            "(stocks+OR+markets+OR+Fed+OR+oil+OR+yields)+when:2d&hl=en-US&gl=US&ceid=US:en"
+        ),
+    },
+]
+MARKET_RE = re.compile(
+    r"\b(stocks?|markets?|s&p|nasdaq|dow|fed|federal|treasury|yields?|oil|gold|"
+    r"banks?|earnings|futures|bonds?|inflation|economy|gdp|investors?|shares|"
+    r"equit(?:y|ies)|tariffs?|rally|sell-?off|trading|recession|payrolls?|"
+    r"bitcoin|crypto|etf|ipo|wall street)\b",
+    re.IGNORECASE,
+)
+HU_MARKET_HINTS = (
+    "tőzsde",
+    "részvény",
+    "hozam",
+    "olaj",
+    "forint",
+    "mnb",
+    "kamat",
+    "inflác",
+    "befektet",
+    "arany",
+    "dollár",
+    "árfolyam",
+    "kötvény",
+    "bitcoin",
+    "euró",
+)
+
 VIX_TICKERS = {"vix": "^VIX", "vix9d": "^VIX9D", "vix3m": "^VIX3M"}
 
 YIELD_SERIES = [
@@ -115,9 +216,9 @@ LIMITS = {
 # Minden részpont 0–100. Hiányzó résznél a súlyok a többire normálódnak.
 SCORE_PARTS = (
     ("nasdaq", "Nasdaq-trend", 35),
-    ("breadth", "Szélesség", 25),
+    ("breadth", "Piaci szélesség", 25),
     ("volatility", "Volatilitás", 20),
-    ("credit", "Hitel", 10),
+    ("credit", "Hitelkockázat", 10),
     ("sentiment", "Hangulat", 10),
 )
 SCORE_META = {item[0]: item for item in SCORE_PARTS}
@@ -134,8 +235,8 @@ BREADTH_FIELDS = (
 )
 SCORE_METHOD = (
     "Trendkövető long swing környezetet mér, nem kontrariánus jelzés. "
-    "Súlyozott átlag, minden rész 0–100: Nasdaq-trend (Qullamaggie) 35%, "
-    "szélesség 25%, volatilitás 20%, hitel 10%, hangulat 10%. "
+    "Súlyozott átlag, minden rész 0–100: Nasdaq-trend 35%, "
+    "piaci szélesség 25%, volatilitás 20%, hitelkockázat 10%, hangulat 10%. "
     "Ha egy rész hiányzik, a súlyok a többire normálódnak; az extrém félelem rontja a pontot."
 )
 
@@ -196,7 +297,7 @@ def write_dashboard(payload: dict) -> None:
 def has_payload(block) -> bool:
     if not isinstance(block, dict):
         return False
-    if block.get("history"):
+    if block.get("history") or block.get("items") or block.get("sectors"):
         return True
     for key in ("value", "price", "score", "bull", "vix", "close"):
         if block.get(key) is not None:
@@ -684,18 +785,121 @@ def fetch_aaii(session: requests.Session) -> dict:
 
 
 def fetch_fred_series(session: requests.Session, series_id: str) -> pd.Series:
-    response = session.get(FRED_URL.format(series_id=series_id), timeout=40)
-    response.raise_for_status()
-    frame = pd.read_csv(io.StringIO(response.text))
-    if frame.shape[1] < 2:
-        raise RuntimeError(f"{series_id} CSV túl keskeny")
-    frame.columns = ["date", "value"]
-    frame["value"] = pd.to_numeric(frame["value"], errors="coerce")
-    frame = frame.dropna(subset=["value"])
-    if frame.empty:
-        raise RuntimeError(f"{series_id} üres")
-    frame["date"] = pd.to_datetime(frame["date"])
-    return frame.set_index("date")["value"].sort_index()
+    url = FRED_URL.format(series_id=series_id)
+    last_error: Exception | None = None
+    for attempt in range(3):
+        try:
+            response = session.get(url, headers=FRED_HEADERS, timeout=(10, 40))
+            response.raise_for_status()
+            text = response.text.lstrip("\ufeff")
+            head = text[:120].lower()
+            if "<html" in head or ("date" not in head and "observation_date" not in head):
+                raise RuntimeError(f"{series_id} nem CSV választ adott")
+            frame = pd.read_csv(io.StringIO(text))
+            if frame.shape[1] < 2:
+                raise RuntimeError(f"{series_id} CSV túl keskeny")
+            frame.columns = ["date", "value", *list(frame.columns[2:])]
+            frame = frame[["date", "value"]]
+            frame["value"] = pd.to_numeric(frame["value"], errors="coerce")
+            frame = frame.dropna(subset=["value"])
+            if frame.empty:
+                raise RuntimeError(f"{series_id} üres")
+            frame["date"] = pd.to_datetime(frame["date"])
+            return frame.set_index("date")["value"].sort_index()
+        except Exception as exc:
+            last_error = exc
+            log(f"  FRED {series_id} próba {attempt + 1} sikertelen: {exc}")
+            time.sleep(1.2 * (attempt + 1))
+    raise RuntimeError(str(last_error))
+
+
+def _treasury_column_map(frame: pd.DataFrame) -> dict[str, str]:
+    found = {}
+    for column in frame.columns:
+        label = str(column).strip().lower()
+        if label in {"3 mo", "3 month", "3 hónap"}:
+            found["m3"] = column
+        elif label in {"2 yr", "2 year", "2 év"}:
+            found["y2"] = column
+        elif label in {"10 yr", "10 year", "10 év"}:
+            found["y10"] = column
+        elif label in {"30 yr", "30 year", "30 év"}:
+            found["y30"] = column
+        elif label == "date":
+            found["date"] = column
+    return found
+
+
+def build_treasury_yields(session: requests.Session) -> dict:
+    frames = []
+    year = date.today().year
+    errors = []
+    for current_year in range(year - 5, year + 1):
+        try:
+            response = session.get(
+                TREASURY_URL.format(year=current_year),
+                headers={"User-Agent": "data-fetch", "Accept": "text/csv,*/*"},
+                timeout=(10, 30),
+            )
+            response.raise_for_status()
+            text = response.text.lstrip("\ufeff")
+            if "date" not in text[:80].lower():
+                raise RuntimeError("nem CSV")
+            frame = pd.read_csv(io.StringIO(text))
+            if frame.empty:
+                raise RuntimeError("üres")
+            frames.append(frame)
+            log(f"  Treasury {current_year}: {len(frame)} sor")
+        except Exception as exc:
+            errors.append(f"{current_year}: {exc}")
+            log(f"  Treasury {current_year} hiba: {exc}")
+    if not frames:
+        raise RuntimeError("a Treasury hozamgörbe nem elérhető" + (f" ({errors[-1]})" if errors else ""))
+    columns = _treasury_column_map(frames[0])
+    required = ("date", "m3", "y2", "y10", "y30")
+    if any(key not in columns for key in required):
+        raise RuntimeError("a Treasury CSV oszlopai nem ismerhetők fel")
+    history = []
+    for frame in frames:
+        mapped = _treasury_column_map(frame)
+        if any(key not in mapped for key in required):
+            continue
+        for _, record in frame.iterrows():
+            raw_date = record.get(mapped["date"])
+            parsed = pd.to_datetime(raw_date, errors="coerce")
+            if pd.isna(parsed):
+                continue
+            row = {"date": date_str(parsed)}
+            for key in ("m3", "y2", "y10", "y30"):
+                row[key] = rnd(record.get(mapped[key]), 2)
+            if row.get("y10") is not None and row.get("y2") is not None:
+                row["spread"] = rnd(row["y10"] - row["y2"], 2)
+            else:
+                row["spread"] = None
+            if any(row[key] is not None for key in ("m3", "y2", "y10", "y30", "spread")):
+                history.append(row)
+    history = merge_rows([], history, 0)
+    if not history:
+        raise RuntimeError("nincs Treasury hozamadat")
+    cutoff = (pd.Timestamp(history[-1]["date"]) - pd.Timedelta(days=365 * 5)).strftime("%Y-%m-%d")
+    history = [row for row in history if row["date"] >= cutoff]
+    if not history:
+        raise RuntimeError("nincs Treasury hozamadat a megtartott ablakban")
+    current = {}
+    as_of = {}
+    for key, _series_id, _label in YIELD_SERIES:
+        filled = [(row["date"], row.get(key)) for row in history if row.get(key) is not None]
+        current[key] = filled[-1][1] if filled else None
+        as_of[key] = filled[-1][0] if filled else None
+    return {
+        "status": "ok",
+        "source": "U.S. Treasury napi hozamgörbe (FRED helyett); a 10 év−2 év különbség saját számítás",
+        "as_of": as_of.get("y10") or history[-1]["date"],
+        "current": current,
+        "as_of_by_tenor": as_of,
+        "history": history,
+        "fallback": "treasury",
+    }
 
 
 def build_yields(session: requests.Session) -> dict:
@@ -983,7 +1187,7 @@ def classify_regime(close: float, ema9: float, ema20: float, sma50: float, sma20
         )
         return {"id": "half", "label": "Fél kockázat", "tone": "warn", "note": note, "reason": "below_long"}
     if above9 and above20 and above50 and above200:
-        return {"id": "full", "label": "LONG – teljes kockázat", "tone": "good", "note": None, "reason": "above_all"}
+        return {"id": "full", "label": "Teljes kockázat", "tone": "good", "note": None, "reason": "above_all"}
     if not above20:
         return {
             "id": "none",
@@ -1753,6 +1957,72 @@ def self_check() -> None:
     nasdaq_weight = next(part["effective_weight"] for part in reduced["components"] if part["id"] == "nasdaq")
     assert nasdaq_weight == 38.9
     assert abs(sum(part["effective_weight"] for part in reduced["components"] if part["available"]) - 100) < 0.11
+    assert "Qullamaggie" not in SCORE_METHOD
+    assert "qullamaggie" not in SCORE_METHOD.lower()
+    assert classify_regime(100, 90, 80, 70, 60)["label"] == "Teljes kockázat"
+
+    index = pd.bdate_range("2024-12-16", periods=40)
+    prices = pd.Series([100 + i for i in range(40)], index=index, dtype=float)
+    last = float(prices.iloc[-1])
+    assert abs(session_return(prices, 5) - (last / float(prices.iloc[-6]) - 1) * 100) < 1e-9
+    assert abs(session_return(prices, 21) - (last / float(prices.iloc[-22]) - 1) * 100) < 1e-9
+    prior = prices[prices.index < pd.Timestamp("2025-01-01")]
+    assert abs(ytd_return(prices) - (last / float(prior.iloc[-1]) - 1) * 100) < 1e-9
+    assert session_return(prices.iloc[:3], 5) is None
+    assert ytd_return(pd.Series([1.0, 2.0], index=pd.bdate_range("2025-01-02", periods=2))) is None
+
+    moment = datetime(2026, 11, 2, 12, 0, tzinfo=timezone.utc)
+    raw_news = [
+        {
+            "title": "Stocks rally on earnings",
+            "url": "https://example.com/a?utm_source=rss",
+            "source": "CNBC",
+            "published": moment - timedelta(hours=2),
+            "market": True,
+        },
+        {
+            "title": "Stocks rally on earnings!",
+            "url": "https://example.com/a",
+            "source": "Yahoo Finance",
+            "published": moment - timedelta(hours=1),
+            "market": True,
+        },
+        {
+            "title": "Oil jumps as yields fall",
+            "url": "https://example.com/b",
+            "source": "Reuters",
+            "published": moment - timedelta(hours=3),
+            "market": True,
+        },
+        {
+            "title": "Celebrity lists a house",
+            "url": "https://example.com/c",
+            "source": "MarketWatch",
+            "published": moment - timedelta(hours=1),
+            "market": False,
+        },
+        {
+            "title": "Fed holds rates",
+            "url": "https://example.com/d",
+            "source": "CNBC",
+            "published": moment - timedelta(hours=40),
+            "market": True,
+        },
+    ]
+    fresh = [row for row in raw_news if moment - row["published"] <= timedelta(hours=NEWS_WINDOW_HOURS)]
+    deduped = dedupe_news(fresh)
+    assert len(deduped) == 3
+    assert deduped[0]["url"].rstrip("/").endswith("/a")
+    picked = select_headlines(deduped)
+    titles = [row["title"] for row in picked]
+    assert any(title.startswith("Stocks rally on earnings") for title in titles)
+    assert "Oil jumps as yields fall" in titles
+    assert "Fed holds rates" not in titles
+    rally_at = next(index for index, title in enumerate(titles) if title.startswith("Stocks rally on earnings"))
+    assert rally_at < titles.index("Celebrity lists a house")
+    assert market_related("A forint gyengült a dollárral szemben")
+    assert market_related("Nasdaq futures rise before the Fed")
+    assert not market_related("Celebrity lists a house")
     log("Pontszám önellenőrzés rendben.")
 
 
@@ -1776,6 +2046,403 @@ def finish_instrument(meta: dict, series_map: dict[str, pd.Series], source: str,
     return attach_history(quote, previous_items, LIMITS["daily"])
 
 
+def session_return(series: pd.Series, sessions: int):
+    clean = series.dropna().sort_index()
+    clean = clean[~clean.index.duplicated(keep="last")]
+    if len(clean) <= sessions:
+        return None
+    last = float(clean.iloc[-1])
+    base = float(clean.iloc[-1 - sessions])
+    if base == 0 or pd.isna(last) or pd.isna(base):
+        return None
+    return (last / base - 1.0) * 100.0
+
+
+def ytd_return(series: pd.Series):
+    clean = series.dropna().sort_index()
+    clean = clean[~clean.index.duplicated(keep="last")]
+    if clean.empty:
+        return None
+    year_start = pd.Timestamp(year=int(clean.index[-1].year), month=1, day=1)
+    prior = clean[clean.index < year_start]
+    if prior.empty:
+        return None
+    base = float(prior.iloc[-1])
+    last = float(clean.iloc[-1])
+    if base == 0 or pd.isna(base) or pd.isna(last):
+        return None
+    return (last / base - 1.0) * 100.0
+
+
+def _spread(left, right):
+    if left is None or right is None:
+        return None
+    return left - right
+
+
+def empty_sectors() -> dict:
+    return {
+        "source": "Yahoo Finance (XLK, XLF, XLV, XLY, XLP, XLE, XLI, XLB, XLU, XLRE, XLC, SPY)",
+        "as_of": None,
+        "benchmark": None,
+        "sectors": [],
+        "leaders": [],
+        "laggards": [],
+    }
+
+
+def build_sectors(series_map: dict[str, pd.Series]) -> dict:
+    def pack_benchmark(series: pd.Series) -> dict:
+        week = session_return(series, SECTOR_WEEK_SESSIONS)
+        month = session_return(series, SECTOR_MONTH_SESSIONS)
+        ytd = ytd_return(series)
+        clean = series.dropna()
+        return {
+            "ticker": BENCHMARK_TICKER,
+            "name": "S&P 500 ETF",
+            "as_of": date_str(clean.index[-1]) if len(clean) else None,
+            "price": rnd(float(clean.iloc[-1]), 2) if len(clean) else None,
+            "week_pct": rnd(week, 2),
+            "month_pct": rnd(month, 2),
+            "ytd_pct": rnd(ytd, 2),
+        }
+
+    spy = series_map.get(BENCHMARK_TICKER)
+    benchmark = pack_benchmark(spy) if spy is not None and spy.dropna().shape[0] >= 2 else None
+    rows = []
+    for meta in SECTORS:
+        series = series_map.get(meta["ticker"])
+        if series is None or series.dropna().shape[0] < 2:
+            rows.append(
+                {
+                    "id": meta["id"],
+                    "ticker": meta["ticker"],
+                    "name": meta["name"],
+                    "name_en": meta["name_en"],
+                    "as_of": None,
+                    "price": None,
+                    "week_pct": None,
+                    "month_pct": None,
+                    "ytd_pct": None,
+                    "week_vs_spy": None,
+                    "month_vs_spy": None,
+                    "ytd_vs_spy": None,
+                    "role": None,
+                }
+            )
+            continue
+        clean = series.dropna()
+        week = rnd(session_return(series, SECTOR_WEEK_SESSIONS), 2)
+        month = rnd(session_return(series, SECTOR_MONTH_SESSIONS), 2)
+        ytd = rnd(ytd_return(series), 2)
+        spy_week = None if benchmark is None else benchmark["week_pct"]
+        spy_month = None if benchmark is None else benchmark["month_pct"]
+        spy_ytd = None if benchmark is None else benchmark["ytd_pct"]
+        rows.append(
+            {
+                "id": meta["id"],
+                "ticker": meta["ticker"],
+                "name": meta["name"],
+                "name_en": meta["name_en"],
+                "as_of": date_str(clean.index[-1]),
+                "price": rnd(float(clean.iloc[-1]), 2),
+                "week_pct": week,
+                "month_pct": month,
+                "ytd_pct": ytd,
+                "week_vs_spy": rnd(_spread(week, spy_week), 2),
+                "month_vs_spy": rnd(_spread(month, spy_month), 2),
+                "ytd_vs_spy": rnd(_spread(ytd, spy_ytd), 2),
+                "role": None,
+            }
+        )
+    ranked = [row for row in rows if row["week_pct"] is not None]
+    ranked.sort(key=lambda row: row["week_pct"], reverse=True)
+    count = len(ranked)
+    if count >= 6:
+        leader_n, lag_n = 3, 3
+    elif count >= 2:
+        leader_n, lag_n = 1, 1
+    else:
+        leader_n, lag_n = 0, 0
+    leader_ids = {row["id"] for row in ranked[:leader_n]}
+    lag_ids = {row["id"] for row in ranked[-lag_n:]} - leader_ids
+    for row in rows:
+        if row["id"] in leader_ids:
+            row["role"] = "leader"
+        elif row["id"] in lag_ids:
+            row["role"] = "laggard"
+    rows.sort(key=lambda row: (row["week_pct"] is None, -(row["week_pct"] or 0)))
+    dated = [row["as_of"] for row in rows if row.get("as_of")]
+    if not ranked:
+        raise RuntimeError("egy szektor ETF-nek sincs heti hozama")
+    leaders = [
+        {"id": row["id"], "ticker": row["ticker"], "name": row["name"], "week_pct": row["week_pct"]}
+        for row in rows
+        if row["role"] == "leader"
+    ]
+    laggards = [
+        {"id": row["id"], "ticker": row["ticker"], "name": row["name"], "week_pct": row["week_pct"]}
+        for row in rows
+        if row["role"] == "laggard"
+    ]
+    return {
+        "status": "ok",
+        "source": "Yahoo Finance, osztalékkal igazított záróár (SPDR szektor ETF-ek és SPY)",
+        "as_of": max(dated) if dated else None,
+        "week_sessions": SECTOR_WEEK_SESSIONS,
+        "month_sessions": SECTOR_MONTH_SESSIONS,
+        "benchmark": benchmark,
+        "sectors": rows,
+        "leaders": leaders,
+        "laggards": laggards,
+        "note": (
+            "Az 1 hét az utolsó 5 kereskedési nap hozama, az 1 hónap 21 kereskedési nap. "
+            "A YTD az idei év első kereskedési napja előtti záróártól mért hozam. "
+            "A SPY-hez képesti szám a szektor hozama mínusz az S&P 500 ETF hozama ugyanazon az időtávon."
+        ),
+    }
+
+
+def norm_title(title: str) -> str:
+    text = re.sub(r"\s+[-–|]\s+reuters\s*$", "", title.strip(), flags=re.IGNORECASE)
+    text = text.casefold()
+    text = re.sub(r"[^\w\s]", "", text, flags=re.UNICODE)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+def norm_url(url: str) -> str:
+    text = url.split("#", 1)[0]
+    text = re.sub(r"\?.*$", "", text)
+    return text.lower().rstrip("/")
+
+
+def market_related(title: str) -> bool:
+    if MARKET_RE.search(title):
+        return True
+    folded = title.casefold()
+    return any(hint in folded for hint in HU_MARKET_HINTS)
+
+
+def parse_news_datetime(raw: str | None) -> datetime | None:
+    if not raw:
+        return None
+    text = raw.strip()
+    parsed = None
+    try:
+        parsed = parsedate_to_datetime(text)
+    except (TypeError, ValueError, IndexError):
+        parsed = None
+    if parsed is None:
+        try:
+            parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def xml_local(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1]
+
+
+def xml_text(elem: ET.Element, name: str) -> str:
+    for child in list(elem):
+        if xml_local(child.tag) == name and child.text and child.text.strip():
+            return " ".join(child.text.split())
+    return ""
+
+
+def xml_link(elem: ET.Element) -> str:
+    for child in list(elem):
+        if xml_local(child.tag) != "link":
+            continue
+        if child.text and child.text.strip():
+            return child.text.strip()
+        href = (child.attrib.get("href") or "").strip()
+        if href:
+            return href
+    return ""
+
+
+def dedupe_news(items: list[dict]) -> list[dict]:
+    ordered = sorted(items, key=lambda row: row["published"], reverse=True)
+    seen_titles: set[str] = set()
+    seen_urls: set[str] = set()
+    kept = []
+    for row in ordered:
+        title = norm_title(row.get("title") or "")
+        url = norm_url(row.get("url") or "")
+        if not title or not url:
+            continue
+        if title in seen_titles or url in seen_urls:
+            continue
+        seen_titles.add(title)
+        seen_urls.add(url)
+        kept.append(row)
+    return kept
+
+
+def select_headlines(items: list[dict]) -> list[dict]:
+    ordered = sorted(items, key=lambda row: row["published"], reverse=True)
+    chosen: list[dict] = []
+    counts: dict[str, int] = {}
+
+    def take(pool: list[dict], cap: int, limit: int) -> None:
+        for row in pool:
+            if len(chosen) >= limit:
+                return
+            if any(existing is row for existing in chosen):
+                continue
+            source = row.get("source") or ""
+            if counts.get(source, 0) >= cap:
+                continue
+            chosen.append(row)
+            counts[source] = counts.get(source, 0) + 1
+
+    market = [row for row in ordered if row.get("market")]
+    other = [row for row in ordered if not row.get("market")]
+    take(market, NEWS_PER_SOURCE, NEWS_LIMIT)
+    if len(chosen) < NEWS_TARGET:
+        take(market, 99, NEWS_LIMIT)
+    if len(chosen) < NEWS_TARGET:
+        take(other, 2, NEWS_TARGET)
+    chosen.sort(key=lambda row: row["published"], reverse=True)
+    return chosen[:NEWS_LIMIT]
+
+
+def news_public(row: dict) -> dict:
+    local = row["published"].astimezone(BUDAPEST)
+    title = re.sub(r"\s+[-–|]\s+reuters\s*$", "", row["title"], flags=re.IGNORECASE).strip()
+    return {
+        "title": title,
+        "source": row["source"],
+        "url": row["url"],
+        "published_at": local.isoformat(timespec="seconds"),
+        "published_budapest": f"{local.year}. {MONTHS_HU[local.month - 1]} {local.day}., {local:%H:%M}",
+    }
+
+
+def parse_feed_items(payload: bytes, source: str, now: datetime) -> list[dict]:
+    root = ET.fromstring(payload)
+    found = []
+    for elem in root.iter():
+        if xml_local(elem.tag) not in {"item", "entry"}:
+            continue
+        title = xml_text(elem, "title")
+        url = xml_link(elem)
+        published = (
+            parse_news_datetime(xml_text(elem, "pubDate"))
+            or parse_news_datetime(xml_text(elem, "published"))
+            or parse_news_datetime(xml_text(elem, "updated"))
+            or parse_news_datetime(xml_text(elem, "date"))
+        )
+        if not title or not url or published is None:
+            continue
+        age = now.astimezone(timezone.utc) - published
+        if age < timedelta(0) and age > timedelta(hours=-3):
+            age = timedelta(0)
+        if age < timedelta(0) or age > timedelta(hours=NEWS_WINDOW_HOURS):
+            continue
+        found.append(
+            {
+                "title": title,
+                "url": url,
+                "source": source,
+                "published": published,
+                "market": market_related(title),
+            }
+        )
+    return found
+
+
+def empty_news() -> dict:
+    return {
+        "source": "RSS: CNBC, MarketWatch, Yahoo Finance, Reuters, Portfolio.hu",
+        "window_hours": NEWS_WINDOW_HOURS,
+        "items": [],
+        "feeds": [],
+    }
+
+
+def fresh_previous_news(previous: dict, now: datetime) -> list[dict]:
+    block = previous.get("news") if isinstance(previous, dict) else None
+    if not isinstance(block, dict):
+        return []
+    kept = []
+    for row in block.get("items") or []:
+        if not isinstance(row, dict):
+            continue
+        published = parse_news_datetime(row.get("published_at"))
+        if published is None:
+            continue
+        age = now.astimezone(timezone.utc) - published
+        if timedelta(0) <= age <= timedelta(hours=NEWS_WINDOW_HOURS):
+            kept.append(dict(row))
+    return kept
+
+
+def build_news(session: requests.Session, now: datetime) -> dict:
+    collected: list[dict] = []
+    feeds = []
+    for feed in NEWS_FEEDS:
+        try:
+            response = session.get(
+                feed["url"],
+                headers={
+                    "User-Agent": BROWSER_UA,
+                    "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
+                },
+                timeout=(8, 20),
+            )
+            response.raise_for_status()
+            sample = response.text.lstrip()[:300].lower()
+            if not (sample.startswith("<?xml") or "<rss" in sample or "<feed" in sample):
+                raise RuntimeError("a válasz nem hírfolyam")
+            parsed = parse_feed_items(response.content, feed["name"], now)
+            collected.extend(parsed)
+            feeds.append(
+                {
+                    "id": feed["id"],
+                    "name": feed["name"],
+                    "status": "ok",
+                    "items": len(parsed),
+                    "error": None,
+                    "note": "Google News, reuters.com szűrő" if feed["id"] == "reuters" else None,
+                }
+            )
+            log(f"  hír {feed['name']} ({feed['id']}): {len(parsed)} friss cím")
+        except Exception as exc:
+            message = str(exc).strip().splitlines()[-1][:240]
+            log(f"  hír {feed['name']} ({feed['id']}) hiba: {message}")
+            feeds.append(
+                {
+                    "id": feed["id"],
+                    "name": feed["name"],
+                    "status": "unavailable",
+                    "items": 0,
+                    "error": message,
+                }
+            )
+    chosen = select_headlines(dedupe_news(collected))
+    if not chosen:
+        failed = [feed["name"] for feed in feeds if feed["status"] != "ok"]
+        raise RuntimeError("nincs friss cím" + (f"; elbukott: {', '.join(failed)}" if failed else ""))
+    names = []
+    for feed in feeds:
+        if feed["name"] not in names:
+            names.append(feed["name"])
+    return {
+        "status": "ok",
+        "source": "RSS: " + ", ".join(names),
+        "as_of": chosen[0]["published"].astimezone(BUDAPEST).isoformat(timespec="seconds"),
+        "window_hours": NEWS_WINDOW_HOURS,
+        "items": [news_public(row) for row in chosen],
+        "feeds": feeds,
+    }
+
+
 def main() -> int:
     self_check()
     started = time.time()
@@ -1786,7 +2453,12 @@ def main() -> int:
     spx_members, spx_origin = load_universe(session, "sp500")
     ndx_members, ndx_origin = load_universe(session, "nasdaq100")
 
-    market_tickers = [item["ticker"] for item in INDICES + EXTRAS] + list(VIX_TICKERS.values())
+    market_tickers = (
+        [item["ticker"] for item in INDICES + EXTRAS]
+        + list(VIX_TICKERS.values())
+        + [item["ticker"] for item in SECTORS]
+        + [BENCHMARK_TICKER]
+    )
     log(f"Indexek, VIX és egyéb piacok ({len(market_tickers)} ticker)…")
     try:
         market = download_closes(market_tickers, PRICE_PERIOD)
@@ -1949,9 +2621,22 @@ def main() -> int:
         yields = build_yields(session)
         yields["history"] = merge_rows((previous.get("yields") or {}).get("history"), yields["history"], LIMITS["yields"])
     except Exception as exc:
-        log(f"Hozam hiba: {exc}")
+        log(f"Hozam hiba, Treasury tartalék: {exc}")
         traceback.print_exc()
-        yields = as_stale(previous.get("yields"), str(exc), {"current": {}, "history": [], "source": "FRED"})
+        try:
+            yields = build_treasury_yields(session)
+            yields["history"] = merge_rows(
+                (previous.get("yields") or {}).get("history"), yields["history"], LIMITS["yields"]
+            )
+            yields["fred_error"] = str(exc).strip().splitlines()[-1][:300]
+        except Exception as treasury_exc:
+            log(f"Treasury hozam hiba: {treasury_exc}")
+            traceback.print_exc()
+            yields = as_stale(
+                previous.get("yields"),
+                f"FRED: {exc}; Treasury: {treasury_exc}",
+                {"current": {}, "history": [], "source": "FRED"},
+            )
     try:
         hy_spread = build_hy_spread(session)
         hy_spread["history"] = merge_rows(
@@ -1980,6 +2665,28 @@ def main() -> int:
         "put_call": cnn["put_call"],
         "hy_spread": hy_spread,
     }
+    log("Szektorok…")
+    try:
+        sectors = build_sectors(series_map)
+    except Exception as exc:
+        log(f"Szektor hiba: {exc}")
+        traceback.print_exc()
+        sectors = as_stale(previous.get("sectors"), str(exc), empty_sectors())
+
+    log("Napi hírek…")
+    try:
+        news = build_news(session, now)
+    except Exception as exc:
+        log(f"Hír hiba: {exc}")
+        traceback.print_exc()
+        fresh_items = fresh_previous_news(previous, now)
+        if fresh_items:
+            news = as_stale(previous.get("news"), str(exc), empty_news())
+            news["items"] = fresh_items
+            news["window_hours"] = NEWS_WINDOW_HOURS
+        else:
+            news = as_stale(None, str(exc), empty_news())
+
     log("Kereskedési pontszám és Nasdaq trendszűrő…")
     try:
         nasdaq_trend, trading_score = build_market_regime(indices, breadth, sentiment)
@@ -2004,6 +2711,8 @@ def main() -> int:
         "indices": indices,
         "yields": yields,
         "extras": extras,
+        "sectors": sectors,
+        "news": news,
     }
     write_dashboard(dashboard)
     elapsed = round(time.time() - started, 1)
@@ -2049,6 +2758,21 @@ def summarize(dashboard: dict) -> None:
         )
     yields = dashboard["yields"]
     log(f"Hozamok {yields.get('status')} {yields.get('current')} pontok={len(yields.get('history') or [])}")
+    sectors = dashboard.get("sectors") or {}
+    log(
+        f"Szektorok {sectors.get('status')} nap={sectors.get('as_of')} "
+        f"vezető={[row.get('ticker') for row in sectors.get('leaders') or []]} "
+        f"lemaradó={[row.get('ticker') for row in sectors.get('laggards') or []]}"
+    )
+    for row in sectors.get("sectors") or []:
+        log(
+            f"  {row.get('ticker')} {row.get('name')}: hét={row.get('week_pct')} "
+            f"hó={row.get('month_pct')} ytd={row.get('ytd_pct')} vs={row.get('week_vs_spy')} {row.get('role')}"
+        )
+    news = dashboard.get("news") or {}
+    log(f"Hírek {news.get('status')} {len(news.get('items') or [])} cím, forrás={news.get('source')}")
+    for feed in news.get("feeds") or []:
+        log(f"  feed {feed.get('id')}: {feed.get('status')} {feed.get('items')} {feed.get('error') or ''}")
 
 
 if __name__ == "__main__":
