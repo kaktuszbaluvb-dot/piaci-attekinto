@@ -1,38 +1,46 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="hu" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f5f7">
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <meta name="asset-version" content="">
   <script>
     (function () {
       try {
         var stored = localStorage.getItem("piaci-theme");
-        var theme = stored === "light" || stored === "dark"
-          ? stored
-          : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        var theme = stored === "dark" ? "dark" : "light";
         var root = document.documentElement;
         root.setAttribute("data-theme", theme);
         root.style.colorScheme = theme;
         var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute("content", theme === "dark" ? "#09090b" : "#f5f5f7");
+        if (meta) meta.setAttribute("content", theme === "dark" ? "#0F1314" : "#f5f5f7");
       } catch (e) {}
     })();
   </script>
-  <title>Piaci áttekintő</title>
-  <meta name="description" content="Kereskedési pontszám, Nasdaq trendszűrő, szélesség, hangulat, kamatok, szektorok és napi piaci hírek. Ingyenes, kulcs nélküli adatokból.">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <title>Piaci áttekintő · Stocksharksacademy</title>
+  <meta name="description" content="Kereskedési pontszám, Nasdaq trendszűrő, szélesség, hangulat, kamatok, szektorok és a nap eseményei. Ingyenes, kulcs nélküli adatokból.">
+  <meta property="og:title" content="Piaci áttekintő · Stocksharksacademy">
+  <meta property="og:description" content="Kereskedési pontszám, Nasdaq trendszűrő, szélesség, hangulat, kamatok, szektorok és a nap eseményei.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="hu_HU">
+  <meta property="og:image" content="https://kaktuszbaluvb-dot.github.io/piaci-attekinto/assets/brand/og.png">
+  <link rel="icon" href="assets/brand/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="assets/brand/favicon-64.png" type="image/png" sizes="64x64">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <header class="top">
     <div class="top-inner">
       <a class="brand" href="#pontszam">
-        <svg class="mark" viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="1.25" y="1.25" width="21.5" height="21.5" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
-          <path d="M5.5 16.2l3.7-4.4 2.9 2.2L18.5 7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-        <span class="brand-name">Piaci áttekintő</span>
+        <img class="logo logo-light" src="assets/brand/logo-light.webp" srcset="assets/brand/logo-light.webp 1x, assets/brand/logo-light@2x.webp 2x" width="24" height="36" alt="">
+        <img class="logo logo-dark" src="assets/brand/logo-dark.webp" srcset="assets/brand/logo-dark.webp 1x, assets/brand/logo-dark@2x.webp 2x" width="24" height="36" alt="">
+        <span class="brand-text">
+          <span class="brand-kicker">Stocksharksacademy</span>
+          <span class="brand-name">Piaci áttekintő</span>
+        </span>
       </a>
       <nav class="nav" aria-label="Oldalrészek">
         <a href="#pontszam">Pontszám</a>

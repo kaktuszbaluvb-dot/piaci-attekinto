@@ -132,6 +132,8 @@ A munkafolyamat fájljának a `main` ágon kell lennie, különben az ütemezés
 5. Az oldal címe: `https://<felhasználónév>.github.io/piaci-attekinto/`  
    Ennek a repónak várhatóan: <https://kaktuszbaluvb-dot.github.io/piaci-attekinto/>
 
+A közzététel a css, js és vendor fájlok címéhez egy rövid commit-azonosítót ír (`?v=`), és a JSON-t a böngésző nem tárolja. Így egy új felület nem keveredik a régi, gyorsítótárazott stílussal.
+
 Ezután a munkafolyamat hétfőtől péntekig kétszer fut: 23:30 UTC-kor (amerikai zárás után; télen 18:30, nyáron 19:30 New York-i idő) és 05:30 UTC-kor (európai reggel; télen 06:30, nyáron 07:30 Budapest). Kézzel is indítható. A `web/data/news_summary.json` módosítása a `main` ágon szintén elindítja, így a reggeli összefoglaló kikerül az oldalra. A futás a saját adatcommitja előtt `rebase`-eli magát a távoli ágra, és csak a `cache/` mappát meg a `web/data/dashboard.json` fájlt commitolja, a kézi összefoglalót nem. A `github-actions` bot push-a nem indít új kört. Egyidejű futások ugyanabba a sorba állnak. Amerikai ünnepen is elindul, de ilyenkor a piaci dátum az előző kereskedési nap marad. Egy forrás hibája nem állítja meg a többit, és nem teszi sikertelenné a közzétételt. Az „Utolsó frissítés” mindig Európa/Budapest időzónában látszik, a „piaci nap” pedig az utolsó S&P 500 zárás napja.
 
 ## Helyi megtekintés és kézi frissítés

@@ -70,6 +70,15 @@ jobs:
             git push origin "HEAD:${{ github.ref_name }}"
           fi
 
+      - name: Gyorsítótár-törés
+        run: |
+          VERSION="${GITHUB_SHA:0:7}"
+          if [ -z "$VERSION" ]; then
+            VERSION="$(date -u +%Y%m%d%H%M%S)"
+          fi
+          export VERSION
+          python3 scripts/stamp_assets.py
+
       - name: Oldal csomagolása
         uses: actions/upload-pages-artifact@v3
         with:
