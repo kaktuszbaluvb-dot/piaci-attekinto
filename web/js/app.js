@@ -431,7 +431,7 @@ function syncThemeControls() {
     button.setAttribute("title", label);
   }
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute("content", theme === "dark" ? "#09090b" : "#f5f5f7");
+  if (meta) meta.setAttribute("content", theme === "dark" ? "#0F1314" : "#f5f5f7");
 }
 
 function setTheme(theme) {

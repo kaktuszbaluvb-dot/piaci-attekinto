@@ -76,13 +76,8 @@ jobs:
           if [ -z "$VERSION" ]; then
             VERSION="$(date -u +%Y%m%d%H%M%S)"
           fi
-          sed -i \
-            -e "s|href=\"css/styles.css\"|href=\"css/styles.css?v=${VERSION}\"|" \
-            -e "s|src=\"js/app.js\"|src=\"js/app.js?v=${VERSION}\"|" \
-            -e "s|src=\"vendor/chart.umd.min.js\"|src=\"vendor/chart.umd.min.js?v=${VERSION}\"|" \
-            -e "s|href=\"favicon.svg\"|href=\"favicon.svg?v=${VERSION}\"|" \
-            -e "s|name=\"asset-version\" content=\"\"|name=\"asset-version\" content=\"${VERSION}\"|" \
-            web/index.html
+          export VERSION
+          python3 scripts/stamp_assets.py
 
       - name: Oldal csomagolása
         uses: actions/upload-pages-artifact@v3
