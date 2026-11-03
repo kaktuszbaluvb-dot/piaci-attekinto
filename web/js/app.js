@@ -461,34 +461,87 @@ function sparkOptions() {
   });
 }
 
-function scoreSpark(history, tone) {
+function scoreBand(value) {
+  if (value < 40) return "bad";
+  if (value < 60) return "warn";
+  if (value < 80) return "good";
+  return "strong";
+}
+
+function scoreSpark(history) {
   const rows = (history || []).filter((row) => row.score !== null && row.score !== undefined);
   if (rows.length < 2) return "";
   const values = rows.map((row) => Number(row.score));
-  const width = 320;
-  const height = 72;
-  const pad = 6;
+  const width = 360;
+  const height = 124;
+  const padL = 28;
+  const padR = 8;
+  const padT = 12;
+  const padB = 12;
+  const plotW = width - padL - padR;
+  const plotH = height - padT - padB;
+  const yOf = (value) => padT + (1 - Math.max(0, Math.min(100, value)) / 100) * plotH;
+  const xOf = (index) => padL + (index / (values.length - 1)) * plotW;
+  const points = values.map((value, index) => ({ x: xOf(index), y: yOf(value), v: value }));
+  const pieces = [];
+  for (let index = 0; index < points.length - 1; index += 1) {
+    const start = points[index];
+    const end = points[index + 1];
+    const cuts = [40, 60, 80]
+      .filter((level) => (level - start.v) * (level - end.v) < 0)
+      .sort((left, right) => Math.abs(left - start.v) - Math.abs(right - start.v));
+    const nodes = [start];
+    const delta = end.v - start.v;
+    cuts.forEach((level) => {
+      const ratio = (level - start.v) / delta;
+      nodes.push({ x: start.x + ratio * (end.x - start.x), y: yOf(level), v: level });
+    });
+    nodes.push(end);
+    for (let node = 0; node < nodes.length - 1; node += 1) {
+      const left = nodes[node];
+      const right = nodes[node + 1];
+      pieces.push({ left, right, band: scoreBand((left.v + right.v) / 2) });
+    }
+  }
+  const baseline = yOf(0);
+  const areas = pieces.map((piece) => {
+    const path = `M${piece.left.x.toFixed(1)} ${piece.left.y.toFixed(1)} L${piece.right.x.toFixed(1)} ${piece.right.y.toFixed(1)} L${piece.right.x.toFixed(1)} ${baseline.toFixed(1)} L${piece.left.x.toFixed(1)} ${baseline.toFixed(1)} Z`;
+    return `<path class="spark-area band-${piece.band}" d="${path}"></path>`;
+  }).join("");
+  const line = points.map((point, index) => `${index ? "L" : "M"}${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ");
+  const last = points[points.length - 1];
+  const guides = [40, 60, 80].map((level) => {
+    const y = yOf(level).toFixed(1);
+    return `<line class="spark-guide" x1="${padL}" y1="${y}" x2="${width - padR}" y2="${y}"></line>`;
+  }).join("");
+  const labels = [0, 40, 60, 100].map((level) => {
+    return `<text class="spark-tick num" x="2" y="${yOf(level).toFixed(1)}">${level}</text>`;
+  }).join("");
+  const stops = [
+    ["0%", "strong"],
+    ["20%", "strong"],
+    ["20%", "good"],
+    ["40%", "good"],
+    ["40%", "warn"],
+    ["60%", "warn"],
+    ["60%", "bad"],
+    ["100%", "bad"],
+  ].map(([offset, band]) => `<stop offset="${offset}" style="stop-color:var(--spark-${band})"/>`).join("");
   const min = Math.min(...values);
   const max = Math.max(...values);
-  const span = Math.max(8, max - min);
-  const low = Math.max(0, min - span * 0.18);
-  const high = Math.min(100, max + span * 0.18);
-  const range = Math.max(1, high - low);
-  const coords = values.map((value, index) => {
-    const x = pad + (index / (values.length - 1)) * (width - pad * 2);
-    const y = pad + (1 - (value - low) / range) * (height - pad * 2);
-    return [x, y];
-  });
-  const line = coords.map(([x, y], index) => `${index ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
-  const last = coords[coords.length - 1];
-  const first = coords[0];
-  const area = `${line} L${last[0].toFixed(1)} ${height - pad} L${first[0].toFixed(1)} ${height - pad} Z`;
   return `
     <div class="spark-block">
-      <svg class="score-spark tone-${esc(tone)}" viewBox="0 0 ${width} ${height}" role="img" aria-label="A kereskedési pontszám az utolsó ${rows.length} kereskedési napon ${fmt(min, 0)} és ${fmt(max, 0)} között mozgott">
-        <path class="spark-area" d="${area}"></path>
-        <path class="spark-line" d="${line}"></path>
-        <circle class="spark-dot" cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="2.5"></circle>
+      <svg class="score-spark" viewBox="0 0 ${width} ${height}" role="img" aria-label="A kereskedési pontszám az utolsó ${rows.length} kereskedési napon, 0-tól 100-ig. A vonal színe a sávot követi: 39-ig piros, 40–59 borostyán, 60–79 zöld, 80-tól sötétzöld. A tartomány ${fmt(min, 0)}–${fmt(max, 0)}.">
+        <defs>
+          <linearGradient id="score-spark-band" gradientUnits="userSpaceOnUse" x1="0" y1="${yOf(100)}" x2="0" y2="${yOf(0)}">
+            ${stops}
+          </linearGradient>
+        </defs>
+        ${areas}
+        ${guides}
+        <path class="spark-line" stroke="url(#score-spark-band)" d="${line}"></path>
+        <circle class="spark-dot band-${scoreBand(last.v)}" cx="${last.x.toFixed(1)}" cy="${last.y.toFixed(1)}" r="2.6"></circle>
+        ${labels}
       </svg>
       <p class="spark-caption">Utolsó ${rows.length} kereskedési nap · ${formatDay(rows[0].date)} – ${formatDay(rows[rows.length - 1].date)} · ${fmt(min, 0)}–${fmt(max, 0)}</p>
     </div>`;
@@ -673,7 +726,7 @@ function renderTradingScore(block, breadth, sentiment) {
               <em class="band-mark" style="left:${Math.max(0, Math.min(100, Number(block.score)))}%"></em>
             </div>
             ${bandLabels()}
-            ${scoreSpark(block.history, tone)}
+            ${scoreSpark(block.history)}
             ${overboughtNote(breadth, sentiment, block)}
           </div>
           <div class="score-side">
