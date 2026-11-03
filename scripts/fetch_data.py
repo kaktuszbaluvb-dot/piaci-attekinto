@@ -249,7 +249,8 @@ SCORE_METHOD = (
     "Trendkövető long swing környezetet mér, nem kontrariánus jelzés. "
     "Súlyozott átlag, minden rész 0–100: Nasdaq-trend 35%, "
     "piaci szélesség 25%, volatilitás 20%, hitelkockázat 10%, hangulat 10%. "
-    "Ha egy rész hiányzik, a súlyok a többire normálódnak; az extrém félelem rontja a pontot."
+    "Ha egy rész hiányzik, a súlyok a többire normálódnak. "
+    "A kész végösszeget a Nasdaq záróára az 50 napos átlaghoz és a 9/20 napos átlagokhoz képest keretezheti."
 )
 
 
@@ -1222,6 +1223,44 @@ def classify_regime(close: float, ema9: float, ema20: float, sma50: float, sma20
     return {"id": "half", "label": "Fél kockázat", "tone": "warn", "note": note, "reason": "touch_long"}
 
 
+def score_gate(close, ema9, ema20, sma50) -> dict:
+    """A kész végösszeg kerete a Nasdaq záróár és a 9/20/50 átlagok szerint."""
+    if close is None or ema9 is None or ema20 is None or sma50 is None:
+        return {"applied": False, "cap": None, "floor": None}
+    close, ema9, ema20, sma50 = (float(close), float(ema9), float(ema20), float(sma50))
+    cap = None
+    floor = None
+    if close < sma50:
+        cap = 39
+    elif close >= ema20 and close < ema9:
+        cap = 59
+    elif close < ema20:
+        cap = 59
+        if close >= ema9:
+            floor = 40
+    else:
+        floor = 40
+    return {"applied": cap is not None or floor is not None, "cap": cap, "floor": floor}
+
+
+def apply_score_gate(exact: float, gate: dict) -> float:
+    value = float(exact)
+    if gate.get("floor") is not None:
+        value = max(value, float(gate["floor"]))
+    if gate.get("cap") is not None:
+        value = min(value, float(gate["cap"]))
+    return value
+
+
+def sentiment_points(fg: float) -> float:
+    base = 30.0 + 0.5 * float(fg)
+    if fg < 10:
+        base += 2.0 * (10.0 - float(fg))
+    elif fg > 80:
+        base -= 2.0 * (float(fg) - 80.0)
+    return max(0.0, min(100.0, base))
+
+
 def nasdaq_points(regime_id: str, fresh: bool) -> float:
     if regime_id == "full":
         return 100.0
@@ -1308,9 +1347,9 @@ def breadth_part(snap: dict) -> dict:
             reason = "Nincs használható szélesség (S&P 500 és Nasdaq-100, 50 és 200 napos arány)."
         return {"id": "breadth", "available": False, "score": None, "reason": reason, "detail": reason, "inputs": {}}
     average = publish(sum(present.values()) / len(present), 1)
-    score = publish(lerp_score(average, 20, 70, 0, 100), 1)
+    score = publish(lerp_score(average, 15, 80, 0, 100), 1)
     bits = [f"{label} {hu_num(present[key], 1)}%" for key, label in BREADTH_FIELDS if key in present]
-    detail = f"Átlag {hu_num(average, 1)}% → {hu_num(score, 1, trim=True)} pont (20% → 0, 70% → 100). " + " · ".join(bits) + "."
+    detail = f"Átlag {hu_num(average, 1)}% → {hu_num(score, 1, trim=True)} pont (15% → 0, 80% → 100). " + " · ".join(bits) + "."
     if missing:
         detail += " Hiányzó arány: " + ", ".join(missing) + "."
     return {
@@ -1418,10 +1457,12 @@ def sentiment_part(snap: dict) -> dict:
     if fg is None or fg < 0 or fg > 100:
         reason = "A Fear & Greed érték a 0–100 tartományon kívül esik."
         return {"id": "sentiment", "available": False, "score": None, "reason": reason, "detail": reason, "inputs": {}}
-    score = publish(lerp_score(fg, 0, 100, 40, 90), 1)
+    score = publish(sentiment_points(fg), 1)
     detail = (
-        f"Fear & Greed {hu_num(fg, 1, trim=True)} → 40 + 0,5 × {hu_num(fg, 1, trim=True)} "
-        f"= {hu_num(score, 1, trim=True)}. Enyhe skála: az extrém félelem (0) 40 pont, az extrém kapzsiság (100) 90."
+        f"Fear & Greed {hu_num(fg, 1, trim=True)}: alap 30 + 0,5 × az index"
+        + (" , plusz a 10 alatti félelem korrekciója" if fg < 10 else "")
+        + (" , mínusz a 80 feletti kapzsiság korrekciója" if fg > 80 else "")
+        + f" → {hu_num(score, 1, trim=True)}."
     )
     return {
         "id": "sentiment",
@@ -1721,11 +1762,15 @@ def build_market_regime(indices: list, breadth: dict, sentiment: dict) -> tuple[
     dates = list(spine[-SCORE_HISTORY_DAYS:])
     scored = []
     for stamp in dates:
-        parts = build_parts(snap_for(stamp))
+        snap = snap_for(stamp)
+        parts = build_parts(snap)
         exact, headline, parts = finalize(parts)
         if headline is None:
             continue
-        scored.append((pd.Timestamp(stamp), exact, headline, parts))
+        gate = score_gate(snap.get("close"), snap.get("ema9"), snap.get("ema20"), snap.get("sma50"))
+        gated_exact = apply_score_gate(exact, gate)
+        gated = int(round_half_up(gated_exact, 0))
+        scored.append((pd.Timestamp(stamp), exact, headline, gated_exact, gated, gate, parts))
     if not scored:
         score = empty_trading_score()
         score["status"] = "unavailable"
@@ -1736,14 +1781,14 @@ def build_market_regime(indices: list, breadth: dict, sentiment: dict) -> tuple[
         return trend, score
 
     history = []
-    for stamp, _exact, headline, parts in scored:
-        row = {"date": date_str(stamp), "score": headline}
+    for stamp, _exact, _headline, _gated_exact, gated, _gate, parts in scored:
+        row = {"date": date_str(stamp), "score": gated}
         for part in parts:
             row[part["id"]] = part["score"] if part.get("available") else None
         history.append(row)
 
-    stamp, exact, headline, parts = scored[-1]
-    band = band_for(headline)
+    stamp, exact, headline, gated_exact, gated, gate, parts = scored[-1]
+    band = band_for(gated)
     missing = [part["label"] for part in parts if not part.get("available")]
     vol_stale = vix_block.get("status") == "stale" or (
         parts[2].get("available") and parts[2]["inputs"].get("vix3m") is not None and term.get("status") == "stale"
@@ -1764,8 +1809,14 @@ def build_market_regime(indices: list, breadth: dict, sentiment: dict) -> tuple[
         "status": "stale" if stale_labels else "ok",
         "source": "Saját számítás: Nasdaq Composite, szélesség, VIX, bóvli felár, CNN Fear & Greed",
         "as_of": date_str(stamp),
-        "score": headline,
-        "score_exact": publish(exact, 1),
+        "score": gated,
+        "score_exact": publish(gated_exact, 1),
+        "gate": {
+            "applied": bool(gate["applied"]),
+            "cap": gate["cap"],
+            "floor": gate["floor"],
+            "raw_score": headline,
+        },
         "verdict": band["verdict"],
         "tone": band["tone"],
         "method": SCORE_METHOD,
@@ -1827,7 +1878,7 @@ def self_check() -> None:
     assert nasdaq_points("none", True) == 0
 
     breadth = breadth_part({"spx50": 20, "spx200": 70, "ndx50": 45, "ndx200": None})
-    assert breadth["available"] and breadth["score"] == 50
+    assert breadth["available"] and breadth["score"] == 46.2
     assert "Nasdaq-100 200 napos" in breadth["inputs"]["missing_series"]
     assert volatility_part({"vix": 15, "vix3m": 14})["score"] == 80
     assert volatility_part({"vix": 30, "vix3m": 40})["score"] == 0
@@ -1836,10 +1887,28 @@ def self_check() -> None:
     assert credit_part({"hy": 3, "hy_change": 0.5})["score"] == 60
     assert credit_part({"hy": 5.5, "hy_change": 0})["score"] == 50
     assert credit_part({"hy": 3, "hy_change": None})["score"] == 100
-    assert sentiment_part({"fg": 0})["score"] == 40
-    assert sentiment_part({"fg": 100})["score"] == 90
-    assert sentiment_part({"fg": 50})["score"] == 65
+    assert sentiment_points(0) == 50
+    assert sentiment_points(10) == 35
+    assert sentiment_points(23) == 41.5
+    assert sentiment_points(80) == 70
+    assert sentiment_points(100) == 40
+    assert sentiment_part({"fg": 0})["score"] == 50
+    assert sentiment_part({"fg": 10})["score"] == 35
+    assert sentiment_part({"fg": 23})["score"] == 41.5
+    assert sentiment_part({"fg": 80})["score"] == 70
+    assert sentiment_part({"fg": 100})["score"] == 40
+    assert sentiment_part({"fg": 50})["score"] == 55
     assert sentiment_part({"fg": None})["available"] is False
+    assert score_gate(90, 100, 110, 100) == {"applied": True, "cap": 39, "floor": None}
+    assert score_gate(100, 90, 110, 80) == {"applied": True, "cap": 59, "floor": 40}
+    assert score_gate(100, 120, 130, 80) == {"applied": True, "cap": 59, "floor": None}
+    assert score_gate(100, 90, 80, 70) == {"applied": True, "cap": None, "floor": 40}
+    assert score_gate(100, 110, 90, 80) == {"applied": True, "cap": 59, "floor": None}
+    assert score_gate(100, 110, 90, 120) == {"applied": True, "cap": 39, "floor": None}
+    assert apply_score_gate(70, {"floor": 40, "cap": None}) == 70
+    assert apply_score_gate(30, {"floor": 40, "cap": None}) == 40
+    assert apply_score_gate(80, {"floor": None, "cap": 39}) == 39
+    assert apply_score_gate(30, {"floor": 40, "cap": 59}) == 40
 
     parts = build_parts(
         {
@@ -1860,11 +1929,13 @@ def self_check() -> None:
         }
     )
     exact, headline, done = finalize(parts)
-    # Nasdaq 100, breadth of 20/70/45/45 = 45 → 50, volatility missing, credit 60, sentiment 80.
-    # (100*35 + 50*25 + 60*10 + 80*10) / 80 = 76.875
-    assert abs(exact - 76.875) < 1e-9
-    assert headline == 77
+    # Nasdaq 100, breadth of 20/70/45 = 45 → 46.2, volatility missing, credit 60, sentiment fg 80 → 70.
+    # (100*35 + 46.2*25 + 60*10 + 70*10) / 80 = 74.4375. Close is above the 9, 20 and 50 averages, so only a floor of 40 applies.
+    assert abs(exact - 74.4375) < 1e-9
+    assert headline == 74
     assert next(part["effective_weight"] for part in done if part["id"] == "volatility") == 0
+    gated = apply_score_gate(exact, score_gate(100, 90, 80, 70))
+    assert gated == exact
 
     bull = pd.Series(
         [100 * (1.002**i) for i in range(260)],
@@ -1957,12 +2028,15 @@ def self_check() -> None:
     assert trend["subscore"] == 100
     assert trend["fresh_up_cross"] is False
     assert by_id["nasdaq"]["score"] == 100
-    assert by_id["breadth"]["score"] == 77.6
+    assert by_id["breadth"]["score"] == 67.4
     assert by_id["volatility"]["score"] == 93.3
     assert by_id["credit"]["score"] == 77.6
-    assert by_id["sentiment"]["score"] == 67.5
-    assert score["score"] == 88
-    assert score["score_exact"] == 87.6
+    assert by_id["sentiment"]["score"] == 57.5
+    assert score["gate"]["floor"] == 40
+    assert score["gate"]["cap"] is None
+    assert score["gate"]["raw_score"] == score["score"]
+    assert score["score"] == 84
+    assert score["score_exact"] == 84.0
     assert score["verdict"] == "Erős piac"
     assert len(score["history"]) == SCORE_HISTORY_DAYS
     assert score["history"][-1]["score"] == score["score"]
