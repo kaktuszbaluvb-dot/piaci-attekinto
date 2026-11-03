@@ -506,7 +506,7 @@ function methodology() {
           <li><b>Piaci szélesség, 25%.</b> A négy „átlag feletti részvény” arány átlaga. 15% körül 0 pont, 80% körül 100 pont, a kettő között egyenletesen nő.</li>
           <li><b>Volatilitás, 20%.</b> Alacsony VIX sok pontot ér, 30 körül vagy felette keveset. Ha a 30 napos VIX a 3 hónapos felett van, 20 pont levonás.</li>
           <li><b>Hitelkockázat, 10%.</b> Szűk bóvli felár jobb, táguló felár ront. A szint számít jobban, a 20 napos változás kisebb súllyal. Ha a változás hiányzik, csak a szint számít.</li>
-          <li><b>Hangulat, 10%.</b> A Fear &amp; Greed közepén a pont vele együtt nő. 10 alatt a nagyon erős félelem a közép felé húzza vissza, 80 felett a nagyon erős kapzsiság lejjebb viszi a pontot.</li>
+          <li><b>Hangulat, 10%.</b> A pont a Fear &amp; Greeddel együtt nő; a nagyon erős félelem plusz pontot kap a visszapattanás esélyéért, a nagyon erős kapzsiság pontot veszít.</li>
         </ul>
         <p>A kis görbe az utolsó 60 kereskedési nap. A Nasdaq trendszűrő ugyanezt a négy átlagot mutatja külön is.</p>
       </div>
@@ -590,7 +590,7 @@ function plainSentiment(inputs) {
   else if (fg < 55) read = "semleges hangulat";
   else if (fg < 75) read = "inkább optimizmus";
   else if (fg <= 80) read = "kapzsiság";
-  return `A Fear & Greed ${fmt(fg, 0)}, ${read}: a pont a hangulattal együtt nő, de a 10 alatti félelem és a 80 feletti kapzsiság visszahúzza.`;
+  return `A Fear & Greed ${fmt(fg, 0)}, ${read}: a pont a hangulattal együtt nő, 10 alatt a félelem plusz pontot kap a visszapattanás esélyéért, 80 felett a kapzsiság pontot veszít.`;
 }
 
 function bandLabels() {
