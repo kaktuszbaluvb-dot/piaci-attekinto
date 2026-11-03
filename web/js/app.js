@@ -260,15 +260,6 @@ function unavailable(title, block) {
   return `<article class="card"><h3>${esc(title)}</h3><p class="empty">Ez a mutató most nem elérhető.${esc(why)}</p></article>`;
 }
 
-function breadthWord(value) {
-  if (value === null || value === undefined) return "nincs adat";
-  if (value >= 80) return "nagyon széles";
-  if (value >= 60) return "széles emelkedés";
-  if (value >= 40) return "vegyes";
-  if (value >= 20) return "szűk piac";
-  return "széles gyengeség";
-}
-
 function breadthStory(value) {
   if (value === null || value === undefined) return "A 200 napos szélesség most nem számolható.";
   if (value >= 80) return "A piac nagyon széles: a részvények túlnyomó része a hosszú átlag felett van. Ez erős, de már feszített állapot.";
@@ -509,12 +500,13 @@ function methodology() {
       <summary>Hogyan számolunk?</summary>
       <div class="method-body">
         <p>A kereskedési pontszám 0 és 100 között azt méri, mennyire kedvező a környezet a trendkövető, emelkedésre játszó swing kereskedéshez. Nem fordított jelzés: a nagy félelem rontja a pontot, nem javítja. Öt rész súlyozott átlaga. Ha egy résznek nincs friss adata, a súlya a többire oszlik, és ez a felületen látszik. A kijelzett szám az átlag egészre kerekítve. A sávok: 0–39 nem érdemes kereskedni, 40–59 óvatosan, 60–79 kedvező, 80–100 erős piac.</p>
+        <p>A kész végösszeget a Nasdaq záróára még keretezheti. Az 50 napos átlag alatt a pont legfeljebb 39. Az 50 napos felett, de a 20 napos alatt legfeljebb 59; ha közben a 9 napos felett is van, legalább 40. Ha az ár a 9, a 20 és az 50 napos átlag felett van, nincs felső határ, és a pont legalább 40. Ha a 20 napos felett, de a 9 napos alatt van, csak a felső határ érvényes: legfeljebb 59.</p>
         <ul>
-          <li><b>Nasdaq-trend, 35%.</b> Teljes kockázat, ha a záróár a 9 és a 20 napos EMA, valamint az 50 és a 200 napos SMA felett van: 100 pont. Fél kockázat: 50 pont, plusz 10, ha az utolsó 5 kereskedési napon a 9 napos EMA alulról keresztezte a 20 naposat. A 20 napos EMA alatt: 0 pont.</li>
-          <li><b>Piaci szélesség, 25%.</b> Az S&amp;P 500 és a Nasdaq-100 50 és 200 napos átlag feletti négy arány átlaga. 20% → 0 pont, 70% → 100 pont, közte egyenes: (átlag − 20) / 50 × 100. A tartományon kívül a pont 0 vagy 100.</li>
-          <li><b>Volatilitás, 20%.</b> VIX 15 vagy alatta: 100 pont, 30 vagy felette: 0, közte egyenes. Ha a 30 napos VIX a 3 hónapos VIX felett van: −20 pont.</li>
-          <li><b>Hitelkockázat, 10%.</b> A bóvli felár szintje: 3% vagy alatta 100, 8% vagy felette 0. A 20 napos változás: −0,5 százalékpont 100, +0,5 százalékpont 0. A rész 60% szint + 40% változás. Ha a változás hiányzik, csak a szint számít.</li>
-          <li><b>Hangulat, 10%.</b> 40 + 0,5 × a CNN Fear &amp; Greed index. Az extrém félelem (0) 40 pont, az extrém kapzsiság (100) 90 pont.</li>
+          <li><b>Nasdaq-trend, 35%.</b> Mind a négy átlag felett 100 pont. Vegyes helyzetben 50, és ehhez 10 jár, ha a 9 napos átlag az utolsó öt napban alulról a 20 napos fölé fordult. A 20 napos alatt 0 pont.</li>
+          <li><b>Piaci szélesség, 25%.</b> A négy „átlag feletti részvény” arány átlaga. 15% körül 0 pont, 80% körül 100 pont, a kettő között egyenletesen nő.</li>
+          <li><b>Volatilitás, 20%.</b> Alacsony VIX sok pontot ér, 30 körül vagy felette keveset. Ha a 30 napos VIX a 3 hónapos felett van, 20 pont levonás.</li>
+          <li><b>Hitelkockázat, 10%.</b> Szűk bóvli felár jobb, táguló felár ront. A szint számít jobban, a 20 napos változás kisebb súllyal. Ha a változás hiányzik, csak a szint számít.</li>
+          <li><b>Hangulat, 10%.</b> A Fear &amp; Greed közepén a pont vele együtt nő. 10 alatt a nagyon erős félelem a közép felé húzza vissza, 80 felett a nagyon erős kapzsiság lejjebb viszi a pontot.</li>
         </ul>
         <p>A kis görbe az utolsó 60 kereskedési nap. A Nasdaq trendszűrő ugyanezt a négy átlagot mutatja külön is.</p>
       </div>
@@ -553,9 +545,9 @@ function plainNasdaq(inputs) {
 function plainBreadth(inputs) {
   const average = Number(inputs.average);
   if (!Number.isFinite(average)) return "A szélesség most nem számolható.";
-  let read = "a részvények nagy része a hosszú átlag alatt van";
-  if (average >= 70) read = "széles, erős emelkedés";
-  else if (average >= 55) read = "közepesen erős piac";
+  let read = "túladott, a részvények nagy része a hosszú átlag alatt van";
+  if (average > 80) read = "túlvett, szinte minden részvény az átlag felett van";
+  else if (average >= 55) read = "közepesen erős, széles emelkedés";
   else if (average >= 40) read = "vegyes kép";
   else if (average >= 20) read = "szűk, gyenge piac";
   return `A részvények ${fmt(average, 0)}%-a van a mozgóátlagai felett – ${read}.`;
@@ -592,12 +584,13 @@ function plainCredit(inputs) {
 function plainSentiment(inputs) {
   const fg = Number(inputs.fear_greed);
   if (!Number.isFinite(fg)) return "A hangulat most nem számolható.";
-  let read = "erős kapzsiság, a piac feszített";
-  if (fg < 25) read = "erős félelem, a befektetők nagyon óvatosak";
-  else if (fg < 45) read = "a piac fél, nem kapzsi";
-  else if (fg < 55) read = "a hangulat semleges";
-  else if (fg < 75) read = "a hangulat inkább optimista";
-  return `A Fear & Greed ${fmt(fg, 0)}: ${read}.`;
+  let read = "erős kapzsiság";
+  if (fg < 25) read = "erős félelem";
+  else if (fg < 45) read = "inkább félelem";
+  else if (fg < 55) read = "semleges hangulat";
+  else if (fg < 75) read = "inkább optimizmus";
+  else if (fg <= 80) read = "kapzsiság";
+  return `A Fear & Greed ${fmt(fg, 0)}, ${read}: a pont a hangulattal együtt nő, de a 10 alatti félelem és a 80 feletti kapzsiság visszahúzza.`;
 }
 
 function bandLabels() {
@@ -624,7 +617,31 @@ function renderScorePart(part, renormalized) {
     </div>`;
 }
 
-function renderTradingScore(block) {
+function shownBreadthRatios(breadth) {
+  const current = (breadth && breadth.current) || {};
+  return ["spx50", "spx200", "ndx50", "ndx200"]
+    .map((key) => Number(current[key]))
+    .filter((value) => Number.isFinite(value));
+}
+
+function overboughtNote(breadth, sentiment, block) {
+  const ratios = shownBreadthRatios(breadth);
+  const part = ((block && block.components) || []).find((item) => item.id === "breadth");
+  const fromScore = part && part.inputs ? Number(part.inputs.average) : NaN;
+  const average = Number.isFinite(fromScore)
+    ? fromScore
+    : ratios.length
+      ? ratios.reduce((sum, value) => sum + value, 0) / ratios.length
+      : null;
+  const fg = Number(sentiment && sentiment.fear_greed && sentiment.fear_greed.score);
+  const hot = ratios.some((value) => value > 80)
+    || (average !== null && average > 80)
+    || (Number.isFinite(fg) && fg > 80);
+  if (!hot) return "";
+  return `<p class="overbought">Túlvett piac. Ha még nem léptél be, ne üldözd az emelkedést.</p>`;
+}
+
+function renderTradingScore(block, breadth, sentiment) {
   if (!block || block.score === null || block.score === undefined) {
     return `<section id="pontszam">${unavailable("Kereskedési pontszám", block)}</section>`;
   }
@@ -656,9 +673,10 @@ function renderTradingScore(block) {
               <em class="band-mark" style="left:${Math.max(0, Math.min(100, Number(block.score)))}%"></em>
             </div>
             ${bandLabels()}
+            ${scoreSpark(block.history, tone)}
+            ${overboughtNote(breadth, sentiment, block)}
           </div>
           <div class="score-side">
-            ${scoreSpark(block.history, tone)}
             ${missingLine}
             <div class="parts">
               ${parts.map((part) => renderScorePart(part, block.renormalized)).join("")}
@@ -770,40 +788,113 @@ function renderIndices(indices, trend) {
     </section>`;
 }
 
+function breadthZone(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return { zone: "none", pill: "Nincs adat", pillClass: "" };
+  if (number < 20) return { zone: "bad", pill: "Túladott", pillClass: "down" };
+  if (number > 80) return { zone: "hot", pill: "Túlvett", pillClass: "flat" };
+  return { zone: "ok", pill: "Normál sáv", pillClass: "" };
+}
+
+function donutChart(value, label) {
+  const cx = 60;
+  const cy = 60;
+  const radius = 42;
+  const circumference = 2 * Math.PI * radius;
+  const finite = value !== null && value !== undefined && Number.isFinite(Number(value));
+  const pct = finite ? Math.max(0, Math.min(100, Number(value))) : 0;
+  const filled = (pct / 100) * circumference;
+  const zone = breadthZone(finite ? Number(value) : NaN);
+  const ticks = [20, 80].map((mark) => {
+    const angle = (mark / 100) * Math.PI * 2 - Math.PI / 2;
+    const x1 = cx + Math.cos(angle) * 34.5;
+    const y1 = cy + Math.sin(angle) * 34.5;
+    const x2 = cx + Math.cos(angle) * 49.5;
+    const y2 = cy + Math.sin(angle) * 49.5;
+    return `<line class="donut-tick" x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}"></line>`;
+  }).join("");
+  const arc = finite && pct > 0
+    ? `<circle class="donut-value zone-${zone.zone}" cx="${cx}" cy="${cy}" r="${radius}" stroke-dasharray="${filled.toFixed(2)} ${(circumference - filled).toFixed(2)}" transform="rotate(-90 ${cx} ${cy})"></circle>`
+    : "";
+  const text = finite ? `${fmt(value, 1)}%` : "–";
+  return `
+    <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="${esc(label)}: ${esc(text)}">
+      <circle class="donut-track" cx="${cx}" cy="${cy}" r="${radius}"></circle>
+      ${arc}
+      ${ticks}
+      <text class="donut-pct num" x="${cx}" y="${cy}">${esc(text)}</text>
+    </svg>`;
+}
+
+function advanceDeclineBar(breadth) {
+  const current = (breadth && breadth.current) || {};
+  const block = breadth && breadth.advance_decline;
+  let up = current.advances ?? current.advancing ?? current.advance;
+  let down = current.declines ?? current.declining ?? current.decline;
+  if (block && typeof block === "object" && !Array.isArray(block)) {
+    up = block.advances ?? block.advancing ?? block.up ?? up;
+    down = block.declines ?? block.declining ?? block.down ?? down;
+  }
+  up = Number(up);
+  down = Number(down);
+  if (!Number.isFinite(up) || !Number.isFinite(down) || up + down <= 0) return "";
+  const share = Math.max(0, Math.min(100, (up / (up + down)) * 100));
+  return `
+    <div class="ad-line">
+      <div class="ad-top"><span>Emelkedő / csökkenő részvények</span><span class="num">${fmt(up, 0)} / ${fmt(down, 0)}</span></div>
+      <div class="ad-bar" aria-hidden="true"><i style="width:${share.toFixed(1)}%"></i></div>
+    </div>`;
+}
+
 function renderBreadth(breadth) {
   const current = (breadth && breadth.current) || {};
   const history = (breadth && breadth.history) || [];
   const tiles = [
-    ["spx50", "S&P 500 · 50 napos", current.spx50, "Rövidebb trend: az S&P 500 részvényeinek hány százaléka van a saját 50 napos átlaga felett."],
-    ["spx200", "S&P 500 · 200 napos", current.spx200, "Hosszabb trend: az S&P 500 részvényeinek hány százaléka van a saját 200 napos átlaga felett."],
-    ["ndx50", "Nasdaq-100 · 50 napos", current.ndx50, "A Nasdaq-100 részvényeinek hány százaléka van a saját 50 napos átlaga felett."],
-    ["ndx200", "Nasdaq-100 · 200 napos", current.ndx200, "A Nasdaq-100 részvényeinek hány százaléka van a saját 200 napos átlaga felett."],
+    ["spx50", "S&P 500", "50 napos átlag felett", current.spx50, "Az S&P 500 részvényeinek hány százaléka van a saját 50 napos átlaga felett."],
+    ["spx200", "S&P 500", "200 napos átlag felett", current.spx200, "Az S&P 500 részvényeinek hány százaléka van a saját 200 napos átlaga felett."],
+    ["ndx50", "Nasdaq-100", "50 napos átlag felett", current.ndx50, "A Nasdaq-100 részvényeinek hány százaléka van a saját 50 napos átlaga felett."],
+    ["ndx200", "Nasdaq-100", "200 napos átlag felett", current.ndx200, "A Nasdaq-100 részvényeinek hány százaléka van a saját 200 napos átlaga felett."],
   ];
   const universe = breadth && breadth.universe ? breadth.universe : {};
   const sample = `S&P minta: ${current.spx_n ?? "–"} / ${universe.spx ?? "–"} · Nasdaq-100 minta: ${current.ndx_n ?? "–"} / ${universe.ndx ?? "–"}`;
+  const ratios = shownBreadthRatios(breadth);
+  const average = ratios.length ? ratios.reduce((sum, value) => sum + value, 0) / ratios.length : null;
+  const oversold = (average !== null && average < 20) || ratios.some((value) => value < 20);
+  const oversoldNote = oversold ? `<p class="oversold-note">Túladott piac</p>` : "";
   return `
     <section id="szelesseg">
       <div class="section-head">
         <div>
           <h2>Piaci szélesség</h2>
-          <p>Hány százalékuk zár a saját mozgóátlaga felett az index részvényeinek. A magas szám széles emelkedést jelent. Alacsony számnál az indexet kevés nagy papír tarthatja, miközben a többség gyenge.</p>
+          <p>Hány részvény van a mozgóátlaga felett. A 20% alatti sáv túladott, a 80% feletti túlvett piacot jelez.</p>
         </div>
         ${statusBadge(breadth)}
       </div>
-      <div class="grid-4">
-        ${tiles.map(([key, label, value, hint]) => {
-          const delta = weekChange(history, key);
-          const week = delta === null ? "" : `<p class="week num ${signClass(delta)}">5 kereskedési napja ${fmtPp(delta)}</p>`;
-          const shown = value === null || value === undefined ? "–" : `${fmt(value, 1)}%`;
-          return `
-          <article class="card kpi" title="${esc(hint)}">
-            <div class="label"><span>${esc(label)}</span></div>
-            <div class="value num">${shown}</div>
-            <p class="hint">${breadthWord(value)}</p>
-            ${week}
-          </article>`;
-        }).join("")}
-      </div>
+      <article class="card breadth-card">
+        <div class="donut-grid">
+          ${tiles.map(([key, name, sub, value, hint]) => {
+            const zone = breadthZone(value);
+            const delta = weekChange(history, key);
+            const week = delta === null ? "" : `<p class="donut-week num ${signClass(delta)}">5 nap ${fmtPp(delta)}</p>`;
+            return `
+            <div class="donut-tile" title="${esc(hint)}">
+              <p class="donut-name">${esc(name)}</p>
+              <p class="donut-sub">${esc(sub)}</p>
+              ${donutChart(value, `${name} ${sub}`)}
+              <p class="donut-pill"><span class="pill ${zone.pillClass}">${esc(zone.pill)}</span></p>
+              ${week}
+            </div>`;
+          }).join("")}
+        </div>
+        <div class="donut-legend">
+          <span><i class="swatch bad"></i>0–20% túladott</span>
+          <span><i class="swatch ok"></i>20–80% normál</span>
+          <span><i class="swatch hot"></i>80–100% túlvett</span>
+          <span class="legend-note">A vékony jelölők a 20% és 80% határt mutatják.</span>
+        </div>
+        ${advanceDeclineBar(breadth)}
+        ${oversoldNote}
+      </article>
       <p class="story">${esc(breadthStory(current.spx200))}</p>
       <p class="source">${esc(sample)} · Zárónap: ${formatDay(breadth && breadth.as_of)} · ${esc((breadth && breadth.source) || "")}</p>
     </section>`;
@@ -1435,7 +1526,7 @@ function render(data, summary) {
   const sentiment = data.sentiment || {};
   document.getElementById("app").innerHTML = `
     ${banner}
-    ${renderTradingScore(data.trading_score)}
+    ${renderTradingScore(data.trading_score, data.breadth, sentiment)}
     ${renderIndices(data.indices || [], data.nasdaq_trend)}
     ${renderBreadth(data.breadth)}
     ${renderSentiment(sentiment)}

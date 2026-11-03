@@ -13,12 +13,12 @@ Tájékoztató jellegű, nem befektetési tanács. Az adatok késleltetettek, ha
 | Rész | Súly | Számítás |
 | --- | --- | --- |
 | Nasdaq-trend | 35% | A Nasdaq Composite záróára a 9 és 20 napos exponenciális, valamint az 50 és 200 napos egyszerű átlaghoz képest. Mind a négy felett 100. Vegyes helyzet 50, és ehhez +10 jár, ha az utolsó 5 kereskedési napon a 9 napos EMA alulról keresztezte a 20 naposat. A 20 napos alatt: 0. |
-| Piaci szélesség | 25% | Az S&P 500 és a Nasdaq-100 50 és 200 napos átlag feletti arányának átlaga. 20% → 0 pont, 70% → 100 pont, közte lineáris. Ha a négy arányból valamelyik hiányzik, a többi átlaga számít. |
+| Piaci szélesség | 25% | Az S&P 500 és a Nasdaq-100 50 és 200 napos átlag feletti arányának átlaga. 15% → 0 pont, 80% → 100 pont, közte lineáris. Ha a négy arányból valamelyik hiányzik, a többi átlaga számít. |
 | Volatilitás | 20% | VIX: 15 vagy alatta 100, 30 vagy felette 0, közte lineáris. Ha a VIX a 3 hónapos VIX felett van, 20 pont levonás. Ha a VIX3M hiányzik, a levonás kimarad, és ez a felületen látszik. |
 | Hitelkockázat | 10% | A bóvli felár szintje (3% vagy alatta 100, 8% vagy felette 0) adja a rész 60%-át. A 20 megfigyeléses változás (−0,5 százalékpont vagy jobb 100, +0,5 vagy rosszabb 0) adja a 40%-át. Emelkedő felár ront. Ha a változás nincs meg, csak a szint számít. |
-| Hangulat | 10% | CNN Fear & Greed, enyhe skálán: 0 → 40 pont, 100 → 90 pont. |
+| Hangulat | 10% | CNN Fear & Greed: alap 30 pont plusz az index fele. 10 alatt a nagyon erős félelem a közép felé húzza (0 → 50 pont), 80 felett a nagyon erős kapzsiság lejjebb viszi (100 → 40 pont). 10-nél 35 pont, 80-nál 70 pont. |
 
-Sávok: 0–39 „Nem érdemes kereskedni”, 40–59 „Óvatosan / fél kockázat”, 60–79 „Kedvező”, 80–100 „Erős piac”. A kijelzett szám a súlyozott átlag egészre kerekítve. Az utolsó 60 kereskedési nap pontszáma kis görbén látszik. A részpontok és a képlet a „Hogyan számolunk?” lenyílóban, a `trading_score` mezőben a JSON-ban is megvan.
+Sávok: 0–39 „Nem érdemes kereskedni”, 40–59 „Óvatosan / fél kockázat”, 60–79 „Kedvező”, 80–100 „Erős piac”. A kijelzett szám a súlyozott átlag egészre kerekítve. A kész végösszeget a Nasdaq záróára még keretezheti: az 50 napos átlag alatt legfeljebb 39, az 50 napos felett de a 20 napos alatt legfeljebb 59 (a 9 napos felett legalább 40), a 9, a 20 és az 50 napos felett nincs felső határ és a pont legalább 40. Az utolsó 60 kereskedési nap pontszáma kis görbén látszik a nagy szám alatt. A részpontok és a keret a „Hogyan számolunk?” lenyílóban, a `trading_score.gate` mezőben a JSON-ban is megvan.
 
 **Nasdaq trendszűrő.** A Nasdaq Composite (^IXIC) záróára négy átlaghoz képest. A 9 és a 20 napos átlag exponenciális (EMA), az 50 és a 200 napos egyszerű (SMA). A felület mind a négyhez kiírja az átlag értékét, a záróár távolságát százalékban, és hogy az ár felette vagy alatta van.
 
@@ -29,7 +29,7 @@ Sávok: 0–39 „Nem érdemes kereskedni”, 40–59 „Óvatosan / fél kocká
 
 Ha a 9 napos EMA az utolsó 5 kereskedési napon alulról keresztezte a 20 naposat, kiemelt jelzés jelenik meg a keresztezés napjával. Különben az utolsó felfelé és az utolsó lefelé keresztezés napja látszik.
 
-**Piaci szélesség.** Az S&P 500 és a Nasdaq-100 összetevői közül hány százalék zár a saját 50 és 200 napos mozgóátlaga felett. Magas érték széles emelkedést jelent, alacsony érték azt, hogy a részvények többsége gyenge, még ha az indexet néhány nagy papír tartja is. Az oldalon a négy aktuális százalék és az 5 kereskedési nappal korábbihoz mért változás látszik. Vonalgrafikon nincs; a történet a JSON-ban megmarad.
+**Piaci szélesség.** Az S&P 500 és a Nasdaq-100 összetevői közül hány százalék zár a saját 50 és 200 napos mozgóátlaga felett. Magas érték széles emelkedést jelent, alacsony érték azt, hogy a részvények többsége gyenge, még ha az indexet néhány nagy papír tartja is. Az oldalon négy gyűrű mutatja az aktuális százalékot: 20% alatt piros, 20–80% között zöld, 80% felett arany, vékony jelölővel a 20% és 80% határnál. Alatta az 5 kereskedési nappal korábbihoz mért változás látszik. Ha van emelkedő és csökkenő darabszám, az osztott sávként jelenik meg. Vonalgrafikon nincs; a történet a JSON-ban megmarad.
 
 **VIX.** Az S&P 500 opciókból számolt, 30 napos implikált volatilitása. 15 alatt nyugodt a piac, 20–30 között emelkedett a bizonytalanság, 30 felett már félelem.
 
