@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-03T04:58:56+01:00",
-    "generated_at_budapest": "2026. november 3., 04:58",
+    "generated_at": "2026-11-03T06:41:42+01:00",
+    "generated_at_budapest": "2026. november 3., 06:41",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-02",
     "price_period": "3y"
@@ -662,14 +662,14 @@
     "as_of": "2026-11-02",
     "name": "Nasdaq Composite",
     "ticker": "^IXIC",
-    "close": 25164.36,
+    "close": 25164.31,
     "averages": [
       {
         "id": "ema9",
         "label": "9 napos EMA",
         "kind": "EMA",
         "period": 9,
-        "value": 25989.34,
+        "value": 25989.33,
         "distance_pct": -3.17,
         "state": "below"
       },
@@ -1457,7 +1457,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.6,
-        "spx50": 34.7,
+        "spx50": 34.9,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -12214,14 +12214,14 @@
     "fear_greed": {
       "status": "ok",
       "source": "CNN Fear & Greed",
-      "as_of": "2026-11-02",
+      "as_of": "2026-11-03",
       "score": 22.7,
       "rating": "extreme fear",
       "rating_hu": "extrém félelem",
-      "previous_close": 26.2,
-      "previous_week": 29.8,
+      "previous_close": 22.7,
+      "previous_week": 32.9,
       "previous_month": 38.2,
-      "previous_year": 34.5,
+      "previous_year": 32.6,
       "history": [
         {
           "date": "2023-11-01",
@@ -15980,6 +15980,11 @@
         },
         {
           "date": "2026-11-02",
+          "score": 22.7,
+          "rating": "extreme fear"
+        },
+        {
+          "date": "2026-11-03",
           "score": 22.7,
           "rating": "extreme fear"
         }
@@ -28283,8 +28288,8 @@
       "group": "usa",
       "source": "Yahoo Finance",
       "as_of": "2026-11-02",
-      "price": 25164.36,
-      "change": -272.64,
+      "price": 25164.31,
+      "change": -272.69,
       "change_pct": -1.07,
       "dma50": 26553.82,
       "dma200": 25063.92,
@@ -31305,7 +31310,7 @@
         },
         {
           "date": "2026-11-02",
-          "close": 25164.36
+          "close": 25164.31
         }
       ]
     },
@@ -54111,14 +54116,14 @@
       "unit": "index",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-02",
-      "price": 101.8,
-      "change": -0.08,
-      "change_pct": -0.08,
-      "dma50": 100.87,
-      "dma200": 99.64,
-      "dist50_pct": 0.91,
-      "dist200_pct": 2.16,
+      "as_of": "2026-11-03",
+      "price": 101.73,
+      "change": -0.02,
+      "change_pct": -0.02,
+      "dma50": 100.93,
+      "dma200": 99.66,
+      "dist50_pct": 0.8,
+      "dist200_pct": 2.09,
       "history": [
         {
           "date": "2023-11-01",
@@ -57138,7 +57143,11 @@
         },
         {
           "date": "2026-11-02",
-          "close": 101.8
+          "close": 101.75
+        },
+        {
+          "date": "2026-11-03",
+          "close": 101.73
         }
       ]
     },
@@ -57151,14 +57160,14 @@
       "unit": "USD/uncia",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-02",
-      "price": 3938.7,
-      "change": 39.8,
-      "change_pct": 1.02,
-      "dma50": 4279.96,
-      "dma200": 4515.89,
-      "dist50_pct": -7.97,
-      "dist200_pct": -12.78,
+      "as_of": "2026-11-03",
+      "price": 3932.8,
+      "change": -36.8,
+      "change_pct": -0.93,
+      "dma50": 4265.28,
+      "dma200": 4512.73,
+      "dist50_pct": -7.79,
+      "dist200_pct": -12.85,
       "history": [
         {
           "date": "2023-11-01",
@@ -60182,7 +60191,11 @@
         },
         {
           "date": "2026-11-02",
-          "close": 3938.7
+          "close": 3969.6
+        },
+        {
+          "date": "2026-11-03",
+          "close": 3932.8
         }
       ]
     },
@@ -60195,14 +60208,14 @@
       "unit": "USD/hordó",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-02",
-      "price": 96.65,
-      "change": -7.47,
-      "change_pct": -7.17,
-      "dma50": 94.82,
-      "dma200": 86.53,
-      "dist50_pct": 1.93,
-      "dist200_pct": 11.7,
+      "as_of": "2026-11-03",
+      "price": 96.95,
+      "change": 0.49,
+      "change_pct": 0.51,
+      "dma50": 95.06,
+      "dma200": 86.72,
+      "dist50_pct": 1.99,
+      "dist200_pct": 11.8,
       "history": [
         {
           "date": "2023-11-01",
@@ -63222,7 +63235,11 @@
         },
         {
           "date": "2026-11-02",
-          "close": 96.65
+          "close": 96.46
+        },
+        {
+          "date": "2026-11-03",
+          "close": 96.95
         }
       ]
     },
@@ -63236,13 +63253,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-03",
-      "price": 76807.0,
-      "change": -1442.0,
-      "change_pct": -1.84,
-      "dma50": 81915.0,
-      "dma200": 73157.0,
-      "dist50_pct": -6.24,
-      "dist200_pct": 4.99,
+      "price": 76541.0,
+      "change": -1708.0,
+      "change_pct": -2.18,
+      "dma50": 81910.0,
+      "dma200": 73156.0,
+      "dist50_pct": -6.55,
+      "dist200_pct": 4.63,
       "history": [
         {
           "date": "2024-05-18",
@@ -66842,7 +66859,7 @@
         },
         {
           "date": "2026-11-03",
-          "close": 76807.0
+          "close": 76541.0
         }
       ]
     }
@@ -67149,8 +67166,8 @@
             "title": "S&P 500 futures are flat as investors weigh Apple earnings; U.S. midterm elections loom: Live updates",
             "source": "CNBC",
             "url": "https://www.cnbc.com/2026/11/02/stock-market-today-live-updates.html",
-            "published_at": "2026-11-03T05:05:19+01:00",
-            "published_budapest": "2026. november 3., 05:05"
+            "published_at": "2026-11-03T06:23:04+01:00",
+            "published_budapest": "2026. november 3., 06:23"
           }
         }
       ]
@@ -67208,7 +67225,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 92,
+        "items": 94,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
