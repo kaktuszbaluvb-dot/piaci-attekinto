@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-04T06:41:07+01:00",
-    "generated_at_budapest": "2026. november 4., 06:41",
+    "generated_at": "2026-11-04T10:24:12+01:00",
+    "generated_at_budapest": "2026. november 4., 10:24",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-03",
     "price_period": "3y"
@@ -17,7 +17,7 @@
       "applied": true,
       "cap": 39,
       "floor": null,
-      "raw_score": 40
+      "raw_score": 41
     },
     "verdict": "Nem érdemes kereskedni",
     "tone": "bad",
@@ -105,15 +105,15 @@
       {
         "id": "sentiment",
         "available": true,
-        "score": 39.6,
+        "score": 42.1,
         "reason": null,
-        "detail": "Fear & Greed 19,1: alap 30 + 0,5 × az index → 39,6.",
+        "detail": "Fear & Greed 24,1: alap 30 + 0,5 × az index → 42,1.",
         "inputs": {
-          "fear_greed": 19.1
+          "fear_greed": 24.1
         },
         "label": "Hangulat",
         "weight": 10,
-        "tone": "bad",
+        "tone": "warn",
         "effective_weight": 10.0,
         "stale": false
       }
@@ -657,7 +657,7 @@
         "breadth": 66.8,
         "volatility": 61.1,
         "credit": 76.1,
-        "sentiment": 39.6
+        "sentiment": 42.1
       }
     ],
     "error": "Régebbi adat: Hitelkockázat"
@@ -1463,7 +1463,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.6,
-        "spx50": 35.0,
+        "spx50": 34.8,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -4641,10 +4641,10 @@
     "vix": {
       "status": "ok",
       "source": "Yahoo Finance (^VIX)",
-      "as_of": "2026-11-03",
-      "value": 20.83,
-      "change": -0.32,
-      "change_pct": -1.51,
+      "as_of": "2026-11-04",
+      "value": 19.09,
+      "change": -1.74,
+      "change_pct": -8.35,
       "history": [
         {
           "date": "2023-10-30",
@@ -7677,6 +7677,10 @@
         {
           "date": "2026-11-03",
           "value": 20.83
+        },
+        {
+          "date": "2026-11-04",
+          "value": 19.09
         }
       ]
     },
@@ -12231,6 +12235,10 @@
           "vix": 20.83,
           "vix9d": 21.96,
           "vix3m": 21.27
+        },
+        {
+          "date": "2026-11-04",
+          "vix": 19.09
         }
       ]
     },
@@ -12238,7 +12246,7 @@
       "status": "ok",
       "source": "CNN Fear & Greed",
       "as_of": "2026-11-04",
-      "score": 19.1,
+      "score": 24.1,
       "rating": "extreme fear",
       "rating_hu": "extrém félelem",
       "previous_close": 19.1,
@@ -16008,12 +16016,12 @@
         },
         {
           "date": "2026-11-03",
-          "score": 19.1,
+          "score": 24.1,
           "rating": "extreme fear"
         },
         {
           "date": "2026-11-04",
-          "score": 19.1,
+          "score": 24.1,
           "rating": "extreme fear"
         }
       ]
@@ -37447,14 +37455,14 @@
       "unit": "",
       "group": "eu",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-03",
-      "price": 25864.62,
-      "change": -116.47,
-      "change_pct": -0.45,
-      "dma50": 25568.41,
-      "dma200": 24905.8,
-      "dist50_pct": 1.16,
-      "dist200_pct": 3.85,
+      "as_of": "2026-11-04",
+      "price": 26040.41,
+      "change": 175.79,
+      "change_pct": 0.68,
+      "dma50": 25563.5,
+      "dma200": 24911.5,
+      "dist50_pct": 1.87,
+      "dist200_pct": 4.53,
       "history": [
         {
           "date": "2023-10-30",
@@ -40515,6 +40523,10 @@
         {
           "date": "2026-11-03",
           "close": 25864.62
+        },
+        {
+          "date": "2026-11-04",
+          "close": 26040.41
         }
       ]
     },
@@ -40527,19 +40539,15 @@
       "unit": "HUF",
       "group": "eu",
       "source": "Budapesti Értéktőzsde",
-      "as_of": "2026-11-02",
-      "price": 145330.02,
-      "change": 72.68,
-      "change_pct": 0.05,
-      "dma50": 147195.57,
-      "dma200": 137060.78,
-      "dist50_pct": -1.27,
-      "dist200_pct": 6.03,
+      "as_of": "2026-11-03",
+      "price": 146075.44,
+      "change": 745.42,
+      "change_pct": 0.51,
+      "dma50": 147089.88,
+      "dma200": 137179.6,
+      "dist50_pct": -0.69,
+      "dist200_pct": 6.48,
       "history": [
-        {
-          "date": "2023-03-21",
-          "close": 42150.58
-        },
         {
           "date": "2023-03-22",
           "close": 41962.45
@@ -44135,6 +44143,10 @@
         {
           "date": "2026-11-02",
           "close": 145330.02
+        },
+        {
+          "date": "2026-11-03",
+          "close": 146075.44
         }
       ]
     }
@@ -54181,13 +54193,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-04",
-      "price": 101.52,
-      "change": -0.35,
-      "change_pct": -0.34,
+      "price": 101.39,
+      "change": -0.48,
+      "change_pct": -0.47,
       "dma50": 100.98,
       "dma200": 99.67,
-      "dist50_pct": 0.53,
-      "dist200_pct": 1.86,
+      "dist50_pct": 0.4,
+      "dist200_pct": 1.72,
       "history": [
         {
           "date": "2023-11-01",
@@ -57215,7 +57227,7 @@
         },
         {
           "date": "2026-11-04",
-          "close": 101.52
+          "close": 101.39
         }
       ]
     },
@@ -57229,13 +57241,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-04",
-      "price": 3972.7,
-      "change": 32.3,
-      "change_pct": 0.82,
-      "dma50": 4250.99,
-      "dma200": 4508.81,
-      "dist50_pct": -6.55,
-      "dist200_pct": -11.89,
+      "price": 4054.8,
+      "change": 114.4,
+      "change_pct": 2.9,
+      "dma50": 4252.64,
+      "dma200": 4509.22,
+      "dist50_pct": -4.65,
+      "dist200_pct": -10.08,
       "history": [
         {
           "date": "2023-11-01",
@@ -60267,7 +60279,7 @@
         },
         {
           "date": "2026-11-04",
-          "close": 3972.7
+          "close": 4054.8
         }
       ]
     },
@@ -60281,13 +60293,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-04",
-      "price": 96.16,
-      "change": 0.07,
-      "change_pct": 0.07,
-      "dma50": 95.32,
+      "price": 96.0,
+      "change": -0.09,
+      "change_pct": -0.09,
+      "dma50": 95.31,
       "dma200": 86.89,
-      "dist50_pct": 0.89,
-      "dist200_pct": 10.67,
+      "dist50_pct": 0.72,
+      "dist200_pct": 10.48,
       "history": [
         {
           "date": "2023-11-01",
@@ -63315,7 +63327,7 @@
         },
         {
           "date": "2026-11-04",
-          "close": 96.16
+          "close": 96.0
         }
       ]
     },
@@ -63329,13 +63341,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-04",
-      "price": 77584.0,
-      "change": 906.0,
-      "change_pct": 1.18,
-      "dma50": 81901.0,
-      "dma200": 73159.0,
-      "dist50_pct": -5.27,
-      "dist200_pct": 6.05,
+      "price": 78222.0,
+      "change": 877.0,
+      "change_pct": 1.13,
+      "dma50": 81949.0,
+      "dma200": 73170.0,
+      "dist50_pct": -4.55,
+      "dist200_pct": 6.9,
       "history": [
         {
           "date": "2024-05-19",
@@ -66931,11 +66943,11 @@
         },
         {
           "date": "2026-11-03",
-          "close": 77274.0
+          "close": 77345.0
         },
         {
           "date": "2026-11-04",
-          "close": 77584.0
+          "close": 78222.0
         }
       ]
     }
@@ -67188,19 +67200,19 @@
           "ticker": "BE",
           "name": "Bloom Energy",
           "change_pct": 9.05,
-          "headline": {
-            "title": "ECB Remarks Point to Sub-2% Inflation By End of 2027, BE Finds",
-            "source": "Bloomberg",
-            "url": "https://www.bloomberg.com/news/articles/2026-11-03/ecb-remarks-point-to-sub-2-inflation-by-end-of-2027-be-finds",
-            "published_at": "2026-11-03T11:49:45+01:00",
-            "published_budapest": "2026. november 3., 11:49"
-          }
+          "headline": null
         },
         {
           "ticker": "DD",
           "name": "DuPont",
           "change_pct": 8.61,
-          "headline": null
+          "headline": {
+            "title": "DuPont raises annual profit forecasts, sees upbeat Q4 on healthcare, aerospace strength",
+            "source": "Reuters",
+            "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPR1B5emZqYVk2MXktM1FJMzg4bElzdUlxaXVOT2d2bmd4dDVGZWh6ZmlfdEhoMUdJcl8zUEdaY1FTNHFiMWFRdEhaM1F2Mk1tLUdyU0F0WFJ2dm0wU3RmMTRxQ1oyQnFiUkZ5cEstNV85d2JTWjgzU0xsOGhMTVQ5QjhNVk85OGZwOU5aVng0c3ZVWHQxRFFXTENudnRfaG81czB4b1Nyc2ZxQVdLbVR4UWhTMHF1SnAxNmN2Zw?oc=5",
+            "published_at": "2026-11-03T16:07:55+01:00",
+            "published_budapest": "2026. november 3., 16:07"
+          }
         },
         {
           "ticker": "RVTY",
@@ -67265,7 +67277,7 @@
         "id": "cnbc_top",
         "name": "CNBC",
         "status": "ok",
-        "items": 30,
+        "items": 29,
         "error": null,
         "note": null
       },
@@ -67273,7 +67285,7 @@
         "id": "cnbc_earnings",
         "name": "CNBC",
         "status": "ok",
-        "items": 14,
+        "items": 15,
         "error": null,
         "note": null
       },
@@ -67297,7 +67309,7 @@
         "id": "bloomberg_markets",
         "name": "Bloomberg",
         "status": "ok",
-        "items": 20,
+        "items": 19,
         "error": null,
         "note": null
       },
@@ -67313,7 +67325,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 72,
+        "items": 74,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
