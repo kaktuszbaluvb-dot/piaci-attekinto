@@ -1086,6 +1086,16 @@ section { margin-bottom: 56px; scroll-margin-top: 76px; }
 
 .footer-col { min-width: 0; }
 
+.footer-logo-link {
+  display: inline-block;
+  line-height: 0;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.footer-logo-link:hover .footer-logo,
+.footer-logo-link:focus-visible .footer-logo { opacity: 0.78; }
+
 .footer-logo {
   height: 104px;
   width: auto;
