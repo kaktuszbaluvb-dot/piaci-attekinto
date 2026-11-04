@@ -4,7 +4,7 @@ Egyoldalas, statikus műszerfal részvénykereskedőknek. A célja, hogy egy pil
 
 Az oldal tetején a kereskedési pontszám áll, alatta a Nasdaq trendszűrő és a fő indexek, majd a piaci szélesség, a volatilitás és a hangulat, a kamatok és a hitelkockázat, a szektorok, végül a napi hírek.
 
-Tájékoztató jellegű, nem befektetési tanács. Az adatok késleltetettek, harmadik féltől származnak, és hibát tartalmazhatnak. Kereskedés előtt az elsődleges forrás a mérvadó.
+Az oldalon szereplő adatok tájékoztató jellegűek, nem minősülnek befektetési tanácsnak. Az adatok késleltetettek, harmadik féltől származnak, és hibát tartalmazhatnak. Kereskedés előtt az elsődleges forrás a mérvadó.
 
 ## Mit jelent az egyes mutató
 

@@ -19,9 +19,9 @@
       } catch (e) {}
     })();
   </script>
-  <title>Piaci áttekintő · Stocksharksacademy</title>
+  <title>Piaci áttekintő · TradeMe</title>
   <meta name="description" content="Kereskedési pontszám, Nasdaq trendszűrő, szélesség, hangulat, kamatok, szektorok és a nap eseményei. Ingyenes, kulcs nélküli adatokból.">
-  <meta property="og:title" content="Piaci áttekintő · Stocksharksacademy">
+  <meta property="og:title" content="Piaci áttekintő · TradeMe">
   <meta property="og:description" content="Kereskedési pontszám, Nasdaq trendszűrő, szélesség, hangulat, kamatok, szektorok és a nap eseményei.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="hu_HU">
@@ -37,10 +37,10 @@
   <header class="top">
     <div class="top-inner">
       <a class="brand" href="#pontszam">
-        <img class="logo logo-light" src="assets/brand/logo-light.webp" srcset="assets/brand/logo-light.webp 1x, assets/brand/logo-light@2x.webp 2x" width="24" height="36" alt="">
-        <img class="logo logo-dark" src="assets/brand/logo-dark.webp" srcset="assets/brand/logo-dark.webp 1x, assets/brand/logo-dark@2x.webp 2x" width="24" height="36" alt="">
+        <img class="logo logo-light" src="assets/brand/logo-light.webp" srcset="assets/brand/logo-light.webp 1x, assets/brand/logo-light@2x.webp 2x" width="45" height="36" alt="">
+        <img class="logo logo-dark" src="assets/brand/logo-dark.webp" srcset="assets/brand/logo-dark.webp 1x, assets/brand/logo-dark@2x.webp 2x" width="45" height="36" alt="">
         <span class="brand-text">
-          <span class="brand-kicker">Stocksharksacademy</span>
+          <span class="brand-kicker">TradeMe</span>
           <span class="brand-name">Piaci áttekintő</span>
         </span>
       </a>
@@ -74,9 +74,29 @@
     <p class="loading">A műszerfal betöltése…</p>
   </main>
   <footer class="site-footer">
-    <p class="disclaimer">Tájékoztató jellegű, nem befektetési tanács.</p>
-    <p id="footer-updated" class="footer-line"></p>
-    <p class="footer-line">Adatforrások: Yahoo Finance, Budapesti Értéktőzsde, Wikipedia, FRED, az amerikai pénzügyminisztérium hozamgörbéje, CNN Fear &amp; Greed, AAII. Hírek: CNBC, MarketWatch, Bloomberg, Reuters.</p>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <a class="footer-logo-link" href="https://trademe.hu" target="_blank" rel="noopener" aria-label="TradeMe">
+          <img class="footer-logo footer-logo-light" src="assets/brand/logo-stack-light.webp" width="96" height="101" alt="">
+          <img class="footer-logo footer-logo-dark" src="assets/brand/logo-stack-dark.webp" width="96" height="101" alt="">
+        </a>
+        <p class="disclaimer">Az oldalon szereplő adatok tájékoztató jellegűek, nem minősülnek befektetési tanácsnak.</p>
+        <p id="footer-updated" class="footer-line"></p>
+        <p class="footer-line">Adatforrások: Yahoo Finance, Budapesti Értéktőzsde, Wikipedia, FRED, az amerikai pénzügyminisztérium hozamgörbéje, CNN Fear &amp; Greed, AAII. Hírek: CNBC, MarketWatch, Bloomberg, Reuters.</p>
+      </div>
+      <div class="brokers">
+        <p class="brokers-label">Brókerek, amiket használok</p>
+        <div class="broker-row">
+          <a class="broker-link" href="https://www.interactivebrokers.com/referral/balazs561" rel="sponsored noopener" target="_blank">
+            <img src="assets/brokers/interactive-brokers.svg" alt="Interactive Brokers" height="30">
+          </a>
+          <a class="broker-link" href="https://lightyear.com/hu-hu/profile/bal%C3%A1zs846" rel="sponsored noopener" target="_blank">
+            <img src="assets/brokers/lightyear.svg" alt="Lightyear" height="30">
+          </a>
+        </div>
+        <p class="brokers-note">Ajánlói linkek</p>
+      </div>
+    </div>
   </footer>
   <script src="vendor/chart.umd.min.js"></script>
   <script src="js/app.js"></script>
