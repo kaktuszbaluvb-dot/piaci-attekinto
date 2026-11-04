@@ -8,10 +8,14 @@ ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "web" / "index.html"
 
 ASSETS = (
+    "assets/brand/logo-stack-light.webp",
+    "assets/brand/logo-stack-dark.webp",
     "assets/brand/logo-light@2x.webp",
     "assets/brand/logo-dark@2x.webp",
     "assets/brand/logo-light.webp",
     "assets/brand/logo-dark.webp",
+    "assets/brokers/interactive-brokers.svg",
+    "assets/brokers/lightyear.svg",
     "assets/brand/apple-touch-icon.png",
     "assets/brand/favicon-64.png",
     "assets/brand/favicon-32.png",

@@ -150,10 +150,10 @@ a:hover { color: var(--accent); }
 [data-theme="dark"] .logo-dark { display: block; }
 
 .brand-kicker {
-  color: var(--faint);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
   line-height: 1.1;
 }
 
@@ -1068,9 +1068,65 @@ section { margin-bottom: 56px; scroll-margin-top: 76px; }
 .empty { color: var(--muted); padding: 8px 4px 12px; }
 
 .site-footer {
-  padding: 8px 0 40px;
+  margin-top: 8px;
+  padding: 28px 0 40px;
+  border-top: 1px solid var(--line);
   color: var(--faint);
   font-size: 13px;
+}
+
+.footer-logo {
+  height: 72px;
+  width: auto;
+  display: block;
+}
+
+.footer-logo-dark { display: none; }
+[data-theme="dark"] .footer-logo-light { display: none; }
+[data-theme="dark"] .footer-logo-dark { display: block; }
+
+.brokers { margin: 18px 0 20px; }
+
+.brokers-label {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.broker-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.broker-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  text-decoration: none;
+}
+
+.broker-link:hover,
+.broker-link:focus-visible { border-color: var(--line-strong); }
+
+.broker-link img {
+  height: 16px;
+  width: auto;
+  display: block;
+}
+
+.brokers-note {
+  margin: 8px 0 0;
+  color: var(--faint);
+  font-size: 11px;
 }
 
 .disclaimer {
