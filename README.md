@@ -129,8 +129,8 @@ A munkafolyamat fájljának a `main` ágon kell lennie, különben az ütemezés
    Settings → Pages → Build and deployment → Source: **GitHub Actions**.
 4. **Indítsd el kézzel az első futást.**  
    Actions → **Adatfrissítés és közzététel** → Run workflow → Branch: `main` → Run workflow.
-5. Az oldal címe: `https://<felhasználónév>.github.io/piaci-attekinto/`  
-   Ennek a repónak várhatóan: <https://kaktuszbaluvb-dot.github.io/piaci-attekinto/>
+5. Az oldal címe: <https://piac.trademe.hu/>  
+   A korábbi cím, <https://kaktuszbaluvb-dot.github.io/piaci-attekinto/>, a saját domainre irányít át. A `web/CNAME` fájl a szándékot rögzíti; a domaint a Pages beállításaiban kell megadni.
 
 A közzététel a css, js és vendor fájlok címéhez egy rövid commit-azonosítót ír (`?v=`), és a JSON-t a böngésző nem tárolja. Így egy új felület nem keveredik a régi, gyorsítótárazott stílussal.
 
