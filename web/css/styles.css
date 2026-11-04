@@ -115,7 +115,7 @@ a:hover { color: var(--accent); }
   border-bottom: 1px solid var(--line);
 }
 
-.top-inner, .site-footer, #app {
+.top-inner, .footer-inner, #app {
   width: min(1120px, calc(100% - 48px));
   margin: 0 auto;
 }
@@ -1068,15 +1068,26 @@ section { margin-bottom: 56px; scroll-margin-top: 76px; }
 .empty { color: var(--muted); padding: 8px 4px 12px; }
 
 .site-footer {
-  margin-top: 8px;
-  padding: 28px 0 40px;
+  width: 100%;
+  margin-top: 36px;
+  padding: 40px 0 48px;
   border-top: 1px solid var(--line);
+  background: var(--card);
   color: var(--faint);
   font-size: 13px;
 }
 
+.footer-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 32px 48px;
+  align-items: start;
+}
+
+.footer-col { min-width: 0; }
+
 .footer-logo {
-  height: 72px;
+  height: 104px;
   width: auto;
   display: block;
 }
@@ -1085,7 +1096,7 @@ section { margin-bottom: 56px; scroll-margin-top: 76px; }
 [data-theme="dark"] .footer-logo-light { display: none; }
 [data-theme="dark"] .footer-logo-dark { display: block; }
 
-.brokers { margin: 18px 0 20px; }
+.brokers { margin: 4px 0 0; justify-self: end; max-width: 420px; }
 
 .brokers-label {
   margin: 0 0 8px;
@@ -1130,12 +1141,13 @@ section { margin-bottom: 56px; scroll-margin-top: 76px; }
 }
 
 .disclaimer {
+  margin: 16px 0 0;
   color: var(--muted);
   font-size: 13px;
   font-weight: 600;
 }
 
-.footer-line { margin-top: 6px; max-width: 78ch; }
+.footer-line { margin-top: 6px; max-width: 62ch; }
 
 @media (max-width: 1100px) {
   .grid-4, .grid-quotes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1159,7 +1171,11 @@ section { margin-bottom: 56px; scroll-margin-top: 76px; }
 }
 
 @media (max-width: 720px) {
-  .top-inner, .site-footer, #app { width: min(1120px, calc(100% - 28px)); }
+  .top-inner, .footer-inner, #app { width: min(1120px, calc(100% - 28px)); }
+  .footer-inner { grid-template-columns: 1fr; gap: 22px; }
+  .brokers { justify-self: start; margin-top: 0; }
+  .site-footer { margin-top: 28px; padding: 28px 0 36px; }
+  .footer-logo { height: 88px; }
   .updated { text-align: left; }
   .nav { flex-wrap: wrap; overflow: visible; }
   .grid-4, .grid-3, .grid-quotes, .yield-row { grid-template-columns: minmax(0, 1fr); }

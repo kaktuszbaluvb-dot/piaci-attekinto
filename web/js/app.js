@@ -1602,7 +1602,7 @@ function renderHeader(meta) {
     <p class="stamp">${esc(stamp)} <span>· piaci nap ${formatDay(meta.market_date)}</span></p>`;
   const footer = document.getElementById("footer-updated");
   if (footer) {
-    footer.textContent = `Utolsó frissítés: ${stamp} (${meta.timezone || "Europe/Budapest"}). Piaci nap: ${formatDay(meta.market_date)}.`;
+    footer.textContent = `Utolsó frissítés: ${stamp} (${meta.timezone || "Europe/Budapest"}). Piaci nap: ${formatDay(meta.market_date)}`;
   }
 }
 
