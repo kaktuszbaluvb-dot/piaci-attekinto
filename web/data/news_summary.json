@@ -1,1 +1,47 @@
-{"date":"2026-11-05","updated_at":"2026-11-05T06:45:00+01:00","headline":"A Demokraták félidős választási győzelme és az olajár közel 9%-os zuhanása után a Dow 3%-ot emelkedett szerdán, a Nasdaq 1,44%-ot, miközben az AI-infrastruktúrához kötődő részvények gyengék maradtak.","items":[{"title":"Wall Street ralival reagált a félidős választások eredményére","summary":"A Demokraták mindkét házban többséget szereztek, ami csökkentette a politikai bizonytalanságot. A Dow 3,03%-kal 53 356,12 pontra, az S&P 500 1,58%-kal 7688,62 pontra, a Nasdaq Composite 1,44%-kal 25 736,51 pontra emelkedett; a Dow napi emelkedése 2025 áprilisa óta a legnagyobb.","impact":"pozitív","tickers":["^DJI","^GSPC","^IXIC"],"source":"CNBC","url":"https://www.cnbc.com/2026/11/03/stock-market-today-live-updates.html"},{"title":"Az olaj szerdán közel 9%-ot esett, a heti visszaesés 2020 áprilisa óta a legnagyobb lehet","summary":"A Brent 94,62 dolláron zárt, nagyjából 9%-kal alacsonyabban, miután Trump elismerte, hogy az iráni háború szerepet játszott pártja vereségében. A Brent a héten eddig mintegy 20%-ot esett, az energiaszektor az S&P 500-on 4,8%-ot gyengült.","impact":"semleges","tickers":["BZ=F","CL=F","XLE"],"source":"Reuters","url":"https://live.euronext.com/en/financial-news/world-shares-advance-democrats-victory-eases-political-uncertainty"},{"title":"Az AI-infrastruktúra részvényei gyengék, a nagy felhőszolgáltatók erősödtek","summary":"Az adatközpont-moratóriumot ígérő demokrata jelöltek texasi és georgiai győzelme miatt a befektetők szigorúbb AI-szabályozástól tartanak. Az Nvidia a nap végén 3%-ot esett, az adatközpont-üzemeltetők (IREN, Hut 8) a nap folyamán két számjegyű mínuszban jártak, az Amazon (+6,2%) és az Alphabet (+3,8%) viszont emelkedett.","impact":"negatív","tickers":["NVDA","AMZN","GOOGL","IREN","HUT"],"source":"Reuters / CNBC","url":"https://www.brecorder.com/news/40447430/wall-street-rallies-after-democrats-win-congress"},{"title":"Esett a hozam és a dollár, az arany 3,5%-ot emelkedett","summary":"Az amerikai 10 éves hozam 6,6 bázisponttal 4,88%-ra csökkent, az euró 1,1231 dollárra erősödött. Az arany 3,49%-kal 4065,80 dollárra emelkedett, a bitcoin 3%-kal 80 165 dollár fölé ment.","impact":"pozitív","tickers":["^TNX","GC=F","EURUSD=X","BTC-USD"],"source":"Reuters","url":"https://live.euronext.com/en/financial-news/world-shares-advance-democrats-victory-eases-political-uncertainty"},{"title":"Az európai részvények kéthavi csúcsra emelkedtek, csütörtökön kamatdöntést hoz a Bank of England","summary":"A STOXX 600 1,82%-kal emelkedett, a német állampapírhozam két hónapos mélyponton áll. A Bank of England csütörtökön dönt a kamatról; emelés esetén az három éven belül az első lenne.","impact":"pozitív","tickers":["^STOXX","GBPUSD=X"],"source":"Reuters","url":"https://za.investing.com/news/economy-news/trading-day-oil-tanks-stocks-leap-on-us-midterms-4552205"}]}
+{
+  "date": "2026-11-06",
+  "updated_at": "2026-11-06T06:45:00+01:00",
+  "headline": "A Nasdaq korrekcióba esett az AI-részvények csütörtöki zuhanása után: a Composite 5,5%-ot, az S&P 500 4,4%-ot esett, miközben a Bank of England három év után először emelt kamatot.",
+  "items": [
+    {
+      "title": "Wall Street zuhant: a Nasdaq korrekcióba került az AI-eladás miatt",
+      "summary": "Csütörtökön a Nasdaq Composite 5,5%-ot, az S&P 500 4,4%-ot, a Dow pedig mintegy 3,4%-ot (több mint 1800 pontot) esett — 2025 áprilisa óta a legrosszabb napjuk. Az AI-infrastruktúrához kötődő részvények vezették a zuhanást, miután a demokrata félidős győzelem miatt a befektetők szigorúbb adatközpont-szabályozástól tartanak; a „Magnificent Seven” több mint 1000 milliárd dollár piaci értéket vesztett, az Nvidia több mint 9%-ot esett.",
+      "impact": "negatív",
+      "tickers": ["^IXIC", "^GSPC", "^DJI", "NVDA", "AMD", "MU"],
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/05/stock-market-selloff-ai-fears.html"
+    },
+    {
+      "title": "Ázsia követi a tech-eladást: a Nikkei medvepiaci tartományba esett",
+      "summary": "Péntek reggel a japán Nikkei 225 mintegy 5,9%-ot gyengült, és több mint 20%-kal került a júniusi csúcs alá (medvepiac). Dél-Koreában a Kospi több mint 6%-ot zuhant, a kereskedést átmenetileg felfüggesztették; a TSMC, a SoftBank és a dél-koreai chipgyártók erős eladási nyomás alá kerültek.",
+      "impact": "negatív",
+      "tickers": ["^N225", "^KS11", "TSM"],
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/05/stock-market-today-live-updates.html"
+    },
+    {
+      "title": "A Bank of England 4%-ra emelte a kamatot, további emelés is szóba jöhet",
+      "summary": "Az MPC 8–1 arányban 25 bázisponttal 4,00%-ra emelte a Bank Rate-et — ez 2023 augusztusa óta az első emelés. A brit CPI szeptemberben 3,5% volt, a jegybank szerint középtávon akár 5% körül is tetőzhet; Bailey kormányzó szerint, ha a közel-keleti konfliktus nem oldódik meg, ez valószínűleg nem az utolsó emelés.",
+      "impact": "semleges",
+      "tickers": ["GBPUSD=X", "^FTSE"],
+      "source": "Bank of England",
+      "url": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/november-2026"
+    },
+    {
+      "title": "A Fed decemberi kamatemelési esélye ~70%-ra csökkent, pénteken jön a foglalkoztatási adat",
+      "summary": "A részvénypiaci menekülés után a 2 éves amerikai hozam mintegy 10 bázisponttal 4,47%-ra, a 10 éves hozam körülbelül 4,84%-ra esett. A fed funds futures szerint a decemberi 25 bázispontos emelés esélye kb. 70%-ra csökkent (szerdán még 80% felett volt). Pénteken jön az októberi nonfarm payrolls; a heti munkanélküli-segélykérelmek 189 ezerre csökkentek.",
+      "impact": "semleges",
+      "tickers": ["^TNX", "DX-Y.NYB"],
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/06/dollar-holds-yen-gains-as-equity-rout-saps-risk-appetite-ahead-of-payrolls.html"
+    },
+    {
+      "title": "Az olaj visszapattant: a Brent közel 4%-kal 98,29 dollárra emelkedett",
+      "summary": "A Brent 3,88%-kal 98,29 dollárra, a WTI 2,72%-kal 90,52 dollárra zárt csütörtökön, miután szerdán mindkét benchmark több mint 8%-ot esett. Az újabb tartályhajó-támadások és a közel-keleti ellátási kockázatok ellensúlyozták a diplomáciai reményeket a félidős választások után.",
+      "impact": "pozitív",
+      "tickers": ["BZ=F", "CL=F"],
+      "source": "Reuters / CNBC",
+      "url": "https://www.cnbc.com/2026/11/05/oil-falls-for-a-fourth-day-on-expectations-for-lower-risk-of-iran-war-escalation.html"
+    }
+  ]
+}
