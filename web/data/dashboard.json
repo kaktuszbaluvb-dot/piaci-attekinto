@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-06T06:38:29+01:00",
-    "generated_at_budapest": "2026. november 6., 06:38",
+    "generated_at": "2026-11-06T14:06:44+01:00",
+    "generated_at_budapest": "2026. november 6., 14:06",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-05",
     "price_period": "3y"
@@ -105,15 +105,15 @@
       {
         "id": "sentiment",
         "available": true,
-        "score": 39.9,
+        "score": 40.0,
         "reason": null,
-        "detail": "Fear & Greed 19,8: alap 30 + 0,5 × az index → 39,9.",
+        "detail": "Fear & Greed 19,9: alap 30 + 0,5 × az index → 40.",
         "inputs": {
-          "fear_greed": 19.8
+          "fear_greed": 19.9
         },
         "label": "Hangulat",
         "weight": 10,
-        "tone": "bad",
+        "tone": "warn",
         "effective_weight": 10.0,
         "stale": false
       }
@@ -657,7 +657,7 @@
         "breadth": 59.7,
         "volatility": 0.0,
         "credit": 76.1,
-        "sentiment": 39.9
+        "sentiment": 40.0
       }
     ],
     "error": "Régebbi adat: Hitelkockázat"
@@ -1463,7 +1463,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.4,
-        "spx50": 34.9,
+        "spx50": 35.1,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -4655,10 +4655,10 @@
     "vix": {
       "status": "ok",
       "source": "Yahoo Finance (^VIX)",
-      "as_of": "2026-11-05",
-      "value": 28.18,
-      "change": 11.57,
-      "change_pct": 69.66,
+      "as_of": "2026-11-06",
+      "value": 27.41,
+      "change": -0.77,
+      "change_pct": -2.73,
       "history": [
         {
           "date": "2023-10-30",
@@ -7699,6 +7699,10 @@
         {
           "date": "2026-11-05",
           "value": 28.18
+        },
+        {
+          "date": "2026-11-06",
+          "value": 27.41
         }
       ]
     },
@@ -12265,6 +12269,10 @@
           "vix": 28.18,
           "vix9d": 32.66,
           "vix3m": 25.55
+        },
+        {
+          "date": "2026-11-06",
+          "vix": 27.41
         }
       ]
     },
@@ -12272,7 +12280,7 @@
       "status": "ok",
       "source": "CNN Fear & Greed",
       "as_of": "2026-11-06",
-      "score": 19.8,
+      "score": 19.9,
       "rating": "extreme fear",
       "rating_hu": "extrém félelem",
       "previous_close": 19.9,
@@ -16052,12 +16060,12 @@
         },
         {
           "date": "2026-11-05",
-          "score": 19.8,
+          "score": 19.9,
           "rating": "extreme fear"
         },
         {
           "date": "2026-11-06",
-          "score": 19.8,
+          "score": 19.9,
           "rating": "extreme fear"
         }
       ]
@@ -16117,8 +16125,8 @@
     "put_call": {
       "status": "ok",
       "source": "CNN Fear & Greed put/call komponens (CBOE részvényopció, 5 napos átlag)",
-      "as_of": "2026-11-05",
-      "value": 0.873,
+      "as_of": "2026-11-06",
+      "value": 0.889,
       "history": [
         {
           "date": "2023-11-01",
@@ -19139,6 +19147,10 @@
         {
           "date": "2026-11-05",
           "value": 0.873
+        },
+        {
+          "date": "2026-11-06",
+          "value": 0.889
         }
       ]
     },
@@ -37546,14 +37558,14 @@
       "unit": "",
       "group": "eu",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-05",
-      "price": 26325.01,
-      "change": -112.66,
-      "change_pct": -0.43,
-      "dma50": 25570.6,
-      "dma200": 24920.44,
-      "dist50_pct": 2.95,
-      "dist200_pct": 5.64,
+      "as_of": "2026-11-06",
+      "price": 25701.28,
+      "change": -623.73,
+      "change_pct": -2.37,
+      "dma50": 25553.23,
+      "dma200": 24924.48,
+      "dist50_pct": 0.58,
+      "dist200_pct": 3.12,
       "history": [
         {
           "date": "2023-10-30",
@@ -40622,6 +40634,10 @@
         {
           "date": "2026-11-05",
           "close": 26325.01
+        },
+        {
+          "date": "2026-11-06",
+          "close": 25701.28
         }
       ]
     },
@@ -40634,19 +40650,15 @@
       "unit": "HUF",
       "group": "eu",
       "source": "Budapesti Értéktőzsde",
-      "as_of": "2026-11-04",
-      "price": 147607.45,
-      "change": 1532.02,
-      "change_pct": 1.05,
-      "dma50": 147011.24,
-      "dma200": 137306.88,
-      "dist50_pct": 0.41,
-      "dist200_pct": 7.5,
+      "as_of": "2026-11-05",
+      "price": 144484.17,
+      "change": -3123.29,
+      "change_pct": -2.12,
+      "dma50": 146885.82,
+      "dma200": 137422.89,
+      "dist50_pct": -1.64,
+      "dist200_pct": 5.14,
       "history": [
-        {
-          "date": "2023-03-23",
-          "close": 42906.06
-        },
         {
           "date": "2023-03-24",
           "close": 41818.92
@@ -44242,6 +44254,10 @@
         {
           "date": "2026-11-04",
           "close": 147607.45
+        },
+        {
+          "date": "2026-11-05",
+          "close": 144484.17
         }
       ]
     }
@@ -54304,13 +54320,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-06",
-      "price": 101.76,
-      "change": 0.21,
-      "change_pct": 0.21,
-      "dma50": 101.08,
+      "price": 102.05,
+      "change": 0.5,
+      "change_pct": 0.5,
+      "dma50": 101.09,
       "dma200": 99.7,
-      "dist50_pct": 0.68,
-      "dist200_pct": 2.07,
+      "dist50_pct": 0.96,
+      "dist200_pct": 2.36,
       "history": [
         {
           "date": "2023-11-01",
@@ -57346,7 +57362,7 @@
         },
         {
           "date": "2026-11-06",
-          "close": 101.76
+          "close": 102.05
         }
       ]
     },
@@ -57360,13 +57376,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-06",
-      "price": 4050.5,
-      "change": -63.0,
-      "change_pct": -1.53,
-      "dma50": 4229.93,
-      "dma200": 4501.37,
-      "dist50_pct": -4.24,
-      "dist200_pct": -10.02,
+      "price": 4071.7,
+      "change": -41.8,
+      "change_pct": -1.02,
+      "dma50": 4230.36,
+      "dma200": 4501.48,
+      "dist50_pct": -3.75,
+      "dist200_pct": -9.55,
       "history": [
         {
           "date": "2023-11-01",
@@ -60406,7 +60422,7 @@
         },
         {
           "date": "2026-11-06",
-          "close": 4050.5
+          "close": 4071.7
         }
       ]
     },
@@ -60420,13 +60436,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-06",
-      "price": 91.14,
-      "change": 0.62,
-      "change_pct": 0.68,
-      "dma50": 95.47,
-      "dma200": 87.16,
-      "dist50_pct": -4.54,
-      "dist200_pct": 4.57,
+      "price": 90.24,
+      "change": -0.28,
+      "change_pct": -0.31,
+      "dma50": 95.45,
+      "dma200": 87.15,
+      "dist50_pct": -5.46,
+      "dist200_pct": 3.54,
       "history": [
         {
           "date": "2023-11-01",
@@ -63462,7 +63478,7 @@
         },
         {
           "date": "2026-11-06",
-          "close": 91.14
+          "close": 90.24
         }
       ]
     },
@@ -63476,13 +63492,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-06",
-      "price": 75543.0,
-      "change": -4862.0,
-      "change_pct": -6.05,
-      "dma50": 81980.0,
-      "dma200": 73189.0,
-      "dist50_pct": -7.85,
-      "dist200_pct": 3.22,
+      "price": 75868.0,
+      "change": -74.0,
+      "change_pct": -0.1,
+      "dma50": 81977.0,
+      "dma200": 73191.0,
+      "dist50_pct": -7.45,
+      "dist200_pct": 3.66,
       "history": [
         {
           "date": "2024-05-21",
@@ -67078,11 +67094,11 @@
         },
         {
           "date": "2026-11-05",
-          "close": 79588.0
+          "close": 75942.0
         },
         {
           "date": "2026-11-06",
-          "close": 75543.0
+          "close": 75868.0
         }
       ]
     }
@@ -67388,7 +67404,7 @@
         "id": "cnbc_top",
         "name": "CNBC",
         "status": "ok",
-        "items": 30,
+        "items": 29,
         "error": null,
         "note": null
       },
@@ -67396,7 +67412,7 @@
         "id": "cnbc_earnings",
         "name": "CNBC",
         "status": "ok",
-        "items": 14,
+        "items": 9,
         "error": null,
         "note": null
       },
@@ -67404,7 +67420,7 @@
         "id": "cnbc_economy",
         "name": "CNBC",
         "status": "ok",
-        "items": 5,
+        "items": 4,
         "error": null,
         "note": null
       },
@@ -67428,7 +67444,7 @@
         "id": "bloomberg_econ",
         "name": "Bloomberg",
         "status": "ok",
-        "items": 19,
+        "items": 20,
         "error": null,
         "note": null
       },
@@ -67436,7 +67452,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 74,
+        "items": 63,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
