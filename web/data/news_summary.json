@@ -1,47 +1,47 @@
 {
-  "date": "2026-11-06",
-  "updated_at": "2026-11-06T06:45:00+01:00",
-  "headline": "A Nasdaq korrekcióba esett az AI-részvények csütörtöki zuhanása után: a Composite 5,5%-ot, az S&P 500 4,4%-ot esett, miközben a Bank of England három év után először emelt kamatot.",
+  "date": "2026-11-09",
+  "updated_at": "2026-11-09T05:45:00+01:00",
+  "headline": "A tech-szektor pénteken részben visszapattant, de mindhárom fő amerikai index negyedik hete zárt mínuszban; a hétvégén az Nvidia vezérigazgatója körüli vizsgálat került a figyelem középpontjába, a héten pedig az inflációs adatok jönnek.",
   "items": [
     {
-      "title": "Wall Street zuhant: a Nasdaq korrekcióba került az AI-eladás miatt",
-      "summary": "Csütörtökön a Nasdaq Composite 5,5%-ot, az S&P 500 4,4%-ot, a Dow pedig mintegy 3,4%-ot (több mint 1800 pontot) esett — 2025 áprilisa óta a legrosszabb napjuk. Az AI-infrastruktúrához kötődő részvények vezették a zuhanást, miután a demokrata félidős győzelem miatt a befektetők szigorúbb adatközpont-szabályozástól tartanak; a „Magnificent Seven” több mint 1000 milliárd dollár piaci értéket vesztett, az Nvidia több mint 9%-ot esett.",
-      "impact": "negatív",
-      "tickers": ["^IXIC", "^GSPC", "^DJI", "NVDA", "AMD", "MU"],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/05/stock-market-selloff-ai-fears.html"
-    },
-    {
-      "title": "Ázsia követi a tech-eladást: a Nikkei medvepiaci tartományba esett",
-      "summary": "Péntek reggel a japán Nikkei 225 mintegy 5,9%-ot gyengült, és több mint 20%-kal került a júniusi csúcs alá (medvepiac). Dél-Koreában a Kospi több mint 6%-ot zuhant, a kereskedést átmenetileg felfüggesztették; a TSMC, a SoftBank és a dél-koreai chipgyártók erős eladási nyomás alá kerültek.",
-      "impact": "negatív",
-      "tickers": ["^N225", "^KS11", "TSM"],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/05/stock-market-today-live-updates.html"
-    },
-    {
-      "title": "A Bank of England 4%-ra emelte a kamatot, további emelés is szóba jöhet",
-      "summary": "Az MPC 8–1 arányban 25 bázisponttal 4,00%-ra emelte a Bank Rate-et — ez 2023 augusztusa óta az első emelés. A brit CPI szeptemberben 3,5% volt, a jegybank szerint középtávon akár 5% körül is tetőzhet; Bailey kormányzó szerint, ha a közel-keleti konfliktus nem oldódik meg, ez valószínűleg nem az utolsó emelés.",
+      "title": "Vegyes pénteki zárás: a Nasdaq 1,1%-ot emelkedett, de a hét veszteséggel zárult",
+      "summary": "Pénteken a Nasdaq Composite 1,09%-kal 24 579,42 pontra, az S&P 500 0,31%-kal 7376,86 pontra emelkedett, a Dow 0,46%-ot esett 51 285,73 pontra. A chipek vezették a visszapattanást (AMD +11%, Micron +5%, Nvidia +2,8%), ám a héten az S&P 500 2,68%-ot, a Nasdaq 3,37%-ot veszített, a VIX 25,64-re csökkent.",
       "impact": "semleges",
-      "tickers": ["GBPUSD=X", "^FTSE"],
-      "source": "Bank of England",
-      "url": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/november-2026"
+      "tickers": ["^IXIC", "^GSPC", "^DJI", "AMD", "MU", "^VIX"],
+      "source": "MarketWatch",
+      "url": "https://www.marketwatch.com/story/u-s-stocks-mixed-after-jobs-data-muted-ai-rebound-e881ebaa"
     },
     {
-      "title": "A Fed decemberi kamatemelési esélye ~70%-ra csökkent, pénteken jön a foglalkoztatási adat",
-      "summary": "A részvénypiaci menekülés után a 2 éves amerikai hozam mintegy 10 bázisponttal 4,47%-ra, a 10 éves hozam körülbelül 4,84%-ra esett. A fed funds futures szerint a decemberi 25 bázispontos emelés esélye kb. 70%-ra csökkent (szerdán még 80% felett volt). Pénteken jön az októberi nonfarm payrolls; a heti munkanélküli-segélykérelmek 189 ezerre csökkentek.",
-      "impact": "semleges",
+      "title": "Erős októberi munkaerőpiac: 165 ezer új munkahely a várt 59 ezer helyett",
+      "summary": "A nonfarm payrolls 165 ezerrel nőtt, a munkanélküliségi ráta 4,1%-ra csökkent, az órabérek havi 0,4%-kal, éves alapon 3,1%-kal emelkedtek; az augusztusi és szeptemberi adatot is felfelé módosították. A CME FedWatch szerint a decemberi 25 bázispontos Fed-kamatemelés esélye 76,8%-ra nőtt, a 2 éves hozam 4,52%-ra, a 10 éves 4,86%-ra emelkedett.",
+      "impact": "negatív",
       "tickers": ["^TNX", "DX-Y.NYB"],
       "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/06/dollar-holds-yen-gains-as-equity-rout-saps-risk-appetite-ahead-of-payrolls.html"
+      "url": "https://www.cnbc.com/2026/11/06/jobs-report-october-2026.html"
     },
     {
-      "title": "Az olaj visszapattant: a Brent közel 4%-kal 98,29 dollárra emelkedett",
-      "summary": "A Brent 3,88%-kal 98,29 dollárra, a WTI 2,72%-kal 90,52 dollárra zárt csütörtökön, miután szerdán mindkét benchmark több mint 8%-ot esett. Az újabb tartályhajó-támadások és a közel-keleti ellátási kockázatok ellensúlyozták a diplomáciai reményeket a félidős választások után.",
+      "title": "Független vizsgálatot indít az Nvidia igazgatótanácsa Jensen Huang ügyében",
+      "summary": "Az Nvidia igazgatótanácsa vasárnap bejelentette, hogy független igazgatókból álló bizottság külső jogászokkal vizsgálja azokat a jelentéseket, amelyek szerint Jensen Huang vezérigazgató egy külföldi hírszerzési akció célpontja volt; a testület szerint nincs jele annak, hogy nemzetbiztonsági vagy céges titkok sérültek volna. Az Nvidia-részvény a vasárnap esti tőzsdén kívüli kereskedésben mintegy 3,5%-ot esett.",
+      "impact": "negatív",
+      "tickers": ["NVDA"],
+      "source": "AP",
+      "url": "https://apnews.com/article/nvidia-jensen-huang-investigation-chinese-spy-68839e7ca6ba2b121529f7e475e501d6"
+    },
+    {
+      "title": "Berkshire Hathaway: csökkenő operatív profit, rekord közeli készpénz, 9,6 milliárd dolláros visszavásárlás",
+      "summary": "A Berkshire harmadik negyedéves operatív eredménye 5,8%-kal 12,705 milliárd dollárra csökkent, főként a biztosítási üzletág gyengülése miatt (underwriting −43%). A társaság mintegy 9,6 milliárd dollárért vásárolt vissza saját részvényt, készpénzállománya 377,4 milliárd dollárra nőtt.",
+      "impact": "semleges",
+      "tickers": ["BRK-B"],
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/07/berkshire-hathaway-q3-2026-earnings-buybacks.html"
+    },
+    {
+      "title": "Ázsia erősödéssel nyitja a hetet, a héten az amerikai inflációs adatok jönnek",
+      "summary": "Hétfőn a tajvani index közel 5%-kal, a Nikkei 225 3,25%-kal emelkedett a TSMC és a Foxconn vezetésével; Kínában az októberi termelői árindex 5,7%-ra gyorsult, a fogyasztói infláció a vártnál lassabb, 0,7% lett. Az amerikai határidős indexek kismértékben emelkedtek; kedden az októberi CPI, pénteken a PPI érkezik, a héten a CoreWeave, a Cisco és az Applied Materials is jelent.",
       "impact": "pozitív",
-      "tickers": ["BZ=F", "CL=F"],
-      "source": "Reuters / CNBC",
-      "url": "https://www.cnbc.com/2026/11/05/oil-falls-for-a-fourth-day-on-expectations-for-lower-risk-of-iran-war-escalation.html"
+      "tickers": ["^TWII", "^N225", "TSM", "ES=F", "NQ=F"],
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/08/stock-market-today-live-updates.html"
     }
   ]
 }
