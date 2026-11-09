@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-07T04:02:26+01:00",
-    "generated_at_budapest": "2026. november 7., 04:02",
+    "generated_at": "2026-11-09T05:38:12+01:00",
+    "generated_at_budapest": "2026. november 9., 05:38",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-06",
     "price_period": "3y"
@@ -48,11 +48,11 @@
         "available": true,
         "score": 58.3,
         "reason": null,
-        "detail": "Átlag 52,9% → 58,3 pont (15% → 0, 80% → 100). S&P 500 50 napos 62,7% · S&P 500 200 napos 58,8% · Nasdaq-100 50 napos 46,5% · Nasdaq-100 200 napos 43,4%.",
+        "detail": "Átlag 52,9% → 58,3 pont (15% → 0, 80% → 100). S&P 500 50 napos 62,9% · S&P 500 200 napos 58,8% · Nasdaq-100 50 napos 46,5% · Nasdaq-100 200 napos 43,4%.",
         "inputs": {
           "average": 52.9,
           "missing_series": [],
-          "spx50": 62.7,
+          "spx50": 62.9,
           "spx200": 58.8,
           "ndx50": 46.5,
           "ndx200": 43.4
@@ -456,7 +456,7 @@
         "date": "2026-10-07",
         "score": 79,
         "nasdaq": 100.0,
-        "breadth": 50.2,
+        "breadth": 50.3,
         "volatility": 99.5,
         "credit": 63.7,
         "sentiment": 52.4
@@ -492,7 +492,7 @@
         "date": "2026-10-13",
         "score": 59,
         "nasdaq": 50.0,
-        "breadth": 55.1,
+        "breadth": 55.2,
         "volatility": 98.2,
         "credit": 62.1,
         "sentiment": 52.8
@@ -609,7 +609,7 @@
         "date": "2026-10-30",
         "score": 39,
         "nasdaq": 0.0,
-        "breadth": 63.4,
+        "breadth": 63.5,
         "volatility": 70.5,
         "credit": 76.1,
         "sentiment": 43.2
@@ -668,7 +668,7 @@
     "as_of": "2026-11-06",
     "name": "Nasdaq Composite",
     "ticker": "^IXIC",
-    "close": 24579.42,
+    "close": 24579.43,
     "averages": [
       {
         "id": "ema9",
@@ -732,7 +732,7 @@
     },
     "current": {
       "spx200": 58.8,
-      "spx50": 62.7,
+      "spx50": 62.9,
       "ndx200": 43.4,
       "ndx50": 46.5,
       "spx_n": 500,
@@ -1463,7 +1463,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.4,
-        "spx50": 34.9,
+        "spx50": 35.1,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -4465,7 +4465,7 @@
       },
       {
         "date": "2026-10-01",
-        "spx200": 44.0,
+        "spx200": 44.2,
         "spx50": 23.3,
         "ndx200": 55.6,
         "ndx50": 44.6
@@ -4480,7 +4480,7 @@
       {
         "date": "2026-10-05",
         "spx200": 47.8,
-        "spx50": 28.3,
+        "spx50": 28.5,
         "ndx200": 59.6,
         "ndx50": 48.5
       },
@@ -4494,7 +4494,7 @@
       {
         "date": "2026-10-07",
         "spx200": 47.2,
-        "spx50": 29.1,
+        "spx50": 29.5,
         "ndx200": 62.6,
         "ndx50": 51.5
       },
@@ -4514,14 +4514,14 @@
       },
       {
         "date": "2026-10-12",
-        "spx200": 52.2,
+        "spx200": 52.4,
         "spx50": 37.5,
         "ndx200": 63.6,
         "ndx50": 50.5
       },
       {
         "date": "2026-10-13",
-        "spx200": 51.6,
+        "spx200": 51.8,
         "spx50": 39.6,
         "ndx200": 63.6,
         "ndx50": 48.5
@@ -4529,7 +4529,7 @@
       {
         "date": "2026-10-14",
         "spx200": 51.2,
-        "spx50": 35.7,
+        "spx50": 35.9,
         "ndx200": 61.6,
         "ndx50": 40.6
       },
@@ -4549,7 +4549,7 @@
       },
       {
         "date": "2026-10-19",
-        "spx200": 51.6,
+        "spx200": 51.8,
         "spx50": 44.2,
         "ndx200": 57.6,
         "ndx50": 43.6
@@ -4571,7 +4571,7 @@
       {
         "date": "2026-10-22",
         "spx200": 60.0,
-        "spx50": 61.2,
+        "spx50": 61.4,
         "ndx200": 56.6,
         "ndx50": 50.5
       },
@@ -4605,7 +4605,7 @@
       },
       {
         "date": "2026-10-29",
-        "spx200": 65.2,
+        "spx200": 65.4,
         "spx50": 65.7,
         "ndx200": 64.6,
         "ndx50": 51.5
@@ -4613,20 +4613,20 @@
       {
         "date": "2026-10-30",
         "spx200": 61.6,
-        "spx50": 61.2,
+        "spx50": 61.4,
         "ndx200": 53.5,
         "ndx50": 48.5
       },
       {
         "date": "2026-11-02",
-        "spx200": 65.8,
+        "spx200": 66.0,
         "spx50": 66.9,
         "ndx200": 54.5,
         "ndx50": 49.5
       },
       {
         "date": "2026-11-03",
-        "spx200": 64.2,
+        "spx200": 64.4,
         "spx50": 66.3,
         "ndx200": 54.5,
         "ndx50": 48.5
@@ -4648,7 +4648,7 @@
       {
         "date": "2026-11-06",
         "spx200": 58.8,
-        "spx50": 62.7,
+        "spx50": 62.9,
         "ndx200": 43.4,
         "ndx50": 46.5
       }
@@ -28432,8 +28432,8 @@
       "group": "usa",
       "source": "Yahoo Finance",
       "as_of": "2026-11-06",
-      "price": 24579.42,
-      "change": 264.42,
+      "price": 24579.43,
+      "change": 264.43,
       "change_pct": 1.09,
       "dma50": 26457.82,
       "dma200": 25098.28,
@@ -31470,7 +31470,7 @@
         },
         {
           "date": "2026-11-06",
-          "close": 24579.42
+          "close": 24579.43
         }
       ]
     },
@@ -54356,14 +54356,14 @@
       "unit": "index",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-06",
-      "price": 102.28,
-      "change": 0.73,
-      "change_pct": 0.72,
-      "dma50": 101.09,
-      "dma200": 99.7,
-      "dist50_pct": 1.17,
-      "dist200_pct": 2.58,
+      "as_of": "2026-11-08",
+      "price": 102.15,
+      "change": -0.15,
+      "change_pct": -0.14,
+      "dma50": 101.14,
+      "dma200": 99.73,
+      "dist50_pct": 1.0,
+      "dist200_pct": 2.43,
       "history": [
         {
           "date": "2023-11-01",
@@ -57399,7 +57399,11 @@
         },
         {
           "date": "2026-11-06",
-          "close": 102.28
+          "close": 102.3
+        },
+        {
+          "date": "2026-11-08",
+          "close": 102.15
         }
       ]
     },
@@ -57412,14 +57416,14 @@
       "unit": "USD/uncia",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-06",
-      "price": 4079.5,
-      "change": -34.0,
-      "change_pct": -0.83,
-      "dma50": 4230.51,
-      "dma200": 4501.52,
-      "dist50_pct": -3.57,
-      "dist200_pct": -9.38,
+      "as_of": "2026-11-08",
+      "price": 4132.9,
+      "change": 58.0,
+      "change_pct": 1.42,
+      "dma50": 4222.48,
+      "dma200": 4497.26,
+      "dist50_pct": -2.12,
+      "dist200_pct": -8.1,
       "history": [
         {
           "date": "2023-11-01",
@@ -60459,7 +60463,11 @@
         },
         {
           "date": "2026-11-06",
-          "close": 4079.5
+          "close": 4074.9
+        },
+        {
+          "date": "2026-11-08",
+          "close": 4132.9
         }
       ]
     },
@@ -60472,14 +60480,14 @@
       "unit": "USD/hordó",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-06",
-      "price": 90.34,
-      "change": -0.18,
-      "change_pct": -0.2,
-      "dma50": 95.46,
-      "dma200": 87.15,
-      "dist50_pct": -5.36,
-      "dist200_pct": 3.65,
+      "as_of": "2026-11-08",
+      "price": 91.34,
+      "change": 0.51,
+      "change_pct": 0.56,
+      "dma50": 95.63,
+      "dma200": 87.31,
+      "dist50_pct": -4.48,
+      "dist200_pct": 4.62,
       "history": [
         {
           "date": "2023-11-01",
@@ -63515,7 +63523,11 @@
         },
         {
           "date": "2026-11-06",
-          "close": 90.34
+          "close": 90.83
+        },
+        {
+          "date": "2026-11-08",
+          "close": 91.34
         }
       ]
     },
@@ -63528,19 +63540,15 @@
       "unit": "USD",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-07",
-      "price": 75995.0,
-      "change": 52.0,
-      "change_pct": 0.07,
-      "dma50": 81980.0,
-      "dma200": 73192.0,
-      "dist50_pct": -7.3,
-      "dist200_pct": 3.83,
+      "as_of": "2026-11-09",
+      "price": 74996.0,
+      "change": -752.0,
+      "change_pct": -0.99,
+      "dma50": 81747.0,
+      "dma200": 73172.0,
+      "dist50_pct": -8.26,
+      "dist200_pct": 2.49,
       "history": [
-        {
-          "date": "2024-05-22",
-          "close": 69122.0
-        },
         {
           "date": "2024-05-23",
           "close": 67930.0
@@ -67131,11 +67139,15 @@
         },
         {
           "date": "2026-11-06",
-          "close": 75868.0
+          "close": 75747.0
         },
         {
           "date": "2026-11-07",
-          "close": 75995.0
+          "close": 75748.0
+        },
+        {
+          "date": "2026-11-09",
+          "close": 74996.0
         }
       ]
     }
@@ -67388,13 +67400,7 @@
           "ticker": "ABNB",
           "name": "Airbnb",
           "change_pct": 11.67,
-          "headline": {
-            "title": "Airbnb Surges 12% as Growth Accelerates and Outlook Rises | Closing Bell",
-            "source": "Bloomberg",
-            "url": "https://www.bloomberg.com/news/videos/2026-11-06/airbnb-surges-on-growth-outlook-closing-bell-video",
-            "published_at": "2026-11-06T22:32:56+01:00",
-            "published_budapest": "2026. november 6., 22:32"
-          }
+          "headline": null
         },
         {
           "ticker": "AMD",
@@ -67447,7 +67453,7 @@
         "id": "cnbc_top",
         "name": "CNBC",
         "status": "ok",
-        "items": 30,
+        "items": 21,
         "error": null,
         "note": null
       },
@@ -67455,7 +67461,7 @@
         "id": "cnbc_earnings",
         "name": "CNBC",
         "status": "ok",
-        "items": 9,
+        "items": 0,
         "error": null,
         "note": null
       },
@@ -67463,7 +67469,7 @@
         "id": "cnbc_economy",
         "name": "CNBC",
         "status": "ok",
-        "items": 5,
+        "items": 1,
         "error": null,
         "note": null
       },
@@ -67487,7 +67493,7 @@
         "id": "bloomberg_econ",
         "name": "Bloomberg",
         "status": "ok",
-        "items": 20,
+        "items": 3,
         "error": null,
         "note": null
       },
@@ -67495,7 +67501,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 64,
+        "items": 78,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
