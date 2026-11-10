@@ -1,47 +1,47 @@
 {
-  "date": "2026-11-09",
-  "updated_at": "2026-11-09T05:45:00+01:00",
-  "headline": "A tech-szektor pénteken részben visszapattant, de mindhárom fő amerikai index negyedik hete zárt mínuszban; a hétvégén az Nvidia vezérigazgatója körüli vizsgálat került a figyelem középpontjába, a héten pedig az inflációs adatok jönnek.",
+  "date": "2026-11-10",
+  "updated_at": "2026-11-10T05:45:00+01:00",
+  "headline": "Hétfőn a Wall Street áprilisi óta legerősebb napját zárta, az olaj meredek esése és a chipek visszapattanása húzta a piacot, miközben az Nvidia a vezérigazgatója körüli vizsgálat miatt esett; ma délután az októberi amerikai inflációs adat jön.",
   "items": [
     {
-      "title": "Vegyes pénteki zárás: a Nasdaq 1,1%-ot emelkedett, de a hét veszteséggel zárult",
-      "summary": "Pénteken a Nasdaq Composite 1,09%-kal 24 579,42 pontra, az S&P 500 0,31%-kal 7376,86 pontra emelkedett, a Dow 0,46%-ot esett 51 285,73 pontra. A chipek vezették a visszapattanást (AMD +11%, Micron +5%, Nvidia +2,8%), ám a héten az S&P 500 2,68%-ot, a Nasdaq 3,37%-ot veszített, a VIX 25,64-re csökkent.",
-      "impact": "semleges",
-      "tickers": ["^IXIC", "^GSPC", "^DJI", "AMD", "MU", "^VIX"],
-      "source": "MarketWatch",
-      "url": "https://www.marketwatch.com/story/u-s-stocks-mixed-after-jobs-data-muted-ai-rebound-e881ebaa"
+      "title": "Erős hétfői rali: az S&P 500 2,35%-kal, a Nasdaq 2,74%-kal emelkedett",
+      "summary": "A Dow 1104 ponttal (+2,15%) 52 389,75 pontra, az S&P 500 2,35%-kal 7549,94 pontra, a Nasdaq Composite 2,74%-kal 25 253,14 pontra emelkedett; az S&P 500 április 8. óta a legjobb napját zárta, a múlt heti, 2025 áprilisa óta legnagyobb heti esése után. A félvezetőindex 6,9%-ot ugrott (AMD +13,3%, Broadcom +8,8%), a Constellation Energy a vártnál jobb negyedéves eredmény után több mint 10%-ot emelkedett.",
+      "impact": "pozitív",
+      "tickers": ["^GSPC", "^IXIC", "^DJI", "^SOX", "AMD", "AVGO", "CEG"],
+      "source": "Reuters",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/wall-st-futures-rise-rough-103539344.html"
     },
     {
-      "title": "Erős októberi munkaerőpiac: 165 ezer új munkahely a várt 59 ezer helyett",
-      "summary": "A nonfarm payrolls 165 ezerrel nőtt, a munkanélküliségi ráta 4,1%-ra csökkent, az órabérek havi 0,4%-kal, éves alapon 3,1%-kal emelkedtek; az augusztusi és szeptemberi adatot is felfelé módosították. A CME FedWatch szerint a decemberi 25 bázispontos Fed-kamatemelés esélye 76,8%-ra nőtt, a 2 éves hozam 4,52%-ra, a 10 éves 4,86%-ra emelkedett.",
-      "impact": "negatív",
-      "tickers": ["^TNX", "DX-Y.NYB"],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/06/jobs-report-october-2026.html"
+      "title": "Közel 6%-ot esett a Brent, miután Trump valószínűtlennek nevezte az újabb Irán elleni csapásokat",
+      "summary": "Trump vasárnap azt mondta, nagyon valószínűtlen, hogy újabb támadást rendeljen el Irán ellen, amíg a háború lezárásáról szóló tárgyalások haladnak. A Brent 5,85%-kal 92,57 dollárra, a WTI 4,38%-kal 86,85 dollárra esett hordónként, ami enyhítette az inflációs aggodalmakat.",
+      "impact": "pozitív",
+      "tickers": ["BZ=F", "CL=F"],
+      "source": "Reuters",
+      "url": "https://live.euronext.com/en/financial-news/stocks-jump-oil-tumbles-nvidia-falls-amid-internal-probe"
     },
     {
-      "title": "Független vizsgálatot indít az Nvidia igazgatótanácsa Jensen Huang ügyében",
-      "summary": "Az Nvidia igazgatótanácsa vasárnap bejelentette, hogy független igazgatókból álló bizottság külső jogászokkal vizsgálja azokat a jelentéseket, amelyek szerint Jensen Huang vezérigazgató egy külföldi hírszerzési akció célpontja volt; a testület szerint nincs jele annak, hogy nemzetbiztonsági vagy céges titkok sérültek volna. Az Nvidia-részvény a vasárnap esti tőzsdén kívüli kereskedésben mintegy 3,5%-ot esett.",
+      "title": "Az Nvidia 4,2%-ot esett, áprilisi mélypontjára a Jensen Huang körüli vizsgálat miatt",
+      "summary": "Az Nvidia-részvény 4,2%-os eséssel április 7. óta a legalacsonyabb szinten zárt, mivel a befektetők a belső vizsgálat nyomán Jensen Huang vezérigazgató jövőjét latolgatják. A félvezetőindexben egyedül az Nvidia zárt mínuszban.",
       "impact": "negatív",
       "tickers": ["NVDA"],
-      "source": "AP",
-      "url": "https://apnews.com/article/nvidia-jensen-huang-investigation-chinese-spy-68839e7ca6ba2b121529f7e475e501d6"
+      "source": "Reuters",
+      "url": "https://www.marketscreener.com/news/stocks-rally-even-as-nvidia-falls-oil-drops-ce785fd3de8ff421"
     },
     {
-      "title": "Berkshire Hathaway: csökkenő operatív profit, rekord közeli készpénz, 9,6 milliárd dolláros visszavásárlás",
-      "summary": "A Berkshire harmadik negyedéves operatív eredménye 5,8%-kal 12,705 milliárd dollárra csökkent, főként a biztosítási üzletág gyengülése miatt (underwriting −43%). A társaság mintegy 9,6 milliárd dollárért vásárolt vissza saját részvényt, készpénzállománya 377,4 milliárd dollárra nőtt.",
+      "title": "Ma jön az októberi CPI: a piac 80% feletti esélyt áraz a decemberi Fed-kamatemelésre",
+      "summary": "A Reuters által megkérdezett elemzők havi 0,3%-os általános és 0,2%-os maginflációt várnak; a pénteki erős munkaerő-piaci adat után a CME FedWatch szerint 80% feletti a decemberi 25 bázispontos kamatemelés esélye. A 10 éves amerikai hozam 4,874%-ra emelkedett, Tom Barkin, a richmondi Fed elnöke szerint a Fednek „óvatosan” kell lépnie.",
       "impact": "semleges",
-      "tickers": ["BRK-B"],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/07/berkshire-hathaway-q3-2026-earnings-buybacks.html"
+      "tickers": ["^TNX", "DX-Y.NYB"],
+      "source": "Reuters",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/wall-st-futures-rise-rough-103539344.html"
     },
     {
-      "title": "Ázsia erősödéssel nyitja a hetet, a héten az amerikai inflációs adatok jönnek",
-      "summary": "Hétfőn a tajvani index közel 5%-kal, a Nikkei 225 3,25%-kal emelkedett a TSMC és a Foxconn vezetésével; Kínában az októberi termelői árindex 5,7%-ra gyorsult, a fogyasztói infláció a vártnál lassabb, 0,7% lett. Az amerikai határidős indexek kismértékben emelkedtek; kedden az októberi CPI, pénteken a PPI érkezik, a héten a CoreWeave, a Cisco és az Applied Materials is jelent.",
+      "title": "Európában a bankok vezették az emelkedést, a STOXX 600 1,26%-kal nőtt",
+      "summary": "A páneurópai STOXX 600 index 1,26%-kal emelkedett, a bankszektort a Credit Agricole és a Banco BPM körüli ügyletek, valamint a UniCredit erős eredménye húzta. Az euró 0,72%-kal 1,1223 dollárra erősödött.",
       "impact": "pozitív",
-      "tickers": ["^TWII", "^N225", "TSM", "ES=F", "NQ=F"],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/08/stock-market-today-live-updates.html"
+      "tickers": ["^STOXX", "UCG.MI", "ACA.PA", "BAMI.MI", "EURUSD=X"],
+      "source": "Reuters",
+      "url": "https://live.euronext.com/en/financial-news/stocks-jump-oil-tumbles-nvidia-falls-amid-internal-probe"
     }
   ]
 }
