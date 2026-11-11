@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-11T03:55:38+01:00",
-    "generated_at_budapest": "2026. november 11., 03:55",
+    "generated_at": "2026-11-11T05:39:20+01:00",
+    "generated_at_budapest": "2026. november 11., 05:39",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-10",
     "price_period": "3y"
@@ -1463,7 +1463,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.4,
-        "spx50": 35.1,
+        "spx50": 34.9,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -31560,8 +31560,8 @@
       "group": "usa",
       "source": "Yahoo Finance",
       "as_of": "2026-11-10",
-      "price": 52231.89,
-      "change": -157.86,
+      "price": 52231.9,
+      "change": -157.85,
       "change_pct": -0.3,
       "dma50": 52021.55,
       "dma200": 50706.91,
@@ -34606,7 +34606,7 @@
         },
         {
           "date": "2026-11-10",
-          "close": 52231.89
+          "close": 52231.9
         }
       ]
     },
@@ -57542,13 +57542,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-10",
-      "price": 4053.3,
-      "change": -61.2,
-      "change_pct": -1.49,
-      "dma50": 4213.55,
+      "price": 4051.7,
+      "change": -62.8,
+      "change_pct": -1.53,
+      "dma50": 4213.52,
       "dma200": 4492.02,
-      "dist50_pct": -3.8,
-      "dist200_pct": -9.77,
+      "dist50_pct": -3.84,
+      "dist200_pct": -9.8,
       "history": [
         {
           "date": "2023-11-01",
@@ -60600,7 +60600,7 @@
         },
         {
           "date": "2026-11-10",
-          "close": 4053.3
+          "close": 4051.7
         }
       ]
     },
@@ -60614,13 +60614,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-10",
-      "price": 86.72,
-      "change": -0.13,
-      "change_pct": -0.15,
+      "price": 86.59,
+      "change": -0.26,
+      "change_pct": -0.3,
       "dma50": 95.55,
       "dma200": 87.42,
-      "dist50_pct": -9.25,
-      "dist200_pct": -0.8,
+      "dist50_pct": -9.38,
+      "dist200_pct": -0.94,
       "history": [
         {
           "date": "2023-11-01",
@@ -63668,7 +63668,7 @@
         },
         {
           "date": "2026-11-10",
-          "close": 86.72
+          "close": 86.59
         }
       ]
     },
@@ -63682,13 +63682,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-11",
-      "price": 73516.0,
-      "change": -1707.0,
-      "change_pct": -2.27,
-      "dma50": 81359.0,
-      "dma200": 73135.0,
-      "dist50_pct": -9.64,
-      "dist200_pct": 0.52,
+      "price": 73680.0,
+      "change": -1543.0,
+      "change_pct": -2.05,
+      "dma50": 81362.0,
+      "dma200": 73136.0,
+      "dist50_pct": -9.44,
+      "dist200_pct": 0.75,
       "history": [
         {
           "date": "2024-05-26",
@@ -67288,7 +67288,7 @@
         },
         {
           "date": "2026-11-11",
-          "close": 73516.0
+          "close": 73680.0
         }
       ]
     }
@@ -67589,8 +67589,8 @@
             "title": "Stock futures rise slightly as market tries to recover from Nvidia-led decline: Live updates",
             "source": "CNBC",
             "url": "https://www.cnbc.com/2026/11/10/stock-market-today-live-updates.html",
-            "published_at": "2026-11-11T03:31:56+01:00",
-            "published_budapest": "2026. november 11., 03:31"
+            "published_at": "2026-11-11T04:58:02+01:00",
+            "published_budapest": "2026. november 11., 04:58"
           }
         },
         {
@@ -67654,7 +67654,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 83,
+        "items": 80,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
