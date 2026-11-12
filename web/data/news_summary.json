@@ -1,47 +1,47 @@
 {
-  "date": "2026-11-11",
-  "updated_at": "2026-11-11T05:45:00+01:00",
-  "headline": "A vártnál magasabb októberi amerikai infláció megerősítette a decemberi Fed-kamatemelésre vonatkozó várakozásokat, így a Wall Street a hétfői rali után lejjebb zárt, az Nvidia tovább esett, Európa viszont a rekordszint közelében maradt.",
+  "date": "2026-11-12",
+  "updated_at": "2026-11-12T05:50:00+01:00",
+  "headline": "A mesterséges intelligenciához kötődő részvények erős visszapattanásával a Wall Street szerdán emelkedett, a zárás után azonban az Nvidia vezérigazgatójának esetleges menesztéséről szóló hírek nyomán a Nasdaq-100 határidős indexe esni kezdett.",
   "items": [
     {
-      "title": "A vártnál magasabb októberi infláció: a CPI havi 0,4%-kal, a maginfláció 0,3%-kal nőtt",
-      "summary": "Az amerikai fogyasztói árindex havi 0,4%-kal emelkedett (várakozás: 0,3%, szeptemberben 0,6%), a maginfláció harmadik hónapja 0,3% volt a várt 0,2% helyett; éves adatot a tavalyi kormányzati leállás miatt nem közöltek. A CME FedWatch szerint a piac kb. 85% esélyt áraz a december 8–9-i 25 bázispontos kamatemelésre és 15%-ot az 50 bázispontosra, a 2 éves hozam 2025 áprilisa óta a legnagyobbat emelkedett.",
-      "impact": "negatív",
-      "tickers": ["^TNX", "DX-Y.NYB"],
-      "source": "Reuters",
-      "url": "https://www.investing.com/news/economy-news/investors-boost-odds-of-halfpoint-fed-hike-as-core-cpi-rise-meets-wallers-bar-5016055"
-    },
-    {
-      "title": "Esés a Wall Streeten: az S&P 500 0,4%-kal, a Nasdaq 0,7%-kal gyengült",
-      "summary": "Az inflációs adat utáni kötvénypiaci nyomás miatt az S&P 500 0,4%-kal, a Dow Jones 157 ponttal (0,3%), a Nasdaq Composite 0,7%-kal esett, részben visszaadva a hétfői erős emelkedést.",
-      "impact": "negatív",
+      "title": "Emelkedés a Wall Streeten: az S&P 500 1,3%-kal, a Nasdaq 1,6%-kal nőtt",
+      "summary": "Az S&P 500 1,31%-kal 7619,38 pontra, a Dow Jones 0,49%-kal 52 486,49 pontra, a Nasdaq Composite 1,60%-kal 25 466,19 pontra emelkedett, a technológiai szektor 2,7%-kal erősödött. Az S&P 500 így 2,6%-ra került a múlt havi csúcsától, szinte teljesen ledolgozva a múlt heti, az MI-üzletág lassulásától tartó eladási hullámot.",
+      "impact": "pozitív",
       "tickers": ["^GSPC", "^IXIC", "^DJI"],
       "source": "AP",
-      "url": "https://apnews.com/article/stock-markets-ai-earnings-oil-ffe205fbc4fddf65c3e8e64e740355b7"
+      "url": "https://apnews.com/article/stock-markets-ai-earnings-oil-297d040c83844a9563327340b370c24e"
     },
     {
-      "title": "Az Nvidia újabb több mint 5%-ot esett, a hiperskálázók is gyengültek",
-      "summary": "Az Nvidia-részvény a vezérigazgató, Jensen Huang ügyében indított igazgatótanácsi vizsgálat miatt kedden több mint 5%-kal esett, a hétfői 4% feletti csökkenés után. A Microsoft 2,2%-ot, az Oracle 1,5%-ot veszített.",
+      "title": "Az Nvidia 8%-ot esett a zárás után a vezérigazgató esetleges menesztéséről szóló hírekre",
+      "summary": "A rendes kereskedésben 2,9%-kal emelkedő Nvidia-részvény a zárás után mintegy 8%-kal esett, miután a Wall Street Journal értesülése szerint az igazgatótanács Jensen Huang vezérigazgató menesztésére készül. Este a Nasdaq-100 határidős indexe 0,8%-kal, az S&P 500 határidős indexe 0,4%-kal gyengült.",
       "impact": "negatív",
-      "tickers": ["NVDA", "MSFT", "ORCL"],
-      "source": "Yahoo Finance",
-      "url": "https://finance.yahoo.com/markets/article/stock-market-today-tuesday-november-10-dow-sp-500-nasdaq-inflation-data-cpi-090627830.html"
-    },
-    {
-      "title": "A CoreWeave a vártnál jobb negyedévet zárt és emelte az éves előrejelzését",
-      "summary": "A CoreWeave harmadik negyedéves árbevétele 168%-kal 3,66 milliárd dollárra nőtt (várakozás: 3,55 milliárd), a 2026-os bevételi előrejelzést 13,0–13,3 milliárd dollárra emelte. A részvény a zárás utáni kereskedésben mintegy 8%-kal emelkedett.",
-      "impact": "pozitív",
-      "tickers": ["CRWV"],
+      "tickers": ["NVDA", "NQ=F", "ES=F"],
       "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/10/coreweave-crwv-q3-earnings-report-2026.html"
+      "url": "https://www.cnbc.com/2026/11/11/stock-market-today-live-updates.html"
     },
     {
-      "title": "Európa a rekord közelében: a STOXX 600 0,27%-kal emelkedett, a bankok vezettek",
-      "summary": "A STOXX 600 0,27%-kal 658,32 pontra emelkedett, 0,8%-ra a rekordjától; a bankszektor 1,7%-kal nőtt, az olajszektor 1,6%-kal esett az olajár csökkenése miatt. A DAX 0,31%-kal, a CAC 40 0,55%-kal emelkedett, az amerikai inflációs adat után azonban az indexek a napi csúcsuk alatt zártak.",
+      "title": "A CoreWeave 24,7%-kal szárnyalt a jobb előrejelzés után",
+      "summary": "A CoreWeave árfolyama 24,7%-kal emelkedett, miután a vállalat a vártnál jobb bevételi kilátásokat közölt, és 2028-ra várja a nyereségessé válást, ami enyhítette a hitelből finanszírozott terjeszkedésével kapcsolatos aggodalmakat. A Micron 11,9%-kal, a Broadcom 4%-kal emelkedett.",
       "impact": "pozitív",
-      "tickers": ["^STOXX", "^GDAXI", "^FCHI"],
+      "tickers": ["CRWV", "MU", "AVGO"],
       "source": "Reuters",
-      "url": "https://www.investing.com/news/economy-news/european-shares-near-record-high-as-lower-oil-prices-boost-sentiment-5014345"
+      "url": "https://live.euronext.com/en/financial-news/stocks-rise-tech-gains-nvidia-falls-after-hours"
+    },
+    {
+      "title": "Erősödő dollár, biztosnak tekintett decemberi Fed-kamatemelés",
+      "summary": "A keddi, vártnál magasabb inflációs adat és a Fed-tisztviselők szigorú hangvétele nyomán a piac biztosra veszi a decemberi kamatemelést, a CME FedWatch szerint mintegy 11% esélyt áraz az 50 bázispontos lépésre. A dollárindex 0,7%-kal 102,92-re emelkedett, az euró 0,68%-kal 1,1087 dollárra gyengült; az amerikai kötvénypiac a Veterans Day miatt zárva volt.",
+      "impact": "negatív",
+      "tickers": ["DX-Y.NYB", "EURUSD=X"],
+      "source": "Reuters",
+      "url": "https://live.euronext.com/en/financial-news/stocks-rise-tech-gains-nvidia-falls-after-hours"
+    },
+    {
+      "title": "Drágult az olaj, Európa is emelkedett",
+      "summary": "A Brent 1,39%-kal 92,76 dollárra, a WTI 0,57%-kal 86,53 dollárra drágult, miután az iráni biztonsági vezető közölte, hogy Teherán nem engedi ki az országból a dúsított nukleáris anyagot. A STOXX 600 0,7%-kal emelkedett, a befektetők visszatértek az MI-hez kötődő részvényekhez.",
+      "impact": "semleges",
+      "tickers": ["BZ=F", "CL=F", "^STOXX"],
+      "source": "Reuters",
+      "url": "https://live.euronext.com/en/financial-news/stocks-rise-tech-gains-nvidia-falls-after-hours"
     }
   ]
 }
