@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-13T04:31:00+01:00",
-    "generated_at_budapest": "2026. november 13., 04:31",
+    "generated_at": "2026-11-13T05:41:40+01:00",
+    "generated_at_budapest": "2026. november 13., 05:41",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-12",
     "price_period": "3y"
@@ -1458,7 +1458,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.4,
-        "spx50": 35.1,
+        "spx50": 34.9,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -31638,8 +31638,8 @@
       "group": "usa",
       "source": "Yahoo Finance",
       "as_of": "2026-11-12",
-      "price": 52297.09,
-      "change": -189.4,
+      "price": 52297.1,
+      "change": -189.39,
       "change_pct": -0.36,
       "dma50": 52000.64,
       "dma200": 50740.73,
@@ -34692,7 +34692,7 @@
         },
         {
           "date": "2026-11-12",
-          "close": 52297.09
+          "close": 52297.1
         }
       ]
     },
@@ -54583,13 +54583,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-12",
-      "price": 103.15,
-      "change": 0.24,
-      "change_pct": 0.24,
-      "dma50": 101.32,
+      "price": 103.17,
+      "change": 0.26,
+      "change_pct": 0.25,
+      "dma50": 101.33,
       "dma200": 99.82,
-      "dist50_pct": 1.81,
-      "dist200_pct": 3.34,
+      "dist50_pct": 1.82,
+      "dist200_pct": 3.36,
       "history": [
         {
           "date": "2023-11-01",
@@ -57645,7 +57645,7 @@
         },
         {
           "date": "2026-11-12",
-          "close": 103.15
+          "close": 103.17
         }
       ]
     },
@@ -57659,13 +57659,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-12",
-      "price": 3919.1,
-      "change": -81.4,
-      "change_pct": -2.03,
-      "dma50": 4195.26,
-      "dma200": 4479.57,
-      "dist50_pct": -6.58,
-      "dist200_pct": -12.51,
+      "price": 3914.6,
+      "change": -85.9,
+      "change_pct": -2.15,
+      "dma50": 4195.17,
+      "dma200": 4479.55,
+      "dist50_pct": -6.69,
+      "dist200_pct": -12.61,
       "history": [
         {
           "date": "2023-11-01",
@@ -60725,7 +60725,7 @@
         },
         {
           "date": "2026-11-12",
-          "close": 3919.1
+          "close": 3914.6
         }
       ]
     },
@@ -60739,13 +60739,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-12",
-      "price": 88.16,
-      "change": 1.63,
-      "change_pct": 1.88,
+      "price": 88.38,
+      "change": 1.85,
+      "change_pct": 2.14,
       "dma50": 95.41,
       "dma200": 87.66,
-      "dist50_pct": -7.6,
-      "dist200_pct": 0.57,
+      "dist50_pct": -7.37,
+      "dist200_pct": 0.82,
       "history": [
         {
           "date": "2023-11-01",
@@ -63801,7 +63801,7 @@
         },
         {
           "date": "2026-11-12",
-          "close": 88.16
+          "close": 88.38
         }
       ]
     },
@@ -63815,13 +63815,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-13",
-      "price": 69228.0,
-      "change": -4736.0,
-      "change_pct": -6.4,
-      "dma50": 80816.0,
-      "dma200": 73070.0,
-      "dist50_pct": -14.34,
-      "dist200_pct": -5.26,
+      "price": 68601.0,
+      "change": -5363.0,
+      "change_pct": -7.25,
+      "dma50": 80803.0,
+      "dma200": 73067.0,
+      "dist50_pct": -15.1,
+      "dist200_pct": -6.11,
       "history": [
         {
           "date": "2024-05-28",
@@ -67421,7 +67421,7 @@
         },
         {
           "date": "2026-11-13",
-          "close": 69228.0
+          "close": 68601.0
         }
       ]
     }
@@ -67733,7 +67733,7 @@
         "id": "cnbc_top",
         "name": "CNBC",
         "status": "ok",
-        "items": 29,
+        "items": 30,
         "error": null,
         "note": null
       },
@@ -67741,7 +67741,7 @@
         "id": "cnbc_earnings",
         "name": "CNBC",
         "status": "ok",
-        "items": 5,
+        "items": 4,
         "error": null,
         "note": null
       },
@@ -67781,7 +67781,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 74,
+        "items": 75,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
