@@ -1,47 +1,39 @@
 {
-  "date": "2026-11-12",
-  "updated_at": "2026-11-12T05:50:00+01:00",
-  "headline": "A mesterséges intelligenciához kötődő részvények erős visszapattanásával a Wall Street szerdán emelkedett, a zárás után azonban az Nvidia vezérigazgatójának esetleges menesztéséről szóló hírek nyomán a Nasdaq-100 határidős indexe esni kezdett.",
+  "date": "2026-11-13",
+  "updated_at": "2026-11-13T05:50:00+01:00",
+  "headline": "Jensen Huang lemondott az Nvidia éléről, a Wall Street mégis csak mérsékelt eséssel zárt csütörtökön, miközben az olajár 3%-ot ugrott, a 10 éves amerikai hozam pedig ismét 5% fölé emelkedett.",
   "items": [
     {
-      "title": "Emelkedés a Wall Streeten: az S&P 500 1,3%-kal, a Nasdaq 1,6%-kal nőtt",
-      "summary": "Az S&P 500 1,31%-kal 7619,38 pontra, a Dow Jones 0,49%-kal 52 486,49 pontra, a Nasdaq Composite 1,60%-kal 25 466,19 pontra emelkedett, a technológiai szektor 2,7%-kal erősödött. Az S&P 500 így 2,6%-ra került a múlt havi csúcsától, szinte teljesen ledolgozva a múlt heti, az MI-üzletág lassulásától tartó eladási hullámot.",
-      "impact": "pozitív",
-      "tickers": ["^GSPC", "^IXIC", "^DJI"],
-      "source": "AP",
-      "url": "https://apnews.com/article/stock-markets-ai-earnings-oil-297d040c83844a9563327340b370c24e"
+      "title": "Mérsékelt esés a Wall Streeten: az S&P 500 0,35%-kal, a Nasdaq 0,39%-kal gyengült",
+      "summary": "Az S&P 500 0,35%-kal 7592,40 pontra, a Dow Jones 0,36%-kal 52 297,09 pontra, a Nasdaq Composite 0,39%-kal 25 366,09 pontra esett, a Russell 2000 1,66%-ot veszített. A nap elején közel 1%-os esést az S&P 500 nagyrészt ledolgozta; az AMD 5,86%-kal, a Broadcom 5,54%-kal emelkedett.",
+      "impact": "negatív",
+      "tickers": ["^GSPC", "^IXIC", "^DJI", "^RUT"],
+      "source": "Investing.com (Reuters)",
+      "url": "https://www.investing.com/news/stock-market-news/us-stocks-lower-at-close-of-trade-dow-jones-industrial-average-down-036-5023324"
     },
     {
-      "title": "Az Nvidia 8%-ot esett a zárás után a vezérigazgató esetleges menesztéséről szóló hírekre",
-      "summary": "A rendes kereskedésben 2,9%-kal emelkedő Nvidia-részvény a zárás után mintegy 8%-kal esett, miután a Wall Street Journal értesülése szerint az igazgatótanács Jensen Huang vezérigazgató menesztésére készül. Este a Nasdaq-100 határidős indexe 0,8%-kal, az S&P 500 határidős indexe 0,4%-kal gyengült.",
+      "title": "Lemondott Jensen Huang, az Nvidia ideiglenes vezérigazgatója Colette Kress lett",
+      "summary": "Az Nvidia igazgatótanácsa bejelentette, hogy Jensen Huang azonnali hatállyal lemondott vezérigazgatói és igazgatósági tagsági posztjáról; ideiglenesen Colette Kress pénzügyi igazgató vezeti a céget, az igazgatótanács első elnöke Harvey C. Jones lett. A részvény 4,34%-kal 166,19 dollárra esett; a harmadik negyedéves gyorsjelentést változatlanul november 17-én teszik közzé.",
       "impact": "negatív",
-      "tickers": ["NVDA", "NQ=F", "ES=F"],
+      "tickers": ["NVDA"],
+      "source": "Nvidia / Reuters",
+      "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-CEO-Transition/"
+    },
+    {
+      "title": "3%-kal drágult az olaj a szaúdi energetikai létesítmények elleni támadások után",
+      "summary": "A Brent 3,3%-kal 95,82 dollárra, a WTI 2,6%-kal 88,74 dollárra emelkedett hordónként, miután a húszik szaúdi olajlétesítményeket támadtak, és a Hormuzi-szorosban is fennakadások voltak a hajózásban. Heti szinten mindkét típus még mintegy 2,5%-os mínuszban áll.",
+      "impact": "negatív",
+      "tickers": ["BZ=F", "CL=F"],
+      "source": "Reuters",
+      "url": "https://live.euronext.com/en/financial-news/oil-settles-3-higher-attacks-saudi-energy-sites-strait-hormuz-disruptions"
+    },
+    {
+      "title": "Ismét 5% fölött a 10 éves amerikai államkötvény hozama",
+      "summary": "A 10 éves hozam több mint 13 bázisponttal 5,125%-ra, a 2 éves több mint 15 bázisponttal 4,879%-ra emelkedett a drágább olaj és a további Fed-kamatemelésekre vonatkozó várakozások nyomán. A Goldman Sachs szerdán egy újabb, márciusi negyed százalékpontos kamatemelést vett fel előrejelzésébe.",
+      "impact": "negatív",
+      "tickers": ["^TNX"],
       "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/11/stock-market-today-live-updates.html"
-    },
-    {
-      "title": "A CoreWeave 24,7%-kal szárnyalt a jobb előrejelzés után",
-      "summary": "A CoreWeave árfolyama 24,7%-kal emelkedett, miután a vállalat a vártnál jobb bevételi kilátásokat közölt, és 2028-ra várja a nyereségessé válást, ami enyhítette a hitelből finanszírozott terjeszkedésével kapcsolatos aggodalmakat. A Micron 11,9%-kal, a Broadcom 4%-kal emelkedett.",
-      "impact": "pozitív",
-      "tickers": ["CRWV", "MU", "AVGO"],
-      "source": "Reuters",
-      "url": "https://live.euronext.com/en/financial-news/stocks-rise-tech-gains-nvidia-falls-after-hours"
-    },
-    {
-      "title": "Erősödő dollár, biztosnak tekintett decemberi Fed-kamatemelés",
-      "summary": "A keddi, vártnál magasabb inflációs adat és a Fed-tisztviselők szigorú hangvétele nyomán a piac biztosra veszi a decemberi kamatemelést, a CME FedWatch szerint mintegy 11% esélyt áraz az 50 bázispontos lépésre. A dollárindex 0,7%-kal 102,92-re emelkedett, az euró 0,68%-kal 1,1087 dollárra gyengült; az amerikai kötvénypiac a Veterans Day miatt zárva volt.",
-      "impact": "negatív",
-      "tickers": ["DX-Y.NYB", "EURUSD=X"],
-      "source": "Reuters",
-      "url": "https://live.euronext.com/en/financial-news/stocks-rise-tech-gains-nvidia-falls-after-hours"
-    },
-    {
-      "title": "Drágult az olaj, Európa is emelkedett",
-      "summary": "A Brent 1,39%-kal 92,76 dollárra, a WTI 0,57%-kal 86,53 dollárra drágult, miután az iráni biztonsági vezető közölte, hogy Teherán nem engedi ki az országból a dúsított nukleáris anyagot. A STOXX 600 0,7%-kal emelkedett, a befektetők visszatértek az MI-hez kötődő részvényekhez.",
-      "impact": "semleges",
-      "tickers": ["BZ=F", "CL=F", "^STOXX"],
-      "source": "Reuters",
-      "url": "https://live.euronext.com/en/financial-news/stocks-rise-tech-gains-nvidia-falls-after-hours"
+      "url": "https://www.cnbc.com/2026/11/12/us-treasurys-bonds-yields.html"
     }
   ]
 }
