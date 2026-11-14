@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-14T04:27:14+01:00",
-    "generated_at_budapest": "2026. november 14., 04:27",
+    "generated_at": "2026-11-14T05:41:07+01:00",
+    "generated_at_budapest": "2026. november 14., 05:41",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-13",
     "price_period": "3y"
@@ -1458,7 +1458,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.4,
-        "spx50": 35.1,
+        "spx50": 34.9,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -31676,8 +31676,8 @@
       "group": "usa",
       "source": "Yahoo Finance",
       "as_of": "2026-11-13",
-      "price": 52347.55,
-      "change": 50.46,
+      "price": 52347.6,
+      "change": 50.51,
       "change_pct": 0.1,
       "dma50": 51973.87,
       "dma200": 50757.11,
@@ -34734,7 +34734,7 @@
         },
         {
           "date": "2026-11-13",
-          "close": 52347.55
+          "close": 52347.6
         }
       ]
     },
@@ -57721,13 +57721,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-13",
-      "price": 3887.6,
-      "change": 2.3,
-      "change_pct": 0.06,
-      "dma50": 4181.54,
+      "price": 3886.3,
+      "change": 1.0,
+      "change_pct": 0.03,
+      "dma50": 4181.51,
       "dma200": 4472.25,
-      "dist50_pct": -7.03,
-      "dist200_pct": -13.07,
+      "dist50_pct": -7.06,
+      "dist200_pct": -13.1,
       "history": [
         {
           "date": "2023-11-01",
@@ -60791,7 +60791,7 @@
         },
         {
           "date": "2026-11-13",
-          "close": 3887.6
+          "close": 3886.3
         }
       ]
     },
@@ -63885,13 +63885,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-14",
-      "price": 67273.0,
-      "change": -4070.0,
-      "change_pct": -5.71,
-      "dma50": 80516.0,
-      "dma200": 73031.0,
-      "dist50_pct": -16.45,
-      "dist200_pct": -7.88,
+      "price": 67005.0,
+      "change": -4338.0,
+      "change_pct": -6.08,
+      "dma50": 80510.0,
+      "dma200": 73029.0,
+      "dist50_pct": -16.77,
+      "dist200_pct": -8.25,
       "history": [
         {
           "date": "2024-05-29",
@@ -67491,7 +67491,7 @@
         },
         {
           "date": "2026-11-14",
-          "close": 67273.0
+          "close": 67005.0
         }
       ]
     }
@@ -67857,7 +67857,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 74,
+        "items": 69,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
