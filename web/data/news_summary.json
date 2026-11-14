@@ -1,39 +1,65 @@
 {
-  "date": "2026-11-13",
-  "updated_at": "2026-11-13T05:50:00+01:00",
-  "headline": "Jensen Huang lemondott az Nvidia éléről, a Wall Street mégis csak mérsékelt eséssel zárt csütörtökön, miközben az olajár 3%-ot ugrott, a 10 éves amerikai hozam pedig ismét 5% fölé emelkedett.",
+  "date": "2026-11-14",
+  "updated_at": "2026-11-14T05:50:00+01:00",
+  "headline": "Az Nvidia körüli bizonytalanság miatt pénteken ismét a technológiai részvények húzták lefelé a Wall Streetet, miközben a vártnál kissé enyhébb termelői árindex sem vitte 5% alá a 10 éves amerikai hozamot, a piac pedig biztosra veszi a decemberi Fed-kamatemelést.",
   "items": [
     {
-      "title": "Mérsékelt esés a Wall Streeten: az S&P 500 0,35%-kal, a Nasdaq 0,39%-kal gyengült",
-      "summary": "Az S&P 500 0,35%-kal 7592,40 pontra, a Dow Jones 0,36%-kal 52 297,09 pontra, a Nasdaq Composite 0,39%-kal 25 366,09 pontra esett, a Russell 2000 1,66%-ot veszített. A nap elején közel 1%-os esést az S&P 500 nagyrészt ledolgozta; az AMD 5,86%-kal, a Broadcom 5,54%-kal emelkedett.",
-      "impact": "negatív",
-      "tickers": ["^GSPC", "^IXIC", "^DJI", "^RUT"],
-      "source": "Investing.com (Reuters)",
-      "url": "https://www.investing.com/news/stock-market-news/us-stocks-lower-at-close-of-trade-dow-jones-industrial-average-down-036-5023324"
-    },
-    {
-      "title": "Lemondott Jensen Huang, az Nvidia ideiglenes vezérigazgatója Colette Kress lett",
-      "summary": "Az Nvidia igazgatótanácsa bejelentette, hogy Jensen Huang azonnali hatállyal lemondott vezérigazgatói és igazgatósági tagsági posztjáról; ideiglenesen Colette Kress pénzügyi igazgató vezeti a céget, az igazgatótanács első elnöke Harvey C. Jones lett. A részvény 4,34%-kal 166,19 dollárra esett; a harmadik negyedéves gyorsjelentést változatlanul november 17-én teszik közzé.",
-      "impact": "negatív",
-      "tickers": ["NVDA"],
-      "source": "Nvidia / Reuters",
-      "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-CEO-Transition/"
-    },
-    {
-      "title": "3%-kal drágult az olaj a szaúdi energetikai létesítmények elleni támadások után",
-      "summary": "A Brent 3,3%-kal 95,82 dollárra, a WTI 2,6%-kal 88,74 dollárra emelkedett hordónként, miután a húszik szaúdi olajlétesítményeket támadtak, és a Hormuzi-szorosban is fennakadások voltak a hajózásban. Heti szinten mindkét típus még mintegy 2,5%-os mínuszban áll.",
-      "impact": "negatív",
-      "tickers": ["BZ=F", "CL=F"],
+      "title": "Vegyes zárás a Wall Streeten: a Nasdaq 0,91%-kal esett, a Dow enyhén emelkedett",
+      "summary": "Az S&P 500 0,40%-kal 7561,67 pontra, a Nasdaq Composite 0,91%-kal 25 136,27 pontra esett, a Dow Jones 0,10%-kal 52 347,55 pontra emelkedett. Mindhárom fő index heti szinten pluszban zárt, az S&P 500 és a Nasdaq négyhetes csökkenő sorozatot szakított meg.",
+      "impact": "semleges",
+      "tickers": [
+        "^GSPC",
+        "^IXIC",
+        "^DJI"
+      ],
       "source": "Reuters",
-      "url": "https://live.euronext.com/en/financial-news/oil-settles-3-higher-attacks-saudi-energy-sites-strait-hormuz-disruptions"
+      "url": "https://live.euronext.com/en/financial-news/stocks-fall-tech-nvidia-concerns-us-dollar-climbs"
     },
     {
-      "title": "Ismét 5% fölött a 10 éves amerikai államkötvény hozama",
-      "summary": "A 10 éves hozam több mint 13 bázisponttal 5,125%-ra, a 2 éves több mint 15 bázisponttal 4,879%-ra emelkedett a drágább olaj és a további Fed-kamatemelésekre vonatkozó várakozások nyomán. A Goldman Sachs szerdán egy újabb, márciusi negyed százalékpontos kamatemelést vett fel előrejelzésébe.",
+      "title": "Tovább estek a chip- és AI-részvények Jensen Huang távozása után",
+      "summary": "A philadelphiai félvezetőindex 3,4%-kal, az Nvidia árfolyama 2%-kal esett, az AMD és a Broadcom is jelentősen gyengült; a CoreWeave és a Nebius napközben 9% körüli mínuszban volt. A Financial Times szerint az Nvidia igazgatótanácsa megkereste az Arm vezérigazgatóját, Rene Haast Huang utódlása ügyében; a cég kedden zárás után teszi közzé negyedéves jelentését.",
       "impact": "negatív",
-      "tickers": ["^TNX"],
+      "tickers": [
+        "NVDA",
+        "AMD",
+        "AVGO",
+        "^SOX"
+      ],
+      "source": "Reuters",
+      "url": "https://www.investing.com/news/stock-market-news/neoclouds-ai-stocks-slide-again-as-nvidia-turmoil-rattles-sector-5026205"
+    },
+    {
+      "title": "A vártnál kissé enyhébb termelői árindex, de 5% felett maradt a 10 éves hozam",
+      "summary": "Az októberi amerikai termelői árindex havi 0,3%-kal nőtt (várakozás: 0,4%), éves szinten 6,5%-kal, ami 2022 novembere óta a legnagyobb emelkedés; a maginflációs mutató 0,5%-ot nőtt. A 10 éves hozam 4 bázisponttal 5,143%-ra emelkedett, a CME FedWatch szerint a piac 100%-os valószínűséggel áraz kamatemelést a Fed december 9-i ülésére.",
+      "impact": "negatív",
+      "tickers": [
+        "^TNX"
+      ],
       "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/12/us-treasurys-bonds-yields.html"
+      "url": "https://www.cnbc.com/2026/11/13/treasury-yields-fed-rates.html"
+    },
+    {
+      "title": "Második hete esik az olaj a növekvő kínálati többlet jelei miatt",
+      "summary": "A Brent 0,02%-kal 95,84 dollárra emelkedett, a WTI 0,20%-kal 88,56 dollárra csökkent hordónként; heti szinten mindkettő mintegy 2,5%-os mínuszban van. A Nemzetközi Energiaügynökség pénteki jelentése a globális olajtöbblet növekedésére utal.",
+      "impact": "semleges",
+      "tickers": [
+        "BZ=F",
+        "CL=F"
+      ],
+      "source": "Reuters",
+      "url": "https://live.euronext.com/en/financial-news/oil-prices-set-second-straight-weekly-drop-signs-growing-supply-surplus"
+    },
+    {
+      "title": "Stagnáló európai zárás, de június vége óta a legjobb hetét zárta a STOXX 600",
+      "summary": "A STOXX 600 lényegében változatlanul, 664,14 ponton zárt, heti szinten 2,44%-kal emelkedett; a német DAX 0,1%-kal 26 749,95 pontra esett, a francia CAC 40 0,1%-kal 8368,91 pontra nőtt. A heti emelkedést az erős gyorsjelentések és a technológiai részvényekből való globális átrendeződés támogatta.",
+      "impact": "pozitív",
+      "tickers": [
+        "^STOXX",
+        "^GDAXI",
+        "^FCHI"
+      ],
+      "source": "Reuters / Sharecast",
+      "url": "https://www.sharecast.com/news/market-report-europe-close/stoxx-600-dax-cac-40-nvidia-microsoft-richemont--24169546.html"
     }
   ]
 }
