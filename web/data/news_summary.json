@@ -1,62 +1,65 @@
 {
-  "date": "2026-11-16",
-  "updated_at": "2026-11-16T05:55:00+01:00",
-  "headline": "A hétvégén az Nvidia keddi gyorsjelentése és az Anthropic tőzsdei bevezetése került a figyelem középpontjába, az amerikai határidős indexek enyhén emelkedtek, miközben a Fed-tisztviselők további, fokozatos kamatemelések mellett érveltek.",
+  "date": "2026-11-17",
+  "updated_at": "2026-11-17T05:55:00+01:00",
+  "headline": "A chipgyártók vezette eladási hullám a harmadik egymást követő napon is lejjebb vitte a Wall Streetet, a Nasdaq 2,5%-ot esett az Nvidia keddi gyorsjelentése előtt, miközben az olajár közel 4%-kal csökkent.",
   "items": [
     {
-      "title": "Emelkedő amerikai határidős indexek az Nvidia-jelentés hete előtt",
-      "summary": "Vasárnap este a Nasdaq-100 határidős indexe 0,6%-kal, az S&P 500-é 0,3%-kal, a Dow Jonesé 0,1%-kal emelkedett. Az Nvidia árfolyama a múlt héten 13%-ot esett Jensen Huang lemondása után; a cég kedden zárás után teszi közzé negyedéves jelentését, az elemzők az LSEG adatai szerint mintegy 109 milliárd dolláros árbevételre és 90% körüli eredménynövekedésre számítanak.",
-      "impact": "semleges",
+      "title": "Harmadik napja esik a Wall Street, a Nasdaq 2,5%-ot veszített",
+      "summary": "Hétfőn a Nasdaq Composite 2,49%-kal 24 509,76 pontra, az S&P 500 1,92%-kal 7416,59 pontra, a Dow Jones 739 ponttal (1,41%) 51 608,17 pontra esett. A félvezetőgyártók 5,3%-ot estek, a Micron és az Intel több mint 7%-ot, az AMD 5%-ot veszített, és az eladások a nagybankokra is átterjedtek.",
+      "impact": "negatív",
       "tickers": [
-        "NVDA",
-        "^NDX",
-        "^GSPC"
+        "^IXIC",
+        "^GSPC",
+        "^DJI",
+        "MU",
+        "INTC",
+        "AMD"
+      ],
+      "source": "AP",
+      "url": "https://apnews.com/article/stocks-markets-ai-nvidia-oil-us-35786b8f539ec95f16ae0500f71cfcc7"
+    },
+    {
+      "title": "Újabb 4%-os esés az Nvidiánál a keddi jelentés előtt",
+      "summary": "Az Nvidia árfolyama 4,1%-kal csökkent, miután a CNBC forrása szerint az igazgatótanács nem tárgyal Jensen Huang visszahívásáról, az amerikai kereskedelmi minisztérium pedig lezárta azt a kiskaput, amelyen keresztül kínai cégek külföldön bérelhettek Nvidia-számítási kapacitást. A vállalat kedden zárás után teszi közzé harmadik negyedéves eredményeit.",
+      "impact": "negatív",
+      "tickers": [
+        "NVDA"
       ],
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/11/15/stock-market-today-live-updates.html"
     },
     {
-      "title": "Akár 1400 milliárd dolláros értékeléssel lép tőzsdére az Anthropic",
-      "summary": "Az Anthropic 825 millió részvény eladásával legfeljebb 64,4 milliárd dollárt kíván bevonni a Nasdaqon, ami a vállalatot akár 1400 milliárd dollárra értékelné; a várható ársáv részvényenként 70–78 dollár. A kereskedés várhatóan két nappal az Nvidia jelentése után indul, és az MI-szektor iránti hangulat fontos fokmérője lehet.",
+      "title": "Megszakadt az európai részvénypiac ötnapos emelkedése",
+      "summary": "A STOXX 600 0,28%-kal 662,31 pontra csökkent, a technológiai papírok közül az ASML 2,4%-ot, az Aixtron 2,8%-ot esett. Az egészségügyi szektor 0,8%-os emelkedéssel a legjobban teljesítő ágazat volt.",
       "impact": "semleges",
       "tickers": [
-        "NVDA"
+        "^STOXX",
+        "ASML"
       ],
       "source": "Reuters",
-      "url": "https://www.devdiscourse.com/article/international/4007139-wall-st-week-ahead-nvidia-results-anthropic-ipo-pose-tests-for-tumultuous-ai-trade"
+      "url": "https://www.investing.com/news/stock-market-news/european-shares-hover-near-record-highs-tech-stocks-lag-5028657"
     },
     {
-      "title": "Fed-tisztviselők: folytatódhat a fokozatos kamatemelés",
-      "summary": "Susan Collins, a bostoni Fed elnöke szombaton a mérsékelt ütemű, fokozatos kamatemelést tartotta megfelelőnek, Jeff Schmid, a Kansas City-i Fed elnöke vasárnap úgy fogalmazott, hogy az infláció kellemetlenül a 2%-os cél felett van, és rossz irányba halad. A határidős piacok teljesen beárazták a 0,25 százalékpontos kamatemelést a Fed decemberi ülésére (a jelenlegi sáv 3,75–4,00%).",
+      "title": "Fed: továbbra is beárazott a decemberi kamatemelés",
+      "summary": "Beth Hammack, a clevelandi Fed elnöke a fokozatos, kisebb lépésekben történő kamatemelést tartja kívánatosnak, de nagyobb lépéseket sem zárt ki, ha az infláció romlik. A határidős piacok decemberre 0,25 százalékpontos emelést áraznak, a dollárindex 2025 áprilisa óta nem látott szintre erősödött, a 10 éves amerikai hozam 5,129%-ra mérséklődött.",
       "impact": "negatív",
       "tickers": [
-        "^TNX"
+        "^TNX",
+        "DX-Y.NYB"
       ],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/15/fed-has-some-work-to-do-on-inflation-kansas-city-fed-chief-says.html"
+      "source": "Reuters",
+      "url": "https://www.investing.com/news/economy-news/feds-hammack-reiterates-case-for-slow-steady-rate-hikes-bloomberg-tv-5030761"
     },
     {
-      "title": "Tovább csökken az olajár a várható kínálati többlet miatt",
-      "summary": "Hétfő reggel a Brent 0,49%-kal 95,37 dollárra, a WTI 0,26%-kal 88,33 dollárra esett hordónként, mivel a Hormuzi-szoroson át zajló szállítások csaknem visszaálltak a háború előtti szintre. A Nemzetközi Energiaügynökség szerint a negyedik negyedévben a kínálat napi 1,7 millió hordóval haladja meg a keresletet.",
+      "title": "Közel 4%-kal esett az olajár a helyreálló hormuzi szállítások miatt",
+      "summary": "A Brent hétfőn 3,8%-kal 92,20 dollárra, a WTI 3,59%-kal 85,38 dollárra csökkent hordónként, mivel a Hormuzi-szoroson át zajló olajszállítások helyreállóban vannak. Az újabb tankerincidensek ugyanakkor további ingadozás lehetőségét jelzik.",
       "impact": "semleges",
       "tickers": [
         "BZ=F",
         "CL=F"
       ],
       "source": "Reuters",
-      "url": "https://www.cnbc.com/2026/11/16/oil-prices-fall-on-expectations-of-coming-supply-surplus.html"
-    },
-    {
-      "title": "Esésekkel indult a hét Ázsiában, a chipgyártók vezették a csökkenést",
-      "summary": "A japán Nikkei 225 1,51%-kal esett, miután a harmadik negyedéves GDP váratlanul csökkent, a dél-koreai Kospi 2,95%-ot veszített; az SK Hynix több mint 5,6%-kal, az Advantest csaknem 10%-kal esett. Kínában az októberi ipari termelés, kiskereskedelmi forgalom és beruházás egyaránt elmaradt a várakozásoktól.",
-      "impact": "negatív",
-      "tickers": [
-        "^N225",
-        "^KS11",
-        "TSM"
-      ],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/15/stock-market-today-live-updates.html"
+      "url": "https://live.euronext.com/en/financial-news/stocks-end-lower-ahead-nvidia-earnings-and-anthropic-ipo-oil-drops"
     }
   ]
 }
