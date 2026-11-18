@@ -1,65 +1,64 @@
 {
-  "date": "2026-11-17",
-  "updated_at": "2026-11-17T05:55:00+01:00",
-  "headline": "A chipgyártók vezette eladási hullám a harmadik egymást követő napon is lejjebb vitte a Wall Streetet, a Nasdaq 2,5%-ot esett az Nvidia keddi gyorsjelentése előtt, miközben az olajár közel 4%-kal csökkent.",
+  "date": "2026-11-18",
+  "updated_at": "2026-11-18T05:50:00+01:00",
+  "headline": "A mesterséges intelligenciához kötődő részvények eladási hulláma kedden is lejjebb vitte a Wall Streetet és az európai piacokat, az Nvidia zárás utáni gyorsjelentése azonban várakozás feletti bevételt és erős előrejelzést hozott.",
   "items": [
     {
-      "title": "Harmadik napja esik a Wall Street, a Nasdaq 2,5%-ot veszített",
-      "summary": "Hétfőn a Nasdaq Composite 2,49%-kal 24 509,76 pontra, az S&P 500 1,92%-kal 7416,59 pontra, a Dow Jones 739 ponttal (1,41%) 51 608,17 pontra esett. A félvezetőgyártók 5,3%-ot estek, a Micron és az Intel több mint 7%-ot, az AMD 5%-ot veszített, és az eladások a nagybankokra is átterjedtek.",
+      "title": "Negyedik napja esik a Wall Street, az S&P 500 július óta nem zárt ilyen alacsonyan",
+      "summary": "Kedden a Dow Jones 848,75 ponttal (1,64%) 50 759,42 pontra, az S&P 500 1,03%-kal 7340,53 pontra, a Nasdaq Composite 0,74%-kal 24 328,38 pontra esett; a Nasdaq napközben az április óta legalacsonyabb szintjét érintette. A félvezetőgyártók gyengélkedése mellett az NSA egyik hálózatának kieséséről szóló hír is nyomta a hangulatot, az ügynökség később ütemezett karbantartással magyarázta a fennakadást.",
       "impact": "negatív",
       "tickers": [
-        "^IXIC",
-        "^GSPC",
         "^DJI",
-        "MU",
-        "INTC",
-        "AMD"
+        "^GSPC",
+        "^IXIC",
+        "MSFT"
       ],
-      "source": "AP",
-      "url": "https://apnews.com/article/stocks-markets-ai-nvidia-oil-us-35786b8f539ec95f16ae0500f71cfcc7"
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/16/stock-market-today-live-updates.html"
     },
     {
-      "title": "Újabb 4%-os esés az Nvidiánál a keddi jelentés előtt",
-      "summary": "Az Nvidia árfolyama 4,1%-kal csökkent, miután a CNBC forrása szerint az igazgatótanács nem tárgyal Jensen Huang visszahívásáról, az amerikai kereskedelmi minisztérium pedig lezárta azt a kiskaput, amelyen keresztül kínai cégek külföldön bérelhettek Nvidia-számítási kapacitást. A vállalat kedden zárás után teszi közzé harmadik negyedéves eredményeit.",
-      "impact": "negatív",
+      "title": "Az Nvidia felülmúlta a várakozásokat, emelte éves növekedési előrejelzését",
+      "summary": "Az Nvidia a harmadik pénzügyi negyedévben 115,84 milliárd dolláros bevételt és 2,68 dolláros korrigált EPS-t ért el (várakozás: 109,10 milliárd, illetve 2,48 dollár), a következő negyedévre mintegy 130 milliárd dolláros bevételt vár, és 75%-os növekedést jelzett a 2028 januárjában záruló pénzügyi évre. A részvény a zárás utáni kereskedésben több mint 3%-kal emelkedett, miközben az igazgatótanács közölte, hogy nem hívja vissza Jensen Huangot vezérigazgatónak.",
+      "impact": "pozitív",
       "tickers": [
         "NVDA"
       ],
       "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/15/stock-market-today-live-updates.html"
+      "url": "https://www.cnbc.com/2026/11/17/nvidia-nvda-earnings-report-q3-2027.html"
     },
     {
-      "title": "Megszakadt az európai részvénypiac ötnapos emelkedése",
-      "summary": "A STOXX 600 0,28%-kal 662,31 pontra csökkent, a technológiai papírok közül az ASML 2,4%-ot, az Aixtron 2,8%-ot esett. Az egészségügyi szektor 0,8%-os emelkedéssel a legjobban teljesítő ágazat volt.",
-      "impact": "semleges",
-      "tickers": [
-        "^STOXX",
-        "ASML"
-      ],
-      "source": "Reuters",
-      "url": "https://www.investing.com/news/stock-market-news/european-shares-hover-near-record-highs-tech-stocks-lag-5028657"
-    },
-    {
-      "title": "Fed: továbbra is beárazott a decemberi kamatemelés",
-      "summary": "Beth Hammack, a clevelandi Fed elnöke a fokozatos, kisebb lépésekben történő kamatemelést tartja kívánatosnak, de nagyobb lépéseket sem zárt ki, ha az infláció romlik. A határidős piacok decemberre 0,25 százalékpontos emelést áraznak, a dollárindex 2025 áprilisa óta nem látott szintre erősödött, a 10 éves amerikai hozam 5,129%-ra mérséklődött.",
+      "title": "Nyolc hónapja nem esett ekkorát az európai részvénypiac",
+      "summary": "A STOXX 600 1,75%-kal 650,72 pontra esett, ami március 20. óta a legnagyobb napi csökkenés; a német DAX több mint 2%-ot, az európai technológiai szektor 3,9%-ot veszített, az ASML 5,3%-kal esett. A Deutsche Bank 6%-ot zuhant a bank ügyfélkapcsolatairól kiszivárgott dokumentumokon alapuló sajtóhírek után.",
       "impact": "negatív",
       "tickers": [
-        "^TNX",
-        "DX-Y.NYB"
+        "^STOXX",
+        "^GDAXI",
+        "ASML",
+        "DB"
       ],
       "source": "Reuters",
-      "url": "https://www.investing.com/news/economy-news/feds-hammack-reiterates-case-for-slow-steady-rate-hikes-bloomberg-tv-5030761"
+      "url": "https://www.reuters.com/5f374b32b07b/markets/europe/european-shares-ease-tech-stocks-deutsche-bank-slide-2026-11-17/"
     },
     {
-      "title": "Közel 4%-kal esett az olajár a helyreálló hormuzi szállítások miatt",
-      "summary": "A Brent hétfőn 3,8%-kal 92,20 dollárra, a WTI 3,59%-kal 85,38 dollárra csökkent hordónként, mivel a Hormuzi-szoroson át zajló olajszállítások helyreállóban vannak. Az újabb tankerincidensek ugyanakkor további ingadozás lehetőségét jelzik.",
+      "title": "Erős kiskereskedelmi adat, a piac szinte biztosra veszi a decemberi Fed-kamatemelést",
+      "summary": "Az amerikai kiskereskedelmi forgalom októberben 0,2%-kal nőtt, a benzin és autók nélküli mutató 0,6%-kal (várakozás: 0,4%); a St. Louis-i Fed elnöke, Alberto Musalem szerint 2027 tavaszáig több kamatemelés is szükséges lehet. A 10 éves hozam 5,102%-ra mérséklődött, a CME FedWatch szerint a piac 95%-os eséllyel áraz 0,25 százalékpontos emelést decemberre.",
+      "impact": "negatív",
+      "tickers": [
+        "^TNX"
+      ],
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/17/treasury-yields-bonds-inflation.html"
+    },
+    {
+      "title": "Enyhén emelkedett az olajár a Közel-Keleten kiújuló feszültségek miatt",
+      "summary": "A Brent januári határidős jegyzése 0,76%-kal 93,14 dollárra, a WTI decemberi jegyzése 0,34%-kal 86,01 dollárra emelkedett hordónként, miután a Perzsa-öbölben és a Vörös-tengeren történt újabb incidensek ellensúlyozták a helyreálló iraki olajexport hatását.",
       "impact": "semleges",
       "tickers": [
         "BZ=F",
         "CL=F"
       ],
-      "source": "Reuters",
-      "url": "https://live.euronext.com/en/financial-news/stocks-end-lower-ahead-nvidia-earnings-and-anthropic-ipo-oil-drops"
+      "source": "DTN",
+      "url": "https://www.dtnpf.com/agriculture/web/AG/news/world-policy/article/2026/11/17/crude-steadies-mideast-flare-ups"
     }
   ]
 }
