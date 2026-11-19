@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-19T05:24:02+01:00",
-    "generated_at_budapest": "2026. november 19., 05:24",
+    "generated_at": "2026-11-19T05:43:16+01:00",
+    "generated_at_budapest": "2026. november 19., 05:43",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-18",
     "price_period": "3y"
@@ -54815,13 +54815,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-18",
-      "price": 103.93,
-      "change": 0.44,
-      "change_pct": 0.43,
+      "price": 103.92,
+      "change": 0.43,
+      "change_pct": 0.42,
       "dma50": 101.7,
       "dma200": 99.95,
-      "dist50_pct": 2.2,
-      "dist200_pct": 3.98,
+      "dist50_pct": 2.19,
+      "dist200_pct": 3.97,
       "history": [
         {
           "date": "2023-11-01",
@@ -57897,7 +57897,7 @@
         },
         {
           "date": "2026-11-18",
-          "close": 103.93
+          "close": 103.92
         }
       ]
     },
@@ -61011,13 +61011,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-18",
-      "price": 82.18,
-      "change": -3.83,
-      "change_pct": -4.45,
+      "price": 82.15,
+      "change": -3.86,
+      "change_pct": -4.49,
       "dma50": 94.83,
       "dma200": 88.09,
-      "dist50_pct": -13.34,
-      "dist200_pct": -6.71,
+      "dist50_pct": -13.37,
+      "dist200_pct": -6.75,
       "history": [
         {
           "date": "2023-11-01",
@@ -64093,7 +64093,7 @@
         },
         {
           "date": "2026-11-18",
-          "close": 82.18
+          "close": 82.15
         }
       ]
     },
@@ -64107,13 +64107,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-19",
-      "price": 63310.0,
-      "change": -1584.0,
-      "change_pct": -2.44,
-      "dma50": 78585.0,
+      "price": 63413.0,
+      "change": -1481.0,
+      "change_pct": -2.28,
+      "dma50": 78587.0,
       "dma200": 72722.0,
-      "dist50_pct": -19.44,
-      "dist200_pct": -12.94,
+      "dist50_pct": -19.31,
+      "dist200_pct": -12.8,
       "history": [
         {
           "date": "2024-06-03",
@@ -67713,7 +67713,7 @@
         },
         {
           "date": "2026-11-19",
-          "close": 63310.0
+          "close": 63413.0
         }
       ]
     }
@@ -67944,7 +67944,7 @@
   },
   "news": {
     "status": "ok",
-    "source": "Yahoo Finance záróár, S&P 500 és Nasdaq-100; hivatkozás: CNBC, MarketWatch, Bloomberg, Reuters",
+    "source": "Yahoo Finance záróár, S&P 500 és Nasdaq-100; hivatkozás: CNBC, Bloomberg, Reuters",
     "as_of": "2026-11-18",
     "movers": {
       "as_of": "2026-11-18",
@@ -67960,13 +67960,7 @@
           "ticker": "PANW",
           "name": "Palo Alto Networks",
           "change_pct": 9.9,
-          "headline": {
-            "title": "Palo Alto Networks’ stock gets a fresh AI-fueled boost from earnings",
-            "source": "MarketWatch",
-            "url": "https://www.marketwatch.com/story/palo-alto-networks-stock-soars-as-earnings-show-ai-has-upped-the-stakes-for-cybersecurity-308e34b8?mod=mw_rss_topstories",
-            "published_at": "2026-11-19T02:02:00+01:00",
-            "published_budapest": "2026. november 19., 02:02"
-          }
+          "headline": null
         },
         {
           "ticker": "GNRC",
@@ -68039,7 +68033,7 @@
         "id": "cnbc_earnings",
         "name": "CNBC",
         "status": "ok",
-        "items": 12,
+        "items": 11,
         "error": null,
         "note": null
       },
@@ -68054,10 +68048,9 @@
       {
         "id": "marketwatch",
         "name": "MarketWatch",
-        "status": "ok",
-        "items": 10,
-        "error": null,
-        "note": null
+        "status": "unavailable",
+        "items": 0,
+        "error": "400 Client Error: Bad Request for url: https://feeds.marketwatch.com/marketwatch/topstories/"
       },
       {
         "id": "bloomberg_markets",
