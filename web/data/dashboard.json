@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-20T05:42:23+01:00",
-    "generated_at_budapest": "2026. november 20., 05:42",
+    "generated_at": "2026-11-20T15:14:07+01:00",
+    "generated_at_budapest": "2026. november 20., 15:14",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-19",
     "price_period": "3y"
@@ -11,13 +11,13 @@
     "status": "ok",
     "source": "Saját számítás: Nasdaq Composite, szélesség, VIX, bóvli felár, CNN Fear & Greed",
     "as_of": "2026-11-19",
-    "score": 20,
-    "score_exact": 19.6,
+    "score": 17,
+    "score_exact": 17.4,
     "gate": {
       "applied": true,
       "cap": 39,
       "floor": null,
-      "raw_score": 20
+      "raw_score": 17
     },
     "verdict": "Nem érdemes kereskedni",
     "tone": "bad",
@@ -48,16 +48,16 @@
       {
         "id": "breadth",
         "available": true,
-        "score": 54.9,
+        "score": 47.8,
         "reason": null,
-        "detail": "Átlag 50,7% → 54,9 pont (15% → 0, 80% → 100). S&P 500 50 napos 53,1% · S&P 500 200 napos 53,6% · Nasdaq-100 50 napos 45,0% · Nasdaq-100 200 napos 51,0%.",
+        "detail": "Átlag 46,1% → 47,8 pont (15% → 0, 80% → 100). S&P 500 50 napos 50,0% · S&P 500 200 napos 52,4% · Nasdaq-100 50 napos 40,6% · Nasdaq-100 200 napos 41,4%.",
         "inputs": {
-          "average": 50.7,
+          "average": 46.1,
           "missing_series": [],
-          "spx50": 53.1,
-          "spx200": 53.6,
-          "ndx50": 45.0,
-          "ndx200": 51.0
+          "spx50": 50.0,
+          "spx200": 52.4,
+          "ndx50": 40.6,
+          "ndx200": 41.4
         },
         "label": "Piaci szélesség",
         "weight": 25,
@@ -101,11 +101,11 @@
       {
         "id": "sentiment",
         "available": true,
-        "score": 39.4,
+        "score": 37.4,
         "reason": null,
-        "detail": "Fear & Greed 18,7: alap 30 + 0,5 × az index → 39,4.",
+        "detail": "Fear & Greed 14,8: alap 30 + 0,5 × az index → 37,4.",
         "inputs": {
-          "fear_greed": 18.7
+          "fear_greed": 14.8
         },
         "label": "Hangulat",
         "weight": 10,
@@ -648,12 +648,12 @@
       },
       {
         "date": "2026-11-19",
-        "score": 20,
+        "score": 17,
         "nasdaq": 0.0,
-        "breadth": 54.9,
+        "breadth": 47.8,
         "volatility": 0.0,
         "credit": null,
-        "sentiment": 39.4
+        "sentiment": 37.4
       }
     ]
   },
@@ -726,12 +726,12 @@
       "ndx": 101
     },
     "current": {
-      "spx200": 53.6,
-      "spx50": 53.1,
-      "ndx200": null,
-      "ndx50": null,
-      "spx_n": 435,
-      "ndx_n": null
+      "spx200": 52.4,
+      "spx50": 50.0,
+      "ndx200": 41.4,
+      "ndx50": 40.6,
+      "spx_n": 500,
+      "ndx_n": 99
     },
     "history": [
       {
@@ -4705,10 +4705,10 @@
       },
       {
         "date": "2026-11-19",
-        "spx200": 53.6,
-        "spx50": 53.1,
-        "ndx200": 51.0,
-        "ndx50": 45.0
+        "spx200": 52.4,
+        "spx50": 50.0,
+        "ndx200": 41.4,
+        "ndx50": 40.6
       }
     ],
     "lists": {
@@ -4720,10 +4720,10 @@
     "vix": {
       "status": "ok",
       "source": "Yahoo Finance (^VIX)",
-      "as_of": "2026-11-19",
-      "value": 28.44,
-      "change": 3.88,
-      "change_pct": 15.8,
+      "as_of": "2026-11-20",
+      "value": 30.36,
+      "change": 1.92,
+      "change_pct": 6.75,
       "history": [
         {
           "date": "2023-10-30",
@@ -7804,6 +7804,10 @@
         {
           "date": "2026-11-19",
           "value": 28.44
+        },
+        {
+          "date": "2026-11-20",
+          "value": 30.36
         }
       ]
     },
@@ -12430,20 +12434,24 @@
           "vix": 28.44,
           "vix9d": 29.26,
           "vix3m": 27.03
+        },
+        {
+          "date": "2026-11-20",
+          "vix": 30.36
         }
       ]
     },
     "fear_greed": {
       "status": "ok",
       "source": "CNN Fear & Greed",
-      "as_of": "2026-11-19",
-      "score": 18.7,
+      "as_of": "2026-11-20",
+      "score": 14.7,
       "rating": "extreme fear",
       "rating_hu": "extrém félelem",
-      "previous_close": 24.6,
-      "previous_week": 40.3,
-      "previous_month": 19.5,
-      "previous_year": 7.9,
+      "previous_close": 18.7,
+      "previous_week": 37.4,
+      "previous_month": 28.7,
+      "previous_year": 5.2,
       "history": [
         {
           "date": "2023-11-01",
@@ -16267,7 +16275,12 @@
         },
         {
           "date": "2026-11-19",
-          "score": 18.7,
+          "score": 14.8,
+          "rating": "extreme fear"
+        },
+        {
+          "date": "2026-11-20",
+          "score": 14.7,
           "rating": "extreme fear"
         }
       ]
@@ -16341,8 +16354,8 @@
     "put_call": {
       "status": "ok",
       "source": "CNN Fear & Greed put/call komponens (CBOE részvényopció, 5 napos átlag)",
-      "as_of": "2026-11-19",
-      "value": 0.902,
+      "as_of": "2026-11-20",
+      "value": 0.927,
       "history": [
         {
           "date": "2023-11-01",
@@ -19403,6 +19416,10 @@
         {
           "date": "2026-11-19",
           "value": 0.902
+        },
+        {
+          "date": "2026-11-20",
+          "value": 0.927
         }
       ]
     },
@@ -31835,10 +31852,10 @@
       "group": "usa",
       "source": "Yahoo Finance",
       "as_of": "2026-11-19",
-      "price": 49097.1,
-      "change": -1101.07,
+      "price": 49097.06,
+      "change": -1101.11,
       "change_pct": -2.19,
-      "dma50": 51794.23,
+      "dma50": 51794.22,
       "dma200": 50780.22,
       "dist50_pct": -5.21,
       "dist200_pct": -3.31,
@@ -34909,7 +34926,7 @@
         },
         {
           "date": "2026-11-19",
-          "close": 49097.1
+          "close": 49097.06
         }
       ]
     },
@@ -38010,14 +38027,14 @@
       "unit": "",
       "group": "eu",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-19",
-      "price": 25463.81,
-      "change": -272.43,
-      "change_pct": -1.06,
-      "dma50": 25627.1,
-      "dma200": 24997.89,
-      "dist50_pct": -0.64,
-      "dist200_pct": 1.86,
+      "as_of": "2026-11-20",
+      "price": 24899.83,
+      "change": -563.98,
+      "change_pct": -2.21,
+      "dma50": 25613.72,
+      "dma200": 24997.45,
+      "dist50_pct": -2.79,
+      "dist200_pct": -0.39,
       "history": [
         {
           "date": "2023-10-30",
@@ -41126,6 +41143,10 @@
         {
           "date": "2026-11-19",
           "close": 25463.81
+        },
+        {
+          "date": "2026-11-20",
+          "close": 24899.83
         }
       ]
     },
@@ -41138,19 +41159,15 @@
       "unit": "HUF",
       "group": "eu",
       "source": "Budapesti Értéktőzsde",
-      "as_of": "2026-11-18",
-      "price": 142664.5,
-      "change": -2422.59,
-      "change_pct": -1.67,
-      "dma50": 146292.36,
-      "dma200": 138266.55,
-      "dist50_pct": -2.48,
-      "dist200_pct": 3.18,
+      "as_of": "2026-11-19",
+      "price": 143065.66,
+      "change": 401.16,
+      "change_pct": 0.28,
+      "dma50": 146195.24,
+      "dma200": 138330.45,
+      "dist50_pct": -2.14,
+      "dist200_pct": 3.42,
       "history": [
-        {
-          "date": "2023-04-06",
-          "close": 44217.85
-        },
         {
           "date": "2023-04-11",
           "close": 44408.12
@@ -44746,6 +44763,10 @@
         {
           "date": "2026-11-18",
           "close": 142664.5
+        },
+        {
+          "date": "2026-11-19",
+          "close": 143065.66
         }
       ]
     }
@@ -54879,14 +54900,14 @@
       "unit": "index",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-19",
-      "price": 103.8,
-      "change": -0.06,
-      "change_pct": -0.06,
-      "dma50": 101.79,
-      "dma200": 99.98,
-      "dist50_pct": 1.97,
-      "dist200_pct": 3.82,
+      "as_of": "2026-11-20",
+      "price": 103.69,
+      "change": -0.21,
+      "change_pct": -0.2,
+      "dma50": 101.88,
+      "dma200": 100.01,
+      "dist50_pct": 1.77,
+      "dist200_pct": 3.68,
       "history": [
         {
           "date": "2023-11-01",
@@ -57966,11 +57987,11 @@
         },
         {
           "date": "2026-11-19",
-          "close": 103.8
+          "close": 103.9
         },
         {
           "date": "2026-11-20",
-          "close": 103.83
+          "close": 103.69
         }
       ]
     },
@@ -57983,14 +58004,14 @@
       "unit": "USD/uncia",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-19",
-      "price": 3531.0,
-      "change": -210.9,
-      "change_pct": -5.64,
-      "dma50": 4125.64,
-      "dma200": 4450.78,
-      "dist50_pct": -14.41,
-      "dist200_pct": -20.67,
+      "as_of": "2026-11-20",
+      "price": 3570.3,
+      "change": -115.2,
+      "change_pct": -3.13,
+      "dma50": 4111.96,
+      "dma200": 4444.95,
+      "dist50_pct": -13.17,
+      "dist200_pct": -19.68,
       "history": [
         {
           "date": "2023-11-01",
@@ -61074,11 +61095,11 @@
         },
         {
           "date": "2026-11-19",
-          "close": 3531.0
+          "close": 3685.5
         },
         {
           "date": "2026-11-20",
-          "close": 3551.3
+          "close": 3570.3
         }
       ]
     },
@@ -61091,14 +61112,14 @@
       "unit": "USD/hordó",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-19",
-      "price": 83.0,
-      "change": -0.26,
-      "change_pct": -0.31,
-      "dma50": 94.47,
-      "dma200": 88.19,
-      "dist50_pct": -12.14,
-      "dist200_pct": -5.88,
+      "as_of": "2026-11-20",
+      "price": 82.22,
+      "change": -0.99,
+      "change_pct": -1.19,
+      "dma50": 94.11,
+      "dma200": 88.28,
+      "dist50_pct": -12.64,
+      "dist200_pct": -6.87,
       "history": [
         {
           "date": "2023-11-01",
@@ -64178,7 +64199,11 @@
         },
         {
           "date": "2026-11-19",
-          "close": 83.0
+          "close": 83.21
+        },
+        {
+          "date": "2026-11-20",
+          "close": 82.22
         }
       ]
     },
@@ -64192,13 +64217,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-20",
-      "price": 61510.0,
-      "change": -1477.0,
-      "change_pct": -2.34,
-      "dma50": 78137.0,
-      "dma200": 72635.0,
-      "dist50_pct": -21.28,
-      "dist200_pct": -15.32,
+      "price": 61811.0,
+      "change": -91.0,
+      "change_pct": -0.15,
+      "dma50": 77684.0,
+      "dma200": 72547.0,
+      "dist50_pct": -20.43,
+      "dist200_pct": -14.8,
       "history": [
         {
           "date": "2024-06-04",
@@ -67794,11 +67819,11 @@
         },
         {
           "date": "2026-11-19",
-          "close": 63812.0
+          "close": 61902.0
         },
         {
           "date": "2026-11-20",
-          "close": 61510.0
+          "close": 61811.0
         }
       ]
     }
@@ -67854,30 +67879,15 @@
         "ticker": "XLRE",
         "name": "Ingatlan",
         "name_en": "Real Estate",
-        "as_of": "2026-11-18",
-        "price": 43.62,
-        "week_pct": -2.18,
-        "month_pct": 2.93,
-        "ytd_pct": 10.71,
-        "week_vs_spy": 3.27,
-        "month_vs_spy": 10.33,
-        "ytd_vs_spy": 4.91,
+        "as_of": "2026-11-19",
+        "price": 42.88,
+        "week_pct": -3.34,
+        "month_pct": 1.95,
+        "ytd_pct": 8.83,
+        "week_vs_spy": 2.11,
+        "month_vs_spy": 9.35,
+        "ytd_vs_spy": 3.03,
         "role": "leader"
-      },
-      {
-        "id": "xlc",
-        "ticker": "XLC",
-        "name": "Kommunikáció",
-        "name_en": "Communication Services",
-        "as_of": "2026-11-18",
-        "price": 105.58,
-        "week_pct": -2.78,
-        "month_pct": -4.18,
-        "ytd_pct": -9.5,
-        "week_vs_spy": 2.67,
-        "month_vs_spy": 3.22,
-        "ytd_vs_spy": -15.3,
-        "role": null
       },
       {
         "id": "xly",
@@ -67892,6 +67902,21 @@
         "week_vs_spy": 1.65,
         "month_vs_spy": 7.7,
         "ytd_vs_spy": -8.15,
+        "role": null
+      },
+      {
+        "id": "xlc",
+        "ticker": "XLC",
+        "name": "Kommunikáció",
+        "name_en": "Communication Services",
+        "as_of": "2026-11-19",
+        "price": 102.76,
+        "week_pct": -4.46,
+        "month_pct": -5.7,
+        "ytd_pct": -11.91,
+        "week_vs_spy": 0.99,
+        "month_vs_spy": 1.7,
+        "ytd_vs_spy": -17.71,
         "role": null
       },
       {
@@ -68002,7 +68027,7 @@
         "id": "xlre",
         "ticker": "XLRE",
         "name": "Ingatlan",
-        "week_pct": -2.18
+        "week_pct": -3.34
       }
     ],
     "laggards": [
@@ -68036,33 +68061,39 @@
       "universe": "S&P 500 és Nasdaq-100",
       "gainers": [
         {
+          "ticker": "PDD",
+          "name": "PDD Holdings",
+          "change_pct": 11.04,
+          "headline": null
+        },
+        {
+          "ticker": "PANW",
+          "name": "Palo Alto Networks",
+          "change_pct": 6.42,
+          "headline": null
+        },
+        {
+          "ticker": "OKTA",
+          "name": "Okta, Inc.",
+          "change_pct": 5.75,
+          "headline": null
+        },
+        {
+          "ticker": "P",
+          "name": "Everpure",
+          "change_pct": 4.73,
+          "headline": {
+            "title": "J.P. Morgan sees Fed rate hikes at next three meetings as inflation persists",
+            "source": "Reuters",
+            "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNWkZwc3MzeGxPMldOWGxwZnk4UFBSWGtfVC1pTnBnQXVRZzBrNTBzdGxCc05WSU5KNjVoTk1XSm82Q2UxSms1WnhkT05tTG5xU3JULWRtUTVOSlpmeXgyNTFWRVVOX1BTS3ZNaDZEendqbkJJNXlMSndLb0JiQjJ0dEhnMWs3bm5RX0hDNTZ4SVlaamJTU2ZDZVJ1VG8ycVpNdXR3NFdKMHhDVjdlUWMyWmhwVQ?oc=5",
+            "published_at": "2026-11-19T19:53:15+01:00",
+            "published_budapest": "2026. november 19., 19:53"
+          }
+        },
+        {
           "ticker": "WDC",
           "name": "Western Digital",
           "change_pct": 2.98,
-          "headline": null
-        },
-        {
-          "ticker": "EXPD",
-          "name": "Expeditors International",
-          "change_pct": 2.26,
-          "headline": null
-        },
-        {
-          "ticker": "AXON",
-          "name": "Axon Enterprise",
-          "change_pct": 2.09,
-          "headline": null
-        },
-        {
-          "ticker": "INTC",
-          "name": "Intel",
-          "change_pct": 1.92,
-          "headline": null
-        },
-        {
-          "ticker": "CF",
-          "name": "CF Industries",
-          "change_pct": 1.81,
           "headline": null
         }
       ],
@@ -68071,6 +68102,18 @@
           "ticker": "WSM",
           "name": "Williams-Sonoma, Inc.",
           "change_pct": -15.16,
+          "headline": null
+        },
+        {
+          "ticker": "NBIS",
+          "name": "Nebius Group",
+          "change_pct": -9.39,
+          "headline": null
+        },
+        {
+          "ticker": "TWLO",
+          "name": "Twilio",
+          "change_pct": -8.75,
           "headline": null
         },
         {
@@ -68090,18 +68133,6 @@
           "name": "Fiserv",
           "change_pct": -6.38,
           "headline": null
-        },
-        {
-          "ticker": "UHS",
-          "name": "Universal Health Services",
-          "change_pct": -5.96,
-          "headline": null
-        },
-        {
-          "ticker": "DECK",
-          "name": "Deckers Brands",
-          "change_pct": -5.56,
-          "headline": null
         }
       ]
     },
@@ -68118,7 +68149,7 @@
         "id": "cnbc_earnings",
         "name": "CNBC",
         "status": "ok",
-        "items": 8,
+        "items": 3,
         "error": null,
         "note": null
       },
@@ -68158,7 +68189,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 64,
+        "items": 71,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
