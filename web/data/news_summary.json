@@ -1,64 +1,59 @@
 {
-  "date": "2026-11-19",
-  "updated_at": "2026-11-19T05:50:00+01:00",
-  "headline": "Szerdán vegyesen zárt a Wall Street: a Nasdaq emelkedett, az S&P 500 ötödik napja esett, miközben Waller Fed-kormányzó akár fél százalékpontos decemberi kamatemelést is szükségesnek nevezett, Európában pedig a magas inflációs adatok újabb eséshez vezettek.",
+  "date": "2026-11-20",
+  "updated_at": "2026-11-20T05:50:00+01:00",
+  "headline": "Csütörtökön több mint 2%-kal esett a Wall Street, a Dow június óta először zárt 50 000 pont alatt, mivel az Anthropic rekordméretű tőzsdei bevezetése sem állította meg a mesterségesintelligencia-részvények eladási hullámát.",
   "items": [
     {
-      "title": "Vegyes zárás a Wall Streeten, az S&P 500 ötödik egymást követő napon esett",
-      "summary": "Szerdán a Dow Jones 561,25 ponttal (1,11%) 50 198,17 pontra, az S&P 500 0,23%-kal 7323,63 pontra csökkent, míg a Nasdaq Composite 0,42%-kal 24 429,89 pontra emelkedett. Az S&P 500 júniusa óta nem esett ilyen hosszú sorozatban, a mesterséges intelligenciához kötődő részvények továbbra is erősen ingadoztak.",
+      "title": "Meredek esés a Wall Streeten, a Dow 50 000 pont alá került",
+      "summary": "A Dow Jones 1101,11 ponttal (2,19%) 49 097,06 pontra, az S&P 500 2,02%-kal 7175,83 pontra, a Nasdaq Composite 2,25%-kal 23 879,20 pontra esett, miután a Nasdaq napközben még 2%-os pluszban járt. Az AMD közel 8%-ot veszített, miután a Hunterbrook Capital short pozíciót jelentett be a cégben, a VIX napközben közel 29-ig, március óta a legmagasabb szintre emelkedett.",
       "impact": "negatív",
       "tickers": [
         "^DJI",
         "^GSPC",
-        "^IXIC"
-      ],
-      "source": "AP",
-      "url": "https://apnews.com/article/wall-street-stocks-dow-nasdaq-990749d3d269f7ef05b9f6c089713a58"
-    },
-    {
-      "title": "Az Nvidia a rekordnegyedév ellenére 2,89%-kal esett",
-      "summary": "Az Nvidia részvénye szerdán 2,89%-ot veszített, miután a 115,84 milliárd dolláros negyedéves bevétel és a 130 milliárd dolláros előrejelzés is felülmúlta a várakozásokat; az árfolyam egy hét alatt több mint 13%-kal csökkent Jensen Huang lemondása óta. A lefelé húzott „neocloud” cégek közül a CoreWeave 4,13%-kal, az Iren 3,61%-kal esett.",
-      "impact": "negatív",
-      "tickers": [
-        "NVDA",
-        "CRWV",
-        "IREN"
+        "^IXIC",
+        "AMD",
+        "^VIX"
       ],
       "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/18/nvidia-stock-earnings.html"
+      "url": "https://www.cnbc.com/2026/11/18/stock-market-today-live-updates.html"
     },
     {
-      "title": "Waller fél százalékpontos kamatemelést sürget, a Fed-jegyzőkönyv további szigorítást jelez",
-      "summary": "Christopher Waller Fed-kormányzó szerint a december 8–9-i ülésen valószínűleg 0,5 százalékpontos emelés szükséges, az októberi FOMC-ülés jegyzőkönyve szerint pedig szinte minden döntéshozó további kamatemelést tart indokoltnak. A 10 éves hozam közel 4 bázisponttal 5,064%-ra csökkent, a 2 éves 4,80%-ra emelkedett, a CME FedWatch szerint a piac 95%-os eséllyel áraz legalább negyed százalékpontos decemberi emelést.",
-      "impact": "negatív",
-      "tickers": [
-        "^TNX"
-      ],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/18/treasury-yields-bonds-fed.html"
-    },
-    {
-      "title": "Három éves csúcsra, 4,0%-ra gyorsult az euróövezeti infláció, esett az európai tőzsde",
-      "summary": "Az Eurostat végleges adata szerint az euróövezet éves inflációja októberben 4,0%-ra nőtt (szeptember: 3,8%), főként a 21,0%-os energiaár-drágulás miatt, a brit infláció pedig 3,6%-ra emelkedett. A STOXX 600 1,03%-kal 644,05 pontra esett, ami a harmadik egymást követő csökkenés és október 27. óta a legalacsonyabb záróérték.",
-      "impact": "negatív",
-      "tickers": [
-        "^STOXX",
-        "^GDAXI",
-        "^FTSE"
-      ],
-      "source": "Dow Jones (Morningstar)",
-      "url": "https://www.morningstar.com/news/dow-jones/202611186210/stoxx-europe-600-index-ends-103-lower-at-64405-data-talk"
-    },
-    {
-      "title": "Esett az olajár a vártnál nagyobb amerikai készletnövekedés után",
-      "summary": "A Brent 1,28%-kal 91,95 dollárra, a WTI 3,2%-kal 83,26 dollárra esett hordónként, miután az EIA szerint az amerikai nyersolajkészlet 3,4 millió hordóval nőtt (várakozás: 58 ezer hordó). Az amerikai–iráni összecsapások és a Hormuzi-szorosban zajló hajózási fennakadások mérsékelték a csökkenést.",
+      "title": "Az Anthropic 17%-os emelkedéssel zárta első kereskedési napját",
+      "summary": "A minden idők legnagyobb tőzsdei bevezetésének számító Anthropic részvényeit 83 dolláron árazták, ami 1,5 billió dolláros értékelésnek felelt meg; a papír 111,50 dolláron, 34%-os ugrással nyitott a Nasdaqon, majd 97,17 dolláron zárt. A kereskedés indulása után a fő amerikai indexek a napi mélypontjukra estek, mivel a befektetők profitot realizáltak a technológiai részvényekben.",
       "impact": "semleges",
       "tickers": [
-        "BZ=F",
-        "CL=F"
+        "ANT"
       ],
       "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/18/oil-prices-fall-as-higher-us-crude-stocks-temper-supply-risks.html"
+      "url": "https://www.cnbc.com/2026/11/19/anthropic-ipo-ant-live-updates.html"
+    },
+    {
+      "title": "A Walmart emelte éves előrejelzését, a részvény mégis esett",
+      "summary": "A Walmart harmadik negyedéves bevétele 5,2%-kal 188,84 milliárd dollárra nőtt, és a vállalat 4,9–5,2%-os éves nettó árbevétel-növekedést vár a korábbi 4–5% helyett, ami azonban elmarad az elemzők által várt 5,5%-tól. A vezérigazgató szerint a dízel- és szállítási költségek idén mintegy 2 milliárd dollár többletkiadást okoztak, a részvény nagyjából 2%-kal esett.",
+      "impact": "negatív",
+      "tickers": [
+        "WMT"
+      ],
+      "source": "Reuters",
+      "url": "https://www.investing.com/news/stock-market-news/walmart-nudges-up-annual-forecasts-ahead-of-crucial-holiday-season-5038616"
+    },
+    {
+      "title": "Enyhén nőtt az új munkanélküli segélykérelmek száma az USA-ban",
+      "summary": "A november 14-ével zárult héten 1000-rel, 203 000-re emelkedett az első alkalommal benyújtott munkanélküli segélykérelmek száma, a négyhetes átlag 197 750 lett. A tartós kérelmek száma 70 000-rel 1,763 millióra nőtt, a munkaerőpiac azonban továbbra is ellenállónak mutatkozik.",
+      "impact": "semleges",
+      "tickers": [],
+      "source": "Reuters",
+      "url": "https://www.investing.com/news/economy-news/us-weekly-jobless-claims-increase-slightly-5039110"
+    },
+    {
+      "title": "Negyedik napja esik az európai tőzsde",
+      "summary": "A STOXX Europe 600 index 0,87%-kal 638,41 pontra csökkent, ez a negyedik egymást követő esés, amely alatt az index 3,87%-ot veszített. Az eladási nyomást az amerikai mesterségesintelligencia-részvények gyengesége és az Anthropic tőzsdei bevezetése körüli bizonytalanság is erősítette.",
+      "impact": "negatív",
+      "tickers": [
+        "^STOXX"
+      ],
+      "source": "Dow Jones (Morningstar)",
+      "url": "https://www.morningstar.com/news/dow-jones/202611197564/stoxx-europe-600-index-ends-087-lower-at-63841-data-talk"
     }
   ]
 }
