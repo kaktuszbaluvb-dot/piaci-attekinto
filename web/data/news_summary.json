@@ -1,62 +1,52 @@
 {
-  "date": "2026-11-21",
-  "updated_at": "2026-11-21T05:55:00+01:00",
-  "headline": "Pénteken folytatódott a mesterségesintelligencia-részvények eladási hulláma: a Nasdaq 5,28%-ot zuhant és idei mínuszba fordult, az S&P 500 és a Dow korrekciós tartományba került, a héten pedig 2020 márciusa óta nem látott mértékű esést szenvedtek el az amerikai indexek.",
+  "date": "2026-11-23",
+  "updated_at": "2026-11-23T05:55:00+01:00",
+  "headline": "A múlt heti, mesterséges intelligenciához kötődő eladási hullám után vasárnap este erőteljesen pattantak vissza az amerikai határidős indexek, miközben az ázsiai tőzsdék hétfőn tovább estek, az Nvidiánál pedig a SEC számviteli vizsgálata jelent újabb bizonytalanságot.",
   "items": [
     {
-      "title": "Korrekcióba került az S&P 500 és a Dow, a Nasdaq idei mínuszba fordult",
-      "summary": "Az S&P 500 3,7%-kal 6910,39 pontra, a Nasdaq Composite 5,28%-kal 22 617,73 pontra, a Dow Jones 949,73 ponttal (1,93%) 48 147,33 pontra esett; az S&P 500 és a Dow 10%-kal a záró csúcsa alatt van, a Nasdaq-100 napközben medvepiaci tartományba (−20%) került. Heti alapon a Dow 8%-ot, az S&P 500 8,6%-ot, a Nasdaq mintegy 10%-ot veszített, a befektetők defenzív részvényekbe (Walmart, Costco, Johnson & Johnson, Procter & Gamble) menekültek.",
-      "impact": "negatív",
+      "title": "Erős visszapattanással indult a rövidített hét az amerikai határidős piacon",
+      "summary": "Vasárnap este a Dow Jones határidős kontraktusa 673 ponttal (1,4%), az S&P 500 határidős 2,03%-kal, a Nasdaq-100 határidős 2,76%-kal emelkedett, miután pénteken mindhárom fő index korrekciós tartományban zárt. A hálaadás miatt rövidített héten a Wall Street csütörtökön zárva tart.",
+      "impact": "pozitív",
       "tickers": [
         "^GSPC",
-        "^IXIC",
-        "^DJI",
-        "^NDX"
+        "^NDX",
+        "^DJI"
       ],
       "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/19/stock-market-today-live-updates.html"
+      "url": "https://www.cnbc.com/2026/11/22/stock-market-today-live-updates.html"
     },
     {
-      "title": "Zuhantak a chipgyártók, az Anthropic is visszaadta nyereségének nagy részét",
-      "summary": "Az Nvidia mintegy 14%-ot, az AMD több mint 13%-ot, a Micron közel 14%-ot esett; az Nvidiára a Reuters értesülése is nyomást gyakorolt, amely szerint az amerikai tőkepiaci felügyelet (SEC) lehetséges számviteli problémákat vizsgál a cégnél. Az Anthropic 8,5%-ot veszített, miután csütörtöki tőzsdei debütálásán 17%-kal emelkedett.",
+      "title": "Tovább estek az ázsiai tőzsdék, a Kospi 5,8%-ot zuhant",
+      "summary": "Hétfőn a dél-koreai Kospi 5,8%-kal 4586,80 pontra esett (Samsung Electronics −5,5%, SK Hynix −4,9%), a hongkongi Hang Seng 1,8%-kal, a Shanghai Composite 1,4%-kal gyengült, a tokiói tőzsde ünnepnap miatt zárva volt. Szöul vasárnapi rendkívüli ülésén azonnali bevetésre készítette elő 10,76 billió wonos piacstabilizációs alapját.",
       "impact": "negatív",
       "tickers": [
-        "NVDA",
-        "AMD",
-        "MU",
-        "ANT"
+        "^KS11",
+        "^HSI",
+        "000001.SS"
       ],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/19/stock-market-today-live-updates.html"
+      "source": "AP",
+      "url": "https://apnews.com/article/stocks-markets-rates-technology-ai-anthropic-49ba1beba78fa4ed2bd5898029f79c91"
     },
     {
-      "title": "Lisa Cook: a további kamatemelés halogatása lemaradással fenyeget",
-      "summary": "A Fed kormányzója pénteki beszédében hangsúlyozta, hogy az infláció több mint öt és fél éve a cél felett van, a PCE-árindex éves változása becslése szerint 3,8% volt, és a kamatemelések halogatása azzal a kockázattal jár, hogy a jegybank lemarad, ami később nagyobb lépéseket tehet szükségessé. A további Fed-kamatemelések lehetősége a részvénypiaci hangulatot is rontja.",
-      "impact": "negatív",
-      "tickers": [],
-      "source": "Federal Reserve",
-      "url": "https://www.federalreserve.gov/newsevents/speech/cook20261120a.htm"
-    },
-    {
-      "title": "Az európai tőzsdék 2%-ot estek, rossz hetet zárt a STOXX 600",
-      "summary": "A STOXX Europe 600 index 2,00%-kal 625,65 pontra csökkent, heti szinten 5,80%-ot veszített, ami a 2025. április 4-ével zárult hét óta a legnagyobb heti esése, és megszakította háromhetes emelkedő sorozatát.",
+      "title": "Korai szakaszban lévő SEC-vizsgálat az Nvidia számviteli gyakorlatáról",
+      "summary": "A New York Times szombati értesülése szerint az amerikai tőkepiaci felügyelet (SEC) bizalmas, korai szakaszban lévő vizsgálatot folytat az Nvidia számviteli gyakorlata miatt; a vizsgálat vádemelés nélkül is lezárulhat. Az Nvidia árfolyama pénteken 14%-ot, a héten több mint 20%-ot esett, a céget Jensen Huang lemondása óta Colette Kress ideiglenes vezérigazgató irányítja.",
       "impact": "negatív",
       "tickers": [
-        "^STOXX"
+        "NVDA"
       ],
-      "source": "Dow Jones / Morningstar",
-      "url": "https://www.morningstar.com/news/dow-jones/202611206110/stoxx-europe-600-index-ends-the-week-580-lower-at-62565-data-talk"
+      "source": "AFP",
+      "url": "https://www.afp.com/en/nvidia-faces-us-accounting-probe-amid-deepening-turmoil-media"
     },
     {
-      "title": "Enyhén emelkedett az olajár, heti szinten azonban esés",
-      "summary": "A Brent 0,64%-kal 92,57 dolláron, a WTI 0,93%-kal 83,98 dolláron zárt hordónként az iráni háborúval kapcsolatos aggodalmak és a hálaadás előtti vásárlások miatt. Heti szinten a Brent közel 4%-kal, a WTI mintegy 5%-kal esett, mivel a Hormuzi-szoroson át zajló szállítások nagyjából visszaálltak a háború előtti szintre.",
+      "title": "Enyhén csökkent az olajár a részvénypiaci eladások közepette",
+      "summary": "Hétfő reggel a Brent 0,30%-kal 92,29 dollárra, a WTI 0,18%-kal 83,26 dollárra csökkent hordónként; a múlt héten a Brent 4%-ot, a WTI 5%-ot veszített, ami sorozatban a harmadik heti esés. A közel-keleti támadások mérsékelték a veszteségeket.",
       "impact": "semleges",
       "tickers": [
         "BZ=F",
         "CL=F"
       ],
-      "source": "Reuters",
-      "url": "https://www.investing.com/news/commodities-news/oil-prices-edge-higher-as-houthi-attacks-on-riyadh-raise-supply-concerns-5040518"
+      "source": "Reuters / Business Standard",
+      "url": "https://www.business-standard.com/markets/commodities/oil-prices-fall-amid-equity-selloff-though-iran-war-attacks-limit-losses-126112300089_1.html"
     }
   ]
 }
