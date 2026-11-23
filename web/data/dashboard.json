@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-21T05:53:47+01:00",
-    "generated_at_budapest": "2026. november 21., 05:53",
+    "generated_at": "2026-11-23T05:42:59+01:00",
+    "generated_at_budapest": "2026. november 23., 05:42",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-20",
     "price_period": "3y"
@@ -1458,7 +1458,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.4,
-        "spx50": 34.9,
+        "spx50": 35.1,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -54937,14 +54937,14 @@
       "unit": "index",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-20",
-      "price": 103.84,
-      "change": -0.06,
-      "change_pct": -0.06,
-      "dma50": 101.89,
-      "dma200": 100.01,
-      "dist50_pct": 1.92,
-      "dist200_pct": 3.83,
+      "as_of": "2026-11-22",
+      "price": 103.79,
+      "change": -0.02,
+      "change_pct": -0.02,
+      "dma50": 101.97,
+      "dma200": 100.04,
+      "dist50_pct": 1.78,
+      "dist200_pct": 3.75,
       "history": [
         {
           "date": "2023-11-01",
@@ -58028,7 +58028,11 @@
         },
         {
           "date": "2026-11-20",
-          "close": 103.84
+          "close": 103.81
+        },
+        {
+          "date": "2026-11-22",
+          "close": 103.79
         }
       ]
     },
@@ -58041,14 +58045,14 @@
       "unit": "USD/uncia",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-20",
-      "price": 3539.0,
-      "change": -146.5,
-      "change_pct": -3.98,
-      "dma50": 4111.33,
-      "dma200": 4444.8,
-      "dist50_pct": -13.92,
-      "dist200_pct": -20.38,
+      "as_of": "2026-11-22",
+      "price": 3605.4,
+      "change": 90.0,
+      "change_pct": 2.56,
+      "dma50": 4095.93,
+      "dma200": 4437.81,
+      "dist50_pct": -11.98,
+      "dist200_pct": -18.76,
       "history": [
         {
           "date": "2023-11-01",
@@ -61136,7 +61140,11 @@
         },
         {
           "date": "2026-11-20",
-          "close": 3539.0
+          "close": 3515.4
+        },
+        {
+          "date": "2026-11-22",
+          "close": 3605.4
         }
       ]
     },
@@ -61149,14 +61157,14 @@
       "unit": "USD/hordó",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-20",
-      "price": 83.62,
-      "change": 0.41,
-      "change_pct": 0.49,
-      "dma50": 94.14,
-      "dma200": 88.29,
-      "dist50_pct": -11.18,
-      "dist200_pct": -5.29,
+      "as_of": "2026-11-22",
+      "price": 83.5,
+      "change": -0.48,
+      "change_pct": -0.57,
+      "dma50": 93.79,
+      "dma200": 88.39,
+      "dist50_pct": -10.97,
+      "dist200_pct": -5.54,
       "history": [
         {
           "date": "2023-11-01",
@@ -64240,7 +64248,11 @@
         },
         {
           "date": "2026-11-20",
-          "close": 83.62
+          "close": 83.98
+        },
+        {
+          "date": "2026-11-22",
+          "close": 83.5
         }
       ]
     },
@@ -64253,19 +64265,15 @@
       "unit": "USD",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-21",
-      "price": 56370.0,
-      "change": -5531.0,
-      "change_pct": -8.94,
-      "dma50": 77575.0,
-      "dma200": 72519.0,
-      "dist50_pct": -27.33,
-      "dist200_pct": -22.27,
+      "as_of": "2026-11-23",
+      "price": 61057.0,
+      "change": 963.0,
+      "change_pct": 1.6,
+      "dma50": 76662.0,
+      "dma200": 72326.0,
+      "dist50_pct": -20.35,
+      "dist200_pct": -15.58,
       "history": [
-        {
-          "date": "2024-06-05",
-          "close": 71083.0
-        },
         {
           "date": "2024-06-06",
           "close": 70757.0
@@ -67856,11 +67864,15 @@
         },
         {
           "date": "2026-11-20",
-          "close": 61811.0
+          "close": 58799.0
         },
         {
           "date": "2026-11-21",
-          "close": 56370.0
+          "close": 60094.0
+        },
+        {
+          "date": "2026-11-23",
+          "close": 61057.0
         }
       ]
     }
@@ -68107,13 +68119,7 @@
           "ticker": "GIS",
           "name": "General Mills",
           "change_pct": 3.65,
-          "headline": {
-            "title": "Stocks making the biggest moves Friday: Nvidia, Anthropic, Micron, General Mills, UnitedHealth, Strategy & more",
-            "source": "CNBC",
-            "url": "https://www.cnbc.com/2026/11/20/stocks-moving-the-most-today-live-updates.html",
-            "published_at": "2026-11-20T20:26:34+01:00",
-            "published_budapest": "2026. november 20., 20:26"
-          }
+          "headline": null
         },
         {
           "ticker": "MKC",
@@ -68145,7 +68151,13 @@
           "ticker": "BE",
           "name": "Bloom Energy",
           "change_pct": -15.3,
-          "headline": null
+          "headline": {
+            "title": "AOIL.BE%5EA24 - | Stock Price & Latest News",
+            "source": "Reuters",
+            "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNY1VxeWhlLWVxR2N1ajI4b19BSXBwSHIyeHdQRk01Wl91YW1iVWZmektleVFBZUJHVHB1R2J4Um8zaG1lY09wVkFYV1l4ZDFPeEZMb2JQQmFGeGxkMWhySW45UUZTcTQ1ZWN5WWY3WWdBeTdpVDFVcEl5TDJHZE9xcGJIbi1TYmxkcEtKdmhsUmF0LW5pUlRGbA?oc=5",
+            "published_at": "2026-11-22T13:59:21+01:00",
+            "published_budapest": "2026. november 22., 13:59"
+          }
         },
         {
           "ticker": "ALAB",
@@ -68163,13 +68175,7 @@
           "ticker": "NVDA",
           "name": "Nvidia",
           "change_pct": -14.01,
-          "headline": {
-            "title": "Nvidia stock plunges 14%, wraps up longest weekly losing streak since 2008 financial crisis",
-            "source": "CNBC",
-            "url": "https://www.cnbc.com/2026/11/20/nvidias-7-week-losing-streak-is-longest-since-2008-financial-crisis.html",
-            "published_at": "2026-11-20T23:59:33+01:00",
-            "published_budapest": "2026. november 20., 23:59"
-          }
+          "headline": null
         }
       ]
     },
@@ -68178,7 +68184,7 @@
         "id": "cnbc_top",
         "name": "CNBC",
         "status": "ok",
-        "items": 30,
+        "items": 17,
         "error": null,
         "note": null
       },
@@ -68186,7 +68192,7 @@
         "id": "cnbc_earnings",
         "name": "CNBC",
         "status": "ok",
-        "items": 3,
+        "items": 0,
         "error": null,
         "note": null
       },
@@ -68194,7 +68200,7 @@
         "id": "cnbc_economy",
         "name": "CNBC",
         "status": "ok",
-        "items": 3,
+        "items": 0,
         "error": null,
         "note": null
       },
@@ -68210,7 +68216,7 @@
         "id": "bloomberg_markets",
         "name": "Bloomberg",
         "status": "ok",
-        "items": 19,
+        "items": 20,
         "error": null,
         "note": null
       },
@@ -68218,7 +68224,7 @@
         "id": "bloomberg_econ",
         "name": "Bloomberg",
         "status": "ok",
-        "items": 20,
+        "items": 8,
         "error": null,
         "note": null
       },
@@ -68226,7 +68232,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 72,
+        "items": 64,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
