@@ -1,52 +1,60 @@
 {
-  "date": "2026-11-23",
-  "updated_at": "2026-11-23T05:55:00+01:00",
-  "headline": "A múlt heti, mesterséges intelligenciához kötődő eladási hullám után vasárnap este erőteljesen pattantak vissza az amerikai határidős indexek, miközben az ázsiai tőzsdék hétfőn tovább estek, az Nvidiánál pedig a SEC számviteli vizsgálata jelent újabb bizonytalanságot.",
+  "date": "2026-11-24",
+  "updated_at": "2026-11-24T05:50:00+01:00",
+  "headline": "Jensen Huang váratlan visszatérése az Nvidia élére hétfőn rendkívüli erejű rali indított a Wall Streeten: a Nasdaq 6,5%-ot, az S&P 500 4,7%-ot emelkedett, miközben az olajár 3%-nál is többet esett.",
   "items": [
     {
-      "title": "Erős visszapattanással indult a rövidített hét az amerikai határidős piacon",
-      "summary": "Vasárnap este a Dow Jones határidős kontraktusa 673 ponttal (1,4%), az S&P 500 határidős 2,03%-kal, a Nasdaq-100 határidős 2,76%-kal emelkedett, miután pénteken mindhárom fő index korrekciós tartományban zárt. A hálaadás miatt rövidített héten a Wall Street csütörtökön zárva tart.",
+      "title": "Történelmi napot zárt a Wall Street, a Nasdaq 6,5%-ot emelkedett",
+      "summary": "Hétfőn a Dow Jones 1447,98 ponttal (3,01%) 49 595,31 pontra, az S&P 500 4,73%-kal 7237,17 pontra, a Nasdaq Composite 6,51%-kal 24 089,56 pontra emelkedett. A ralit az Nvidia vezette, miután a cég váratlanul visszahelyezte Jensen Huangot a vezérigazgatói posztra.",
       "impact": "pozitív",
       "tickers": [
         "^GSPC",
-        "^NDX",
+        "^IXIC",
         "^DJI"
       ],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/22/stock-market-today-live-updates.html"
-    },
-    {
-      "title": "Tovább estek az ázsiai tőzsdék, a Kospi 5,8%-ot zuhant",
-      "summary": "Hétfőn a dél-koreai Kospi 5,8%-kal 4586,80 pontra esett (Samsung Electronics −5,5%, SK Hynix −4,9%), a hongkongi Hang Seng 1,8%-kal, a Shanghai Composite 1,4%-kal gyengült, a tokiói tőzsde ünnepnap miatt zárva volt. Szöul vasárnapi rendkívüli ülésén azonnali bevetésre készítette elő 10,76 billió wonos piacstabilizációs alapját.",
-      "impact": "negatív",
-      "tickers": [
-        "^KS11",
-        "^HSI",
-        "000001.SS"
-      ],
       "source": "AP",
-      "url": "https://apnews.com/article/stocks-markets-rates-technology-ai-anthropic-49ba1beba78fa4ed2bd5898029f79c91"
+      "url": "https://apnews.com/article/wall-street-stocks-dow-nasdaq-fcdf1bad36b4f81c90cbb0f33a2c5704"
     },
     {
-      "title": "Korai szakaszban lévő SEC-vizsgálat az Nvidia számviteli gyakorlatáról",
-      "summary": "A New York Times szombati értesülése szerint az amerikai tőkepiaci felügyelet (SEC) bizalmas, korai szakaszban lévő vizsgálatot folytat az Nvidia számviteli gyakorlata miatt; a vizsgálat vádemelés nélkül is lezárulhat. Az Nvidia árfolyama pénteken 14%-ot, a héten több mint 20%-ot esett, a céget Jensen Huang lemondása óta Colette Kress ideiglenes vezérigazgató irányítja.",
-      "impact": "negatív",
+      "title": "Jensen Huang visszatér az Nvidia élére, a részvény 31,5%-ot ugrott",
+      "summary": "Az Nvidia igazgatótanácsa Donald Trump amerikai elnök nyomására hétfőn visszahelyezte Jensen Huangot vezérigazgatónak; a részvény 31,5%-kal 165,05 dollárra emelkedett, ami közel 1000 milliárd dolláros piaci értéknövekedést jelent. Az árfolyam így sem dolgozta le teljesen a november 12-i lemondás óta elszenvedett veszteségeit, a lépés pedig vállalatirányítási kérdéseket vet fel.",
+      "impact": "pozitív",
       "tickers": [
         "NVDA"
       ],
-      "source": "AFP",
-      "url": "https://www.afp.com/en/nvidia-faces-us-accounting-probe-amid-deepening-turmoil-media"
+      "source": "Reuters",
+      "url": "https://www.reuters.com/3fec1b0a85a0/technology/nvidia-reinstates-jensen-huang-ceo-2026-11-23/"
     },
     {
-      "title": "Enyhén csökkent az olajár a részvénypiaci eladások közepette",
-      "summary": "Hétfő reggel a Brent 0,30%-kal 92,29 dollárra, a WTI 0,18%-kal 83,26 dollárra csökkent hordónként; a múlt héten a Brent 4%-ot, a WTI 5%-ot veszített, ami sorozatban a harmadik heti esés. A közel-keleti támadások mérsékelték a veszteségeket.",
+      "title": "Williams (New York-i Fed): még van tennivaló az inflációval",
+      "summary": "John Williams, a New York-i Fed elnöke szerint a jegybanknak „idővel” további lépéseket kell tennie, hogy az infláció tartósan visszatérjen a 2%-os célhoz, amit 2027-ben közelítőleg, 2028-ban teljesen elérhetőnek tart. Az inflációs nyomást az iráni konfliktusnak, az MI-beruházásokhoz kötődő keresletnek és a vámoknak tulajdonította.",
+      "impact": "negatív",
+      "tickers": [
+        "^TNX"
+      ],
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/23/john-williams-fed-inflation-rate-hikes.html"
+    },
+    {
+      "title": "Több mint 3%-ot esett az olajár a kínálati aggodalmak enyhülésével",
+      "summary": "A Brent 3,20 dollárral (3,46%) 89,37 dollárra, a WTI 3,24 dollárral 80,17 dollárra esett hordónként hétfőn. Líbiában újranyitották a Sharara-vezetéket, és egy iráni képviselő szerint a Hormuzi-szorosban korlátozásokkal, de engedélyezett a hajózás.",
       "impact": "semleges",
       "tickers": [
         "BZ=F",
         "CL=F"
       ],
-      "source": "Reuters / Business Standard",
-      "url": "https://www.business-standard.com/markets/commodities/oil-prices-fall-amid-equity-selloff-though-iran-war-attacks-limit-losses-126112300089_1.html"
+      "source": "Newsquawk / Morningstar",
+      "url": "https://www.morningstar.com/news/dow-jones/202611237545/front-month-ice-brent-crude-fell-346-to-settle-at-8937-data-talk"
+    },
+    {
+      "title": "Öt nap esés után emelkedéssel zártak az európai tőzsdék",
+      "summary": "A STOXX Europe 600 index 1,81%-kal 636,97 pontra emelkedett hétfőn, ami november 4. óta a legnagyobb napi erősödése, és véget vetett egy ötnapos eséssorozatnak. Az index még így is 4,09%-kal marad el a november 13-i, 664,14 pontos csúcsától.",
+      "impact": "pozitív",
+      "tickers": [
+        "^STOXX"
+      ],
+      "source": "Dow Jones / Morningstar",
+      "url": "https://www.morningstar.com/news/dow-jones/202611236817/stoxx-europe-600-index-ends-181-higher-at-63697-data-talk"
     }
   ]
 }
