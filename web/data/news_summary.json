@@ -1,60 +1,63 @@
 {
-  "date": "2026-11-24",
-  "updated_at": "2026-11-24T05:50:00+01:00",
-  "headline": "Jensen Huang váratlan visszatérése az Nvidia élére hétfőn rendkívüli erejű rali indított a Wall Streeten: a Nasdaq 6,5%-ot, az S&P 500 4,7%-ot emelkedett, miközben az olajár 3%-nál is többet esett.",
+  "date": "2026-11-25",
+  "updated_at": "2026-11-25T05:55:00+01:00",
+  "headline": "Az MI- és chipipari részvények keddi visszaesése 1,5%-kal lejjebb vitte a Nasdaqot, miközben a Dow Jones 50 000 pont fölött zárt; a piac a ma érkező PCE-inflációs adatra és a küszöbön álló új amerikai vámokra figyel.",
   "items": [
     {
-      "title": "Történelmi napot zárt a Wall Street, a Nasdaq 6,5%-ot emelkedett",
-      "summary": "Hétfőn a Dow Jones 1447,98 ponttal (3,01%) 49 595,31 pontra, az S&P 500 4,73%-kal 7237,17 pontra, a Nasdaq Composite 6,51%-kal 24 089,56 pontra emelkedett. A ralit az Nvidia vezette, miután a cég váratlanul visszahelyezte Jensen Huangot a vezérigazgatói posztra.",
-      "impact": "pozitív",
-      "tickers": [
-        "^GSPC",
-        "^IXIC",
-        "^DJI"
-      ],
-      "source": "AP",
-      "url": "https://apnews.com/article/wall-street-stocks-dow-nasdaq-fcdf1bad36b4f81c90cbb0f33a2c5704"
-    },
-    {
-      "title": "Jensen Huang visszatér az Nvidia élére, a részvény 31,5%-ot ugrott",
-      "summary": "Az Nvidia igazgatótanácsa Donald Trump amerikai elnök nyomására hétfőn visszahelyezte Jensen Huangot vezérigazgatónak; a részvény 31,5%-kal 165,05 dollárra emelkedett, ami közel 1000 milliárd dolláros piaci értéknövekedést jelent. Az árfolyam így sem dolgozta le teljesen a november 12-i lemondás óta elszenvedett veszteségeit, a lépés pedig vállalatirányítási kérdéseket vet fel.",
-      "impact": "pozitív",
-      "tickers": [
-        "NVDA"
-      ],
-      "source": "Reuters",
-      "url": "https://www.reuters.com/3fec1b0a85a0/technology/nvidia-reinstates-jensen-huang-ceo-2026-11-23/"
-    },
-    {
-      "title": "Williams (New York-i Fed): még van tennivaló az inflációval",
-      "summary": "John Williams, a New York-i Fed elnöke szerint a jegybanknak „idővel” további lépéseket kell tennie, hogy az infláció tartósan visszatérjen a 2%-os célhoz, amit 2027-ben közelítőleg, 2028-ban teljesen elérhetőnek tart. Az inflációs nyomást az iráni konfliktusnak, az MI-beruházásokhoz kötődő keresletnek és a vámoknak tulajdonította.",
+      "title": "Vegyes zárás a Wall Streeten: a Dow 50 000 pont fölött, a Nasdaq 1,5%-os eséssel",
+      "summary": "Kedden a Dow Jones 423,39 ponttal (0,85%) 50 018,70 pontra emelkedett, az S&P 500 0,50%-kal 7201,09 pontra, a Nasdaq Composite 1,48%-kal 23 733,54 pontra esett. Az Nvidia 5,9%-ot, a félvezető-index 7,9%-ot veszített, mivel a befektetők Jensen Huang visszahelyezésének irányítási és politikai kockázatait mérlegelték.",
       "impact": "negatív",
       "tickers": [
-        "^TNX"
+        "^DJI",
+        "^GSPC",
+        "^IXIC",
+        "NVDA"
       ],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/23/john-williams-fed-inflation-rate-hikes.html"
+      "source": "Reuters / NBC News",
+      "url": "https://www.nbcnews.com/business/markets/stocks-lower-after-nvidia-fueled-gains-rcna611211"
     },
     {
-      "title": "Több mint 3%-ot esett az olajár a kínálati aggodalmak enyhülésével",
-      "summary": "A Brent 3,20 dollárral (3,46%) 89,37 dollárra, a WTI 3,24 dollárral 80,17 dollárra esett hordónként hétfőn. Líbiában újranyitották a Sharara-vezetéket, és egy iráni képviselő szerint a Hormuzi-szorosban korlátozásokkal, de engedélyezett a hajózás.",
+      "title": "Új vámokat készít elő a Trump-kormányzat 16 kereskedelmi partner ellen",
+      "summary": "A Reuters értesülése szerint az amerikai kormányzat hamarosan nyilvánosságra hozza a túlzott ipari kapacitásokról szóló Section 301-es vizsgálat eredményeit, amely 16 partnert – köztük Kínát, az EU-t, Indiát, Japánt és Dél-Koreát – érint. A meglévő vámokon felül újabb, célzott importvámok várhatók, Mexikó és Norvégia azonnali vámot valószínűleg nem kap.",
+      "impact": "negatív",
+      "tickers": [
+        "^GSPC",
+        "FXI",
+        "EZU"
+      ],
+      "source": "Reuters",
+      "url": "https://www.investing.com/news/commodities-news/trump-administration-set-to-unveil-new-tariffs-after-probeon-excess-factory-capacity-sources-say-5048724"
+    },
+    {
+      "title": "Két dollárral drágult az olaj a hormuzi hajótámadások miatt",
+      "summary": "A Brent 2,03 dollárral (2,27%) 91,40 dollárra emelkedett hordónként, miután a nap folyamán augusztus 27. óta nem látott mélypontra esett. Az emelkedést a Hormuzi-szorosban és környékén hajók ellen jelentett újabb támadások váltották ki.",
       "impact": "semleges",
       "tickers": [
         "BZ=F",
         "CL=F"
       ],
-      "source": "Newsquawk / Morningstar",
-      "url": "https://www.morningstar.com/news/dow-jones/202611237545/front-month-ice-brent-crude-fell-346-to-settle-at-8937-data-talk"
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/24/oil-wti-brent-hormuz-supply.html"
     },
     {
-      "title": "Öt nap esés után emelkedéssel zártak az európai tőzsdék",
-      "summary": "A STOXX Europe 600 index 1,81%-kal 636,97 pontra emelkedett hétfőn, ami november 4. óta a legnagyobb napi erősödése, és véget vetett egy ötnapos eséssorozatnak. Az index még így is 4,09%-kal marad el a november 13-i, 664,14 pontos csúcsától.",
+      "title": "Erősen javult az amerikai fogyasztói bizalom, ma jön a PCE-infláció",
+      "summary": "A Conference Board fogyasztói bizalmi indexe novemberben 11,4 ponttal 103,3-ra emelkedett a 91,9-es októberi értékről. Szerdán érkezik az októberi PCE-árindex: az elemzők 0,3%-os havi emelkedést és 3,8%-os éves inflációt várnak, az adat a Fed december 8–9-i ülése előtt kulcsfontosságú.",
+      "impact": "semleges",
+      "tickers": [
+        "^TNX"
+      ],
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/24/consumer-confidence-november-election-midterm.html"
+    },
+    {
+      "title": "A Dell várakozás feletti negyedévet és 25 milliárd dolláros visszavásárlást jelentett",
+      "summary": "A Dell a harmadik pénzügyi negyedévben 54,94 milliárd dollár bevételt és 9,45 dollár korrigált EPS-t ért el, mindkettő jóval a várakozások felett, az MI-szerverek iránti kereslet hajtotta. A cég megemelte előrejelzését, 132,3 milliárd dolláros MI-szerver rendelésállományt jelentett, és további 25 milliárd dolláros részvény-visszavásárlást hagyott jóvá; a részvény a zárás után mintegy 4%-kal emelkedett.",
       "impact": "pozitív",
       "tickers": [
-        "^STOXX"
+        "DELL"
       ],
-      "source": "Dow Jones / Morningstar",
-      "url": "https://www.morningstar.com/news/dow-jones/202611236817/stoxx-europe-600-index-ends-181-higher-at-63697-data-talk"
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/24/dell-earnings-report-q3-2027.html"
     }
   ]
 }
