@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-26T05:45:40+01:00",
-    "generated_at_budapest": "2026. november 26., 05:45",
+    "generated_at": "2026-11-26T06:19:05+01:00",
+    "generated_at_budapest": "2026. november 26., 06:19",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-25",
     "price_period": "3y"
@@ -1458,7 +1458,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.4,
-        "spx50": 34.9,
+        "spx50": 35.1,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -12504,14 +12504,14 @@
     "fear_greed": {
       "status": "ok",
       "source": "CNN Fear & Greed",
-      "as_of": "2026-11-25",
+      "as_of": "2026-11-26",
       "score": 15.2,
       "rating": "extreme fear",
       "rating_hu": "extrém félelem",
-      "previous_close": 17.4,
-      "previous_week": 29.9,
-      "previous_month": 16.7,
-      "previous_year": 15.0,
+      "previous_close": 15.2,
+      "previous_week": 15.9,
+      "previous_month": 29.8,
+      "previous_year": 17.7,
       "history": [
         {
           "date": "2023-11-01",
@@ -16355,6 +16355,11 @@
         },
         {
           "date": "2026-11-25",
+          "score": 15.2,
+          "rating": "extreme fear"
+        },
+        {
+          "date": "2026-11-26",
           "score": 15.2,
           "rating": "extreme fear"
         }
@@ -31987,8 +31992,8 @@
       "group": "usa",
       "source": "Yahoo Finance",
       "as_of": "2026-11-25",
-      "price": 50182.9,
-      "change": 164.2,
+      "price": 50182.95,
+      "change": 164.25,
       "change_pct": 0.33,
       "dma50": 51582.12,
       "dma200": 50773.2,
@@ -35077,7 +35082,7 @@
         },
         {
           "date": "2026-11-25",
-          "close": 50182.9
+          "close": 50182.95
         }
       ]
     },
@@ -55111,14 +55116,14 @@
       "unit": "index",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-25",
-      "price": 103.8,
-      "change": -0.01,
-      "change_pct": -0.01,
-      "dma50": 102.14,
-      "dma200": 100.11,
-      "dist50_pct": 1.63,
-      "dist200_pct": 3.68,
+      "as_of": "2026-11-26",
+      "price": 103.82,
+      "change": 0.15,
+      "change_pct": 0.15,
+      "dma50": 102.21,
+      "dma200": 100.15,
+      "dist50_pct": 1.58,
+      "dist200_pct": 3.67,
       "history": [
         {
           "date": "2023-11-01",
@@ -58218,7 +58223,11 @@
         },
         {
           "date": "2026-11-25",
-          "close": 103.8
+          "close": 103.67
+        },
+        {
+          "date": "2026-11-26",
+          "close": 103.82
         }
       ]
     },
@@ -58231,14 +58240,14 @@
       "unit": "USD/uncia",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-25",
-      "price": 3624.5,
-      "change": 62.6,
-      "change_pct": 1.76,
-      "dma50": 4066.17,
-      "dma200": 4423.42,
-      "dist50_pct": -10.86,
-      "dist200_pct": -18.06,
+      "as_of": "2026-11-26",
+      "price": 3623.0,
+      "change": 87.2,
+      "change_pct": 2.47,
+      "dma50": 4048.87,
+      "dma200": 4415.6,
+      "dist50_pct": -10.52,
+      "dist200_pct": -17.95,
       "history": [
         {
           "date": "2023-11-01",
@@ -61342,7 +61351,11 @@
         },
         {
           "date": "2026-11-25",
-          "close": 3624.5
+          "close": 3535.8
+        },
+        {
+          "date": "2026-11-26",
+          "close": 3623.0
         }
       ]
     },
@@ -61355,14 +61368,14 @@
       "unit": "USD/hordó",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-25",
-      "price": 84.32,
-      "change": 2.27,
-      "change_pct": 2.77,
-      "dma50": 92.89,
-      "dma200": 88.57,
-      "dist50_pct": -9.22,
-      "dist200_pct": -4.79,
+      "as_of": "2026-11-26",
+      "price": 84.42,
+      "change": 0.74,
+      "change_pct": 0.88,
+      "dma50": 92.52,
+      "dma200": 88.66,
+      "dist50_pct": -8.76,
+      "dist200_pct": -4.78,
       "history": [
         {
           "date": "2023-11-01",
@@ -64462,7 +64475,11 @@
         },
         {
           "date": "2026-11-25",
-          "close": 84.32
+          "close": 83.68
+        },
+        {
+          "date": "2026-11-26",
+          "close": 84.42
         }
       ]
     },
@@ -64476,13 +64493,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-26",
-      "price": 60938.0,
-      "change": 1190.0,
-      "change_pct": 1.99,
-      "dma50": 75145.0,
+      "price": 60855.0,
+      "change": 1107.0,
+      "change_pct": 1.85,
+      "dma50": 75144.0,
       "dma200": 72031.0,
-      "dist50_pct": -18.91,
-      "dist200_pct": -15.4,
+      "dist50_pct": -19.01,
+      "dist200_pct": -15.52,
       "history": [
         {
           "date": "2024-06-10",
@@ -68082,7 +68099,7 @@
         },
         {
           "date": "2026-11-26",
-          "close": 60938.0
+          "close": 60855.0
         }
       ]
     }
@@ -68313,7 +68330,7 @@
   },
   "news": {
     "status": "ok",
-    "source": "Yahoo Finance záróár, S&P 500 és Nasdaq-100; hivatkozás: CNBC, Bloomberg, Reuters",
+    "source": "Yahoo Finance záróár, S&P 500 és Nasdaq-100; hivatkozás: CNBC, MarketWatch, Bloomberg, Reuters",
     "as_of": "2026-11-25",
     "movers": {
       "as_of": "2026-11-25",
@@ -68361,7 +68378,13 @@
           "ticker": "ORCL",
           "name": "Oracle Corporation",
           "change_pct": -5.13,
-          "headline": null
+          "headline": {
+            "title": "Oracle, CoreWeave and other tech stocks bounce back after selloff",
+            "source": "MarketWatch",
+            "url": "https://www.marketwatch.com/story/oracles-stock-sinks-toward-a-3-year-low-as-the-ai-trade-continues-to-unravel-d4698d77?mod=mw_rss_topstories",
+            "published_at": "2026-11-25T23:16:00+01:00",
+            "published_budapest": "2026. november 25., 23:16"
+          }
         },
         {
           "ticker": "MU",
@@ -68411,9 +68434,10 @@
       {
         "id": "marketwatch",
         "name": "MarketWatch",
-        "status": "unavailable",
-        "items": 0,
-        "error": "400 Client Error: Bad Request for url: https://feeds.marketwatch.com/marketwatch/topstories/"
+        "status": "ok",
+        "items": 10,
+        "error": null,
+        "note": null
       },
       {
         "id": "bloomberg_markets",
