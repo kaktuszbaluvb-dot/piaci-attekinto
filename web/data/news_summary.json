@@ -1,63 +1,67 @@
 {
-  "date": "2026-11-25",
-  "updated_at": "2026-11-25T05:55:00+01:00",
-  "headline": "Az MI- és chipipari részvények keddi visszaesése 1,5%-kal lejjebb vitte a Nasdaqot, miközben a Dow Jones 50 000 pont fölött zárt; a piac a ma érkező PCE-inflációs adatra és a küszöbön álló új amerikai vámokra figyel.",
+  "date": "2026-11-26",
+  "updated_at": "2026-11-26T05:50:00+01:00",
+  "headline": "Az MI-részvények eladási hulláma szerdán napon belül 4,6%-kal vitte lejjebb a Nasdaqot, de zárásig a veszteség nagy része eltűnt; a 3,8%-ra gyorsuló PCE-infláció megerősítette a decemberi Fed-kamatemelés várakozását, az olaj 3,5%-ot drágult. Csütörtökön Hálaadás miatt zárva a Wall Street, pénteken rövidített kereskedés lesz.",
   "items": [
     {
-      "title": "Vegyes zárás a Wall Streeten: a Dow 50 000 pont fölött, a Nasdaq 1,5%-os eséssel",
-      "summary": "Kedden a Dow Jones 423,39 ponttal (0,85%) 50 018,70 pontra emelkedett, az S&P 500 0,50%-kal 7201,09 pontra, a Nasdaq Composite 1,48%-kal 23 733,54 pontra esett. Az Nvidia 5,9%-ot, a félvezető-index 7,9%-ot veszített, mivel a befektetők Jensen Huang visszahelyezésének irányítási és politikai kockázatait mérlegelték.",
+      "title": "Látványos visszapattanás a Wall Streeten: a Dow ledolgozta 1100 pontos esését",
+      "summary": "Szerdán a Dow Jones 164,25 ponttal (0,33%) 50 182,95 pontra emelkedett, az S&P 500 0,25%-kal 7182,78, a Nasdaq Composite 0,62%-kal 23 585,80 pontra esett, miután napon belül a Nasdaq 4,6%-ot, az S&P 500 3,2%-ot is veszített. Az MI-hez kötődő papírok tovább gyengültek: az Nvidia közel 4%-kal, az Oracle több mint 5%-kal, a Micron 4,5%-kal esett.",
       "impact": "negatív",
       "tickers": [
         "^DJI",
         "^GSPC",
         "^IXIC",
-        "NVDA"
+        "NVDA",
+        "ORCL",
+        "MU"
       ],
-      "source": "Reuters / NBC News",
-      "url": "https://www.nbcnews.com/business/markets/stocks-lower-after-nvidia-fueled-gains-rcna611211"
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/24/stock-market-today-live-updates-.html"
     },
     {
-      "title": "Új vámokat készít elő a Trump-kormányzat 16 kereskedelmi partner ellen",
-      "summary": "A Reuters értesülése szerint az amerikai kormányzat hamarosan nyilvánosságra hozza a túlzott ipari kapacitásokról szóló Section 301-es vizsgálat eredményeit, amely 16 partnert – köztük Kínát, az EU-t, Indiát, Japánt és Dél-Koreát – érint. A meglévő vámokon felül újabb, célzott importvámok várhatók, Mexikó és Norvégia azonnali vámot valószínűleg nem kap.",
+      "title": "3,8%-ra gyorsult az amerikai PCE-infláció októberben",
+      "summary": "A Fed által preferált PCE-árindex havi 0,3%-kal és éves szinten 3,8%-kal nőtt (szeptemberben 3,7%), a maginfláció 3,3% lett, 0,1 százalékponttal a várakozás felett; a harmadik negyedéves GDP-növekedést 4,3%-ra módosították. A piac teljesen beárazta a Fed december 8–9-i ülésére a 25 bázispontos kamatemelést.",
+      "impact": "negatív",
+      "tickers": [
+        "^TNX",
+        "^GSPC"
+      ],
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/25/pce-inflation-report-october-2026.html"
+    },
+    {
+      "title": "Új Section 301-es vámokat javasol az USA 14 gazdaság ellen",
+      "summary": "Az amerikai kereskedelmi képviselet (USTR) a túlzott ipari kapacitások miatt célzott, többnyire 15–20%-os vámokat javasol többek között Kínára, az EU-ra, Japánra és Indiára; Kína esetében a teljes vámszint mintegy 45%-ra emelkedhet. Jamieson Greer szerint a vámok valószínűleg csak hónapok múlva lépnek életbe, és nagyrészt nem adódnak hozzá a meglévő terhekhez.",
       "impact": "negatív",
       "tickers": [
         "^GSPC",
         "FXI",
         "EZU"
       ],
-      "source": "Reuters",
-      "url": "https://www.investing.com/news/commodities-news/trump-administration-set-to-unveil-new-tariffs-after-probeon-excess-factory-capacity-sources-say-5048724"
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/11/25/us-tariffs-trump-section-301.html"
     },
     {
-      "title": "Két dollárral drágult az olaj a hormuzi hajótámadások miatt",
-      "summary": "A Brent 2,03 dollárral (2,27%) 91,40 dollárra emelkedett hordónként, miután a nap folyamán augusztus 27. óta nem látott mélypontra esett. Az emelkedést a Hormuzi-szorosban és környékén hajók ellen jelentett újabb támadások váltották ki.",
+      "title": "3,5%-kal drágult a Brent a szaúdi finomító elleni húszi támadás hírére",
+      "summary": "A Brent 3,5%-kal 94,61 dolláron, a WTI 2%-kal 83,68 dolláron zárt hordónként, miután a jemeni húszik közölték, hogy megtámadták Szaúd-Arábia legnagyobb finomítóját, Rasz Tanurát. A befektetők a november 29-i OPEC+ ülésre is figyelnek, ahol a 2027-es kitermelési politikáról döntenek.",
       "impact": "semleges",
       "tickers": [
         "BZ=F",
         "CL=F"
       ],
       "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/24/oil-wti-brent-hormuz-supply.html"
+      "url": "https://www.cnbc.com/2026/11/25/oil-wti-brent-hormuz-middle-east.html"
     },
     {
-      "title": "Erősen javult az amerikai fogyasztói bizalom, ma jön a PCE-infláció",
-      "summary": "A Conference Board fogyasztói bizalmi indexe novemberben 11,4 ponttal 103,3-ra emelkedett a 91,9-es októberi értékről. Szerdán érkezik az októberi PCE-árindex: az elemzők 0,3%-os havi emelkedést és 3,8%-os éves inflációt várnak, az adat a Fed december 8–9-i ülése előtt kulcsfontosságú.",
-      "impact": "semleges",
+      "title": "Esésben zártak az európai tőzsdék",
+      "summary": "A STOXX Europe 600 index 1,06%-kal 626,03 pontra csökkent, ezzel nyolc kereskedési napból hetet esésben zárt. A visszaesést a megújuló MI-aggodalmak, az amerikai inflációs adat és a vámhírek váltották ki.",
+      "impact": "negatív",
       "tickers": [
-        "^TNX"
+        "^STOXX",
+        "^GDAXI"
       ],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/24/consumer-confidence-november-election-midterm.html"
-    },
-    {
-      "title": "A Dell várakozás feletti negyedévet és 25 milliárd dolláros visszavásárlást jelentett",
-      "summary": "A Dell a harmadik pénzügyi negyedévben 54,94 milliárd dollár bevételt és 9,45 dollár korrigált EPS-t ért el, mindkettő jóval a várakozások felett, az MI-szerverek iránti kereslet hajtotta. A cég megemelte előrejelzését, 132,3 milliárd dolláros MI-szerver rendelésállományt jelentett, és további 25 milliárd dolláros részvény-visszavásárlást hagyott jóvá; a részvény a zárás után mintegy 4%-kal emelkedett.",
-      "impact": "pozitív",
-      "tickers": [
-        "DELL"
-      ],
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/24/dell-earnings-report-q3-2027.html"
+      "source": "Dow Jones / Morningstar",
+      "url": "https://www.morningstar.com/news/dow-jones/202611255996/stoxx-europe-600-index-ends-106-lower-at-62603-data-talk"
     }
   ]
 }
