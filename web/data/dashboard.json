@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-26T16:32:22+01:00",
-    "generated_at_budapest": "2026. november 26., 16:32",
+    "generated_at": "2026-11-27T05:48:21+01:00",
+    "generated_at_budapest": "2026. november 27., 05:48",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-25",
     "price_period": "3y"
@@ -4749,9 +4749,9 @@
       "status": "ok",
       "source": "Yahoo Finance (^VIX)",
       "as_of": "2026-11-26",
-      "value": 26.81,
-      "change": -1.48,
-      "change_pct": -5.23,
+      "value": 26.8,
+      "change": -1.49,
+      "change_pct": -5.27,
       "history": [
         {
           "date": "2023-10-30",
@@ -7851,7 +7851,7 @@
         },
         {
           "date": "2026-11-26",
-          "value": 26.81
+          "value": 26.8
         }
       ]
     },
@@ -12505,7 +12505,7 @@
         },
         {
           "date": "2026-11-26",
-          "vix": 26.81
+          "vix": 26.8
         }
       ]
     },
@@ -38215,13 +38215,13 @@
       "group": "eu",
       "source": "Yahoo Finance",
       "as_of": "2026-11-26",
-      "price": 25239.94,
-      "change": 537.81,
-      "change_pct": 2.18,
-      "dma50": 25575.77,
-      "dma200": 25001.33,
-      "dist50_pct": -1.31,
-      "dist200_pct": 0.95,
+      "price": 25215.52,
+      "change": 513.39,
+      "change_pct": 2.08,
+      "dma50": 25575.28,
+      "dma200": 25001.21,
+      "dist50_pct": -1.41,
+      "dist200_pct": 0.86,
       "history": [
         {
           "date": "2023-10-30",
@@ -41349,7 +41349,7 @@
         },
         {
           "date": "2026-11-26",
-          "close": 25239.94
+          "close": 25215.52
         }
       ]
     },
@@ -55141,7 +55141,7 @@
       "change_pct": 0.08,
       "dma50": 102.2,
       "dma200": 100.15,
-      "dist50_pct": 1.51,
+      "dist50_pct": 1.52,
       "dist200_pct": 3.6,
       "history": [
         {
@@ -58260,13 +58260,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-26",
-      "price": 3599.8,
-      "change": 64.0,
-      "change_pct": 1.81,
-      "dma50": 4048.4,
-      "dma200": 4415.48,
-      "dist50_pct": -11.08,
-      "dist200_pct": -18.47,
+      "price": 3662.4,
+      "change": 126.6,
+      "change_pct": 3.58,
+      "dma50": 4049.65,
+      "dma200": 4415.79,
+      "dist50_pct": -9.56,
+      "dist200_pct": -17.06,
       "history": [
         {
           "date": "2023-11-01",
@@ -61374,7 +61374,7 @@
         },
         {
           "date": "2026-11-26",
-          "close": 3599.8
+          "close": 3662.4
         }
       ]
     },
@@ -61388,13 +61388,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-26",
-      "price": 84.65,
-      "change": 0.97,
-      "change_pct": 1.16,
-      "dma50": 92.53,
-      "dma200": 88.66,
-      "dist50_pct": -8.51,
-      "dist200_pct": -4.53,
+      "price": 85.79,
+      "change": 2.11,
+      "change_pct": 2.52,
+      "dma50": 92.55,
+      "dma200": 88.67,
+      "dist50_pct": -7.31,
+      "dist200_pct": -3.25,
       "history": [
         {
           "date": "2023-11-01",
@@ -64498,7 +64498,7 @@
         },
         {
           "date": "2026-11-26",
-          "close": 84.65
+          "close": 85.79
         }
       ]
     },
@@ -64511,19 +64511,15 @@
       "unit": "USD",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-26",
-      "price": 60244.0,
-      "change": -134.0,
-      "change_pct": -0.22,
-      "dma50": 74674.0,
-      "dma200": 71919.0,
-      "dist50_pct": -19.32,
-      "dist200_pct": -16.23,
+      "as_of": "2026-11-27",
+      "price": 61433.0,
+      "change": 1055.0,
+      "change_pct": 1.75,
+      "dma50": 74697.0,
+      "dma200": 71925.0,
+      "dist50_pct": -17.76,
+      "dist200_pct": -14.59,
       "history": [
-        {
-          "date": "2024-06-10",
-          "close": 69512.0
-        },
         {
           "date": "2024-06-11",
           "close": 67332.0
@@ -68119,6 +68115,10 @@
         {
           "date": "2026-11-26",
           "close": 60244.0
+        },
+        {
+          "date": "2026-11-27",
+          "close": 61433.0
         }
       ]
     }
@@ -68415,7 +68415,13 @@
           "ticker": "J",
           "name": "Jacobs Solutions",
           "change_pct": -4.27,
-          "headline": null
+          "headline": {
+            "title": "J.P. Morgan sees Indian stocks rise further in 2027 after 'great comeback' of 2026",
+            "source": "Reuters",
+            "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQQWRmQXRtWGtJcjVxUnJtb3JhWHItaTMtanZUcll1emlBaUFzZU1Eay11ZV9neGRlVnRKMXlMNDVnTDkwMDdjeHVMcUJhRldlUnVzZy11Q2ZYT05Mb3ZZWGRYSDFKT0dtM0t4Z2IweGpmZDZKR2pOSjRHSW5KRE1JQXpWX1VBRlpWTDgtdllpNFprV3RjTUYwWkZFSGo4cEJ3dDlaeUNYU0s4dm9DYUNhWV9qdGRfTUFqUkpDaA?oc=5",
+            "published_at": "2026-11-26T13:37:44+01:00",
+            "published_budapest": "2026. november 26., 13:37"
+          }
         }
       ]
     },
@@ -68424,7 +68430,7 @@
         "id": "cnbc_top",
         "name": "CNBC",
         "status": "ok",
-        "items": 30,
+        "items": 26,
         "error": null,
         "note": null
       },
@@ -68440,7 +68446,7 @@
         "id": "cnbc_economy",
         "name": "CNBC",
         "status": "ok",
-        "items": 6,
+        "items": 4,
         "error": null,
         "note": null
       },
@@ -68472,7 +68478,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 71,
+        "items": 67,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
