@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": 1,
-    "generated_at": "2026-11-27T05:48:21+01:00",
-    "generated_at_budapest": "2026. november 27., 05:48",
+    "generated_at": "2026-11-27T06:14:53+01:00",
+    "generated_at_budapest": "2026. november 27., 06:14",
     "timezone": "Europe/Budapest",
     "market_date": "2026-11-25",
     "price_period": "3y"
@@ -1458,7 +1458,7 @@
       {
         "date": "2025-01-15",
         "spx200": 61.4,
-        "spx50": 34.9,
+        "spx50": 35.1,
         "ndx200": 62.5,
         "ndx50": 42.3
       },
@@ -55135,14 +55135,14 @@
       "unit": "index",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-26",
-      "price": 103.75,
-      "change": 0.08,
-      "change_pct": 0.08,
+      "as_of": "2026-11-27",
+      "price": 103.74,
+      "change": 0.07,
+      "change_pct": 0.07,
       "dma50": 102.2,
       "dma200": 100.15,
-      "dist50_pct": 1.52,
-      "dist200_pct": 3.6,
+      "dist50_pct": 1.51,
+      "dist200_pct": 3.59,
       "history": [
         {
           "date": "2023-11-01",
@@ -58247,6 +58247,10 @@
         {
           "date": "2026-11-26",
           "close": 103.75
+        },
+        {
+          "date": "2026-11-27",
+          "close": 103.74
         }
       ]
     },
@@ -58259,14 +58263,14 @@
       "unit": "USD/uncia",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-26",
-      "price": 3662.4,
-      "change": 126.6,
-      "change_pct": 3.58,
-      "dma50": 4049.65,
-      "dma200": 4415.79,
-      "dist50_pct": -9.56,
-      "dist200_pct": -17.06,
+      "as_of": "2026-11-27",
+      "price": 3663.9,
+      "change": 128.1,
+      "change_pct": 3.62,
+      "dma50": 4049.68,
+      "dma200": 4415.8,
+      "dist50_pct": -9.53,
+      "dist200_pct": -17.03,
       "history": [
         {
           "date": "2023-11-01",
@@ -61375,6 +61379,10 @@
         {
           "date": "2026-11-26",
           "close": 3662.4
+        },
+        {
+          "date": "2026-11-27",
+          "close": 3663.9
         }
       ]
     },
@@ -61387,14 +61395,14 @@
       "unit": "USD/hordó",
       "group": "",
       "source": "Yahoo Finance",
-      "as_of": "2026-11-26",
-      "price": 85.79,
-      "change": 2.11,
-      "change_pct": 2.52,
+      "as_of": "2026-11-27",
+      "price": 85.8,
+      "change": 2.12,
+      "change_pct": 2.53,
       "dma50": 92.55,
       "dma200": 88.67,
-      "dist50_pct": -7.31,
-      "dist200_pct": -3.25,
+      "dist50_pct": -7.3,
+      "dist200_pct": -3.24,
       "history": [
         {
           "date": "2023-11-01",
@@ -64499,6 +64507,10 @@
         {
           "date": "2026-11-26",
           "close": 85.79
+        },
+        {
+          "date": "2026-11-27",
+          "close": 85.8
         }
       ]
     },
@@ -64512,13 +64524,13 @@
       "group": "",
       "source": "Yahoo Finance",
       "as_of": "2026-11-27",
-      "price": 61433.0,
-      "change": 1055.0,
-      "change_pct": 1.75,
-      "dma50": 74697.0,
-      "dma200": 71925.0,
-      "dist50_pct": -17.76,
-      "dist200_pct": -14.59,
+      "price": 61582.0,
+      "change": 1204.0,
+      "change_pct": 1.99,
+      "dma50": 74700.0,
+      "dma200": 71926.0,
+      "dist50_pct": -17.56,
+      "dist200_pct": -14.38,
       "history": [
         {
           "date": "2024-06-11",
@@ -68118,7 +68130,7 @@
         },
         {
           "date": "2026-11-27",
-          "close": 61433.0
+          "close": 61582.0
         }
       ]
     }
@@ -68415,13 +68427,7 @@
           "ticker": "J",
           "name": "Jacobs Solutions",
           "change_pct": -4.27,
-          "headline": {
-            "title": "J.P. Morgan sees Indian stocks rise further in 2027 after 'great comeback' of 2026",
-            "source": "Reuters",
-            "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQQWRmQXRtWGtJcjVxUnJtb3JhWHItaTMtanZUcll1emlBaUFzZU1Eay11ZV9neGRlVnRKMXlMNDVnTDkwMDdjeHVMcUJhRldlUnVzZy11Q2ZYT05Mb3ZZWGRYSDFKT0dtM0t4Z2IweGpmZDZKR2pOSjRHSW5KRE1JQXpWX1VBRlpWTDgtdllpNFprV3RjTUYwWkZFSGo4cEJ3dDlaeUNYU0s4dm9DYUNhWV9qdGRfTUFqUkpDaA?oc=5",
-            "published_at": "2026-11-26T13:37:44+01:00",
-            "published_budapest": "2026. november 26., 13:37"
-          }
+          "headline": null
         }
       ]
     },
@@ -68478,7 +68484,7 @@
         "id": "reuters",
         "name": "Reuters",
         "status": "ok",
-        "items": 67,
+        "items": 66,
         "error": null,
         "note": "Google News, reuters.com szűrő"
       }
