@@ -1,55 +1,71 @@
 {
-  "date": "2026-11-27",
-  "updated_at": "2026-11-27T05:55:00+01:00",
-  "headline": "Csütörtökön a Hálaadás miatt zárva tartott a Wall Street, Európában viszont 1,8%-os széles körű emelkedés jött az enyhülő vámfélelmek nyomán; a Brent a közel-keleti kínálati kockázatok miatt 96,57 dollárra drágult, az EKB pedig a jegyzőkönyv szerint decemberben kamatemelésre készül. Pénteken rövidített kereskedés lesz New Yorkban.",
+  "date": "2026-11-28",
+  "updated_at": "2026-11-28T05:55:00+01:00",
+  "headline": "A rövidített pénteki kereskedésben az AI- és chippapírok visszapattanása 1,6%-kal emelte az S&P 500-at, amely 5,6%-kal 2025 áprilisa óta a legjobb hetét zárta; a piac szinte teljesen beárazta a decemberi Fed- és EKB-kamatemelést, a Brent pedig a heti 3%-os emelkedés után 95,44 dolláron zárt a vasárnapi OPEC+ ülés előtt.",
   "items": [
     {
-      "title": "1,8%-kal emelkedett a STOXX 600 az enyhülő vámfélelmek nyomán",
-      "summary": "Az európai STOXX 600 index 1,8%-kal 636,98 ponton zárt csütörtökön, a német, spanyol és olasz indexek egyaránt több mint 2%-ot emelkedtek, miután az amerikai kereskedelmi képviselet (USTR) jelezte, hogy az új vámokat a már megkötött vagy tárgyalás alatt álló megállapodásokban rögzített szinteken – az EU esetében 15%-on – maximálná. Minden fő szektor emelkedett, a bányászati, autóipari és védelmi papírok több mint 3%-ot erősödtek, a technológiai szektor két esős nap után visszapattant (Infineon +3,6%).",
+      "title": "Az AI-papírok visszapattanásával erős heti emelkedéssel zárt a Wall Street",
+      "summary": "Pénteken a Dow Jones 1,18%-kal 50 774,94, az S&P 500 1,60%-kal 7297,49, a Nasdaq Composite 2,31%-kal 24 129,50 ponton zárt; a chipszektor indexe 4,7%-ot emelkedett, a Micron 7,6%-kal, a Marvell 7,3%-kal, a Sandisk közel 16%-kal, az Nvidia 0,8%-kal erősödött. Hetente az S&P 500 5,6%-ot, a Nasdaq 6,68%-ot, a Dow 5,46%-ot ralizott, de az S&P 500 és a Nasdaq így is 2008 óta a legrosszabb novembere felé tart.",
+      "impact": "pozitív",
+      "tickers": [
+        "^GSPC",
+        "^IXIC",
+        "^DJI",
+        "MU",
+        "MRVL",
+        "NVDA"
+      ],
+      "source": "Reuters",
+      "url": "https://www.investing.com/news/stock-market-news/wall-st-futures-surge-as-investors-return-from-holiday-5053052"
+    },
+    {
+      "title": "98%-os eséllyel áraz a piac decemberi Fed-kamatemelést, erősödött a dollár",
+      "summary": "A piac 98%-os valószínűséggel vár 25 bázispontos kamatemelést a Fed december 8–9-i ülésén, miután a héten közölt adatok szerint a harmadik negyedéves GDP-növekedés az előzetesnél erősebb volt, az októberi infláció pedig tovább gyorsult. A dollárindex 0,37%-kal emelkedett, miközben az amerikai külkereskedelmi hiány októberben 149,5 milliárd dollárra, 19 havi csúcsra nőtt (várakozás: 136,0 milliárd).",
+      "impact": "negatív",
+      "tickers": [
+        "^TNX",
+        "DX-Y.NYB",
+        "^GSPC"
+      ],
+      "source": "Barchart (Yahoo Finance)",
+      "url": "https://finance.yahoo.com/markets/currencies/articles/dollar-moves-higher-t-note-192755662.html"
+    },
+    {
+      "title": "Május közepe óta a legjobb hetét zárta a STOXX 600",
+      "summary": "Az európai STOXX 600 1%-kal 643,85 ponton, egyhetes csúcson zárt pénteken, a héten közel 3%-ot emelkedett; a technológiai szektor 2%-kal (ASML, ASM International, Infineon), a bányászati papírok több mint 3,5%-kal, a Rheinmetall 3,3%-kal erősödött. A befektetők figyelme a vasárnapi spanyol előrehozott választásra irányul.",
       "impact": "pozitív",
       "tickers": [
         "^STOXX",
         "^GDAXI",
-        "EZU",
-        "IFX.DE"
+        "ASML",
+        "IFX.DE",
+        "RHM.DE"
       ],
       "source": "Reuters",
-      "url": "https://finance.yahoo.com/markets/world-indices/articles/european-stocks-end-higher-easing-174244569.html"
+      "url": "https://www.investing.com/news/stock-market-news/european-stocks-extend-recovery-as-tech-miners-advance-5053129"
     },
     {
-      "title": "EKB-jegyzőkönyv: már októberben is széles támogatottsága volt a kamatemelésnek",
-      "summary": "Az október 28–29-i ülés jegyzőkönyve szerint a tanács tagjainak nagy része már akkor támogatott volna egy kamatemelést, de további adatokra vártak; a döntéshozók nyilatkozatai alapján a december 17-i 25 bázispontos emelés szinte biztosnak tekinthető. Az EKB élére Pablo Hernández de Cos jelölését a piac a monetáris politika folytonosságának jeleként értékelte.",
+      "title": "Héja EKB-hangok: Nagel szerint 2027-ben végig 3% felett maradhat az infláció",
+      "summary": "Joachim Nagel Bundesbank-elnök szerint az infláció 2027 egészében 3% felett lesz, ezért az EKB-nak további lépésekre lehet szüksége, a piac 95%-os eséllyel áraz 25 bázispontos emelést a december 17-i ülésre. Közben az euróövezeti gazdasági hangulatindex váratlanul 95,8-ra, 5 havi mélypontra esett, az EUR/USD 0,33%-kal gyengült.",
       "impact": "negatív",
       "tickers": [
-        "^STOXX",
-        "EURUSD=X"
+        "EURUSD=X",
+        "^STOXX50E"
       ],
-      "source": "Reuters",
-      "url": "https://www.investing.com/news/economy-news/ecb-already-had-large-support-for-rate-hike-in-oct-accounts-show-5052492"
+      "source": "Barchart (Yahoo Finance)",
+      "url": "https://finance.yahoo.com/markets/currencies/articles/dollar-moves-higher-t-note-192755662.html"
     },
     {
-      "title": "96,57 dollárra drágult a Brent a hormuzi aknatámadások után",
-      "summary": "A Brent határidős ára 1,96 dollárral (1,2%) 96,57 dolláron zárt hordónként, a WTI 1,39%-kal 84,84 dollárra emelkedett, miután az iráni Forradalmi Gárda szerint két tartályhajó aknára futott a Hormuzi-szorosban, a húszik pedig a szaúdi Rasz Tanura finomító elleni támadásról számoltak be. A figyelem a november 29-i OPEC+ ülésre irányul, ahol a 2027-es kitermelési kvótákról döntenek.",
-      "impact": "negatív",
+      "title": "Heti 3%-os emelkedéssel zárt a Brent a vasárnapi OPEC+ ülés előtt",
+      "summary": "A Brent pénteken 1,2%-kal 95,44 dollárra, a WTI 0,7%-kal 83,08 dollárra csökkent, de a Brent a hormuzi tankerek és a szaúdi létesítmények (köztük a Jazan finomító) elleni támadások miatt a héten 3%-ot drágult, megszakítva háromhetes eséssorozatát. Az OPEC+ forrásai szerint a vasárnapi ülésen változatlanul hagyják a 2027 első negyedéves kitermelési célokat.",
+      "impact": "semleges",
       "tickers": [
         "BZ=F",
         "CL=F",
         "XLE"
       ],
-      "source": "Reuters",
-      "url": "https://finance.yahoo.com/energy/articles/oil-rises-supply-concerns-iran-030849858.html"
-    },
-    {
-      "title": "Emelkedő amerikai határidős indexek a rövidített péntek előtt",
-      "summary": "Csütörtök este az S&P 500 határidős kontraktusa 0,7%-kal, a Nasdaq-100-é 0,6%-kal, a Dow Jones-é 277 ponttal (0,6%) állt magasabban egy volatilis hét végén. Pénteken a NYSE és a Nasdaq rövidített kereskedési nappal, magyar idő szerint 19:00-kor zár.",
-      "impact": "pozitív",
-      "tickers": [
-        "ES=F",
-        "NQ=F",
-        "YM=F"
-      ],
       "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/11/26/stock-market-today-live-updates.html"
+      "url": "https://www.cnbc.com/2026/11/27/brent-oil-wti-hormuz-middle-east.html"
     }
   ]
 }
